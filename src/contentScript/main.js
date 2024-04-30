@@ -47,9 +47,14 @@ class CanvasAPIService
     }
 
     static Get = {
-        UsersSelf: async function(){
+        Announcements: async function(courseId, page=1){
             return HTTPClient.get(
-                CanvasAPIService.formatURL("/users/self")
+                CanvasAPIService.formatURL(`/courses/${courseId}/discussion_topics?only_announcements=true&page=${page}&per_page=100`)
+            )
+        },
+        Assignments: async function(courseId, page=1){
+            return HTTPClient.get(
+                CanvasAPIService.formatURL(`/courses/${courseId}/assignments?page=${page}&per_page=100`)
             )
         },
         Course: async function(courseId){
@@ -66,10 +71,40 @@ class CanvasAPIService
             return HTTPClient.get(
                 CanvasAPIService.formatURL(`/accounts/1/courses?page=${page}&per_page=100`)
             )
+        },
+        Discussions: async function(courseId, page=1){
+            return HTTPClient.get(
+                CanvasAPIService.formatURL(`/courses/${courseId}/discussion_topics?page=${page}&per_page=100`)
+            )
+        },
+        Modules: async function(courseId, moduleId, page=1){
+            return HTTPClient.get(
+                CanvasAPIService.formatURL(`/courses/${courseId}/modules?page=${page}&per_page=100`)
+            )
+        },
+        ModuleItems: async function(courseId, page=1){
+            return HTTPClient.get(
+                CanvasAPIService.formatURL(`/courses/${courseId}/modules/${moduleId}/items?page=${page}&per_page=100`)
+            )
+        },
+        Pages: async function(courseId, page=1){
+            return HTTPClient.get(
+                CanvasAPIService.formatURL(`/courses/${courseId}/pages?include[]=body&page=${page}&per_page=100`)
+            )
+        },
+        Tabs: async function(courseId, page=1){
+            return HTTPClient.get(
+                CanvasAPIService.formatURL(`/courses/${courseId}/tabs?page=${page}&per_page=100`)
+            )
+        },
+        UsersSelf: async function(){
+            return HTTPClient.get(
+                CanvasAPIService.formatURL("/users/self")
+            )
         }
     }
 }
-
+ 
 chrome.runtime.onMessage.addListener(
     async (message, sender, sendResponse) =>
     {
