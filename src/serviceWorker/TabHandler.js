@@ -48,12 +48,56 @@ export class TabHandler
             this.#canvasTabs.splice( this.#canvasTabs.indexOf(tabId), 1 );
         }
     }
+
+    async #removeTab(tabId)
+    {
+        if(this.#canvasTabs.includes(tabId))
+        {
+            return this.#canvasTabs.splice( this.#canvasTabs.indexOf(tabId), 1 );
+        }
+
+        return null;
+    }
     
     init()
     {
+        // If a valid tab URL is found, a new tab opens to start the content script
+        /*
+        chrome.runtime.onStartup.addListener(async () => {
+            const tabs = await chrome.tabs.query({})
+            console.log(tabs)
+
+            for(let i = 0; i < tabs.length; i++)
+            {
+                if(TabHandler.#isValidTab(tabs[i].id))
+                {
+                    chrome.tabs.create({url: tabs[i].url});
+                    return;
+                }
+            }
+        });
+        */
+
+        // If a valid tab URL is found, a new tab opens to start the content script
+        chrome.runtime.onInstalled.addListener(async () => {
+            const tabs = await chrome.tabs.query({})
+
+            for(let i = 0; i < tabs.length; i++)
+            {
+                if(TabHandler.#isValidTab(tabs[i].id))
+                {
+                    chrome.tabs.create({url: tabs[i].url});
+                    return;
+                }
+            }
+        });
+
         chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
             this.#updateValidTabs(tabId);
-            console.log(this.#canvasTabs) // For testing purposes
+        });
+
+        chrome.tabs.onRemoved.addListener(async (tabId, info) => {
+            this.#removeTab(tabId);
         });
 
         return null;

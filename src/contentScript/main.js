@@ -110,7 +110,7 @@ chrome.runtime.onMessage.addListener(
     {
         if(message.type === 200 && message.target === 300)
         {
-            let res = await CanvasAPIService.Get.CourseUser();
+            let res = await CanvasAPIService.Get.CoursesUser();
             console.log(res)
             alert(await JSON.stringify( await res.json()));
         }

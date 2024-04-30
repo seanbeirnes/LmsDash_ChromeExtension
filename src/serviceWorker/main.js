@@ -6,7 +6,7 @@ tabHandler.init();
 console.log(tabHandler.getTabId());
 
 chrome.runtime.onMessage.addListener(
-    (message, sender, response) => {
+    async (message, sender, response) => {
         if(message.type === Message.Type.REQUEST.NEW) {
             console.log(message.text, message.type)
 
@@ -14,8 +14,7 @@ chrome.runtime.onMessage.addListener(
 
             if(tabId != null)
             {
-                console.log(tabId);
-                chrome.tabs.sendMessage(
+                await chrome.tabs.sendMessage(
                     tabId,
                     new Message(Message.Target.TAB, Message.Type.REQUEST.NEW, "Hello world!")
                 )
