@@ -1,24 +1,25 @@
 import {TabHandler} from "./TabHandler.js"
+import { Message } from '../models/Message.js'
 
 const tabHandler = new TabHandler();
 tabHandler.init();
 console.log(tabHandler.getTabId());
 
-const port = chrome.runtime.connect();
+chrome.runtime.onMessage.addListener(
+    (message, sender, response) => {
+        if(message.type === Message.Type.REQUEST.NEW) {
+            console.log(message.text, message.type)
 
-chrome.tabs.onActivated.addListener( () =>
-{
-    let tabId = tabHandler.getTabId()
+            let tabId = tabHandler.getTabId()
 
-    if(tabId != null)
-    {
-        console.log(tabId);
-        chrome.tabs.sendMessage(
-            tabId,
-            "hello"
-        )
-        chrome.runtime.sendMessage(
-            message = "hello"
-        )
+            if(tabId != null)
+            {
+                console.log(tabId);
+                chrome.tabs.sendMessage(
+                    tabId,
+                    new Message(Message.Target.TAB, Message.Type.REQUEST.NEW, "Hello world!")
+                )
+            }
+        }
     }
-})
+)
