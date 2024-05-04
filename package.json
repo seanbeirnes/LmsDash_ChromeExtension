@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp manifest.json dist",
+    "build_contentScript": "rollup --config contentScript.rollup.config.js",
+    "build_manifest": "cp manifest.json dist",
+    "build_vite": "vite build",
+    "build": "npm run build_vite && npm run build_contentScript && npm run build_manifest",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -14,6 +17,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",

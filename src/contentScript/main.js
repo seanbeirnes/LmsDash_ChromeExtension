@@ -1,3 +1,5 @@
+import {Message} from "../shared/models/Message.js"
+
 class HTTPClient
 {
     static async #getCsrfToken()
@@ -108,7 +110,7 @@ class CanvasAPIService
 chrome.runtime.onMessage.addListener(
     async (message, sender, sendResponse) =>
     {
-        if(message.type === 200 && message.target === 300)
+        if(message.type === Message.Type.REQUEST.NEW && message.target === Message.Target.TAB)
         {
             let res = await CanvasAPIService.Get.CoursesUser();
             console.log(res)

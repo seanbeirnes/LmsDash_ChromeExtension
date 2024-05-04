@@ -10,13 +10,13 @@
     "128": "img/icon-128.png"
   },
   "background": {
-    "service_worker": "src/serviceWorker/index.js",
+    "service_worker": "src/ServiceWorker/index.js",
     "type": "module"
   },
   "content_scripts": [
     {
       "js": [
-        "src/contentScript/index.js"
+        "src/ContentScript/index.js"
       ],
       "matches": [
         "https://*.instructure.com/*"
@@ -24,7 +24,7 @@
     }
   ],
   "side_panel": {
-      "default_path": "src/sidePanel/index.html"
+      "default_path": "src/SidePanel/index.html"
     },
   "permissions": ["sidePanel", "tabs"]
 }

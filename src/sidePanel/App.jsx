@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Message } from '../models/Message.js'
+import { Message } from '../shared/models/Message.js'
 import './App.css'
 
 function App() {

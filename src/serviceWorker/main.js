@@ -1,5 +1,5 @@
 import {TabHandler} from "./TabHandler.js"
-import { Message } from '../models/Message.js'
+import { Message } from '../shared/models/Message.js'
 
 // Sets the panel to open when clicking the extension's icon in Chrome
 chrome.sidePanel.setPanelBehavior({openPanelOnActionClick: true})

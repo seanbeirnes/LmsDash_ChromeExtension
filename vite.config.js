@@ -12,17 +12,18 @@ export default defineConfig({
   outDir: resolve(rootDir, 'dist'),
   build:
   {
-    rollupOptions: {
-      input: {
-        serviceWorker: resolve(srcDir, 'serviceWorker', 'main.js'),
-        contentScript: resolve(srcDir, 'contentScript', 'main.js'),
-        sidepanel: resolve(srcDir, 'sidePanel', 'index.html'),
-      },
-      output: {
-        entryFileNames: `src/[name]/index.js`,
-        chunkFileNames: `[name]/index.js`,
-        assetFileNames: `assets/[name].[ext]`
+    rollupOptions: 
+      {
+          input: {
+            SidePanel: resolve(srcDir, 'SidePanel', 'index.html'),
+            ServiceWorker: resolve(srcDir, 'ServiceWorker', 'main.js')
+          },
+          output: {
+            entryFileNames: 'src/[name]/index.js',
+            chunkFileNames: '[name]/index.js',
+            assetFileNames: 'assets/[name].[ext]',
+            format: 'es'
+          }
       }
-    }
   }
 })
