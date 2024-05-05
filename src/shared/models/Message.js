@@ -9,6 +9,7 @@ export class Message
         this.time = time;
     }
 
+    // Enums for message types
     static Type = {
         // General info messages
         STATUS: {
@@ -37,5 +38,3 @@ export class Message
         TAB: 300
     }
 }
-
-export default {Message}

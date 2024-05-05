@@ -79,6 +79,7 @@ export class TabHandler
         */
 
         // If a valid tab URL is found, a new tab opens to start the content script
+        /*
         chrome.runtime.onInstalled.addListener(async () => {
             const tabs = await chrome.tabs.query({})
 
@@ -91,6 +92,7 @@ export class TabHandler
                 }
             }
         });
+        */
 
         chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
             this.#updateValidTabs(tabId);

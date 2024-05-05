@@ -1,16 +1,28 @@
-import { CanvasAPIClient } from "./CanvasAPIClient.js";
-import {Message} from "../shared/models/Message.js"
+import { Message } from "../shared/models/Message.js";
+import { CanvasRequest } from "../shared/models/CanvasRequest.js";
+import { RequestHandler } from "./RequestHandler.js";
 
-const CanvasAPI = new CanvasAPIClient();
+const requestHandler = new (RequestHandler);
 
 chrome.runtime.onMessage.addListener(
     async (message, sender, sendResponse) =>
     {
-        if(message.type === Message.Type.REQUEST.NEW && message.target === Message.Target.TAB)
+        // Only accept messages for the conent script
+        if(message.target !== Message.Target.TAB)
         {
-            let res = await CanvasAPI.Get.CoursesUser();
-            console.log(res)
-            alert(await JSON.stringify( await res.json()));
+            return;
+        }
+
+        // If message is a request, make requests in batches and send respones back in a message
+        if(message.type === Message.Type.REQUEST.NEW)
+        {
+            requestHandler.enqueueList(message.data);
+
+            const responses = await requestHandler.run(); // Array of responses returned
+
+            chrome.runtime.sendMessage(
+                new Message(Message.Target.SERVICE_WORKER, Message.Type.REQUEST.OK, "Response", responses)
+            )
         }
     }
 )
