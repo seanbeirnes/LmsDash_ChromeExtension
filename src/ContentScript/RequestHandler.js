@@ -34,7 +34,6 @@ export class RequestHandler
         list.forEach( (link) => {
             const LINK_PATTERN = /^<([\w\/\.&?:\[\]=]+)>;\srel="(\w+)"$/
             const matches = link.match(LINK_PATTERN)
-            console.log(matches);
             if(matches.length === 3)
             {
                 links[matches[2]] = matches[1];
