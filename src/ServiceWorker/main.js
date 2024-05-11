@@ -21,18 +21,27 @@ chrome.runtime.onMessage.addListener(
                 // Test requests
                 const requests = [
                 new CanvasRequest(CanvasRequest.Get.UsersSelf),
-                new CanvasRequest(CanvasRequest.Get.CoursesUser)
+                new CanvasRequest(CanvasRequest.Get.CoursesUser),
+                new CanvasRequest(CanvasRequest.Get.CoursesAccount),
+                new CanvasRequest(CanvasRequest.Get.Course, [message.text])
             ]
 
-            const message = new Message(Message.Target.TAB, Message.Type.REQUEST.NEW, "", requests)
+            const mes = new Message(Message.Target.TAB, Message.Type.REQUEST.NEW, "", requests)
 
                 await chrome.tabs.sendMessage(
                     tabId,
-                    message
+                    mes
                 )
             }
         }
 
         console.log(message);
+
+        if(message.target === Message.Target.SERVICE_WORKER && message.type === Message.Type.REQUEST.OK)
+        {
+            const res = message.data
+
+            res.forEach(async (response) => console.log(await JSON.parse(response.text), response))
+        }
     }
 )

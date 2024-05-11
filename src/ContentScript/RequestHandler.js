@@ -19,6 +19,40 @@ export class RequestHandler
         requests.forEach( (req) => this.enqueue(req));
     }
 
+    // Returns a dictionary key/value pair of the link header if it is not null
+    #parseLinkHeader(linkHeader)
+    {
+        if(linkHeader == null)
+        {
+            return null;
+        }
+
+        const links = {}
+
+        const list = linkHeader.split(",")
+
+        list.forEach( (link) => {
+            const LINK_PATTERN = /^<([\w\/\.&?:\[\]=]+)>;\srel="(\w+)"$/
+            const matches = link.match(LINK_PATTERN)
+            console.log(matches);
+            if(matches.length === 3)
+            {
+                links[matches[2]] = matches[1];
+            }
+            else
+            {
+                console.error("LMS Dash Error: Could not parse 'Link' header")
+            }
+        })
+
+        if(Object.keys(links).length > 0)
+        {
+            return links;
+        }
+
+        return null;
+    }
+
     async createRequest(request)
     {
         let response = null;
@@ -72,7 +106,16 @@ export class RequestHandler
                 console.error("Error: invalid canvas get request type passed to RequestHandler")
         }
 
-        return {id: request.id, response: response};
+        return {id: request.id, 
+            text: await response.text(), 
+            bodyUsed: response.bodyUsed,
+            link: this.#parseLinkHeader(response.headers.get("Link")),
+            ok: response.ok,
+            redirected: response.redirected,
+            status: response.status, 
+            statusText: response.statusText, 
+            type: response.type
+            };
     }
 
     async run()
