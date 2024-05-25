@@ -1,5 +1,6 @@
 import { CanvasAPIClient } from "./CanvasAPIClient.js";
 import { CanvasRequest } from "../shared/models/CanvasRequest.js";
+import {CanvasResponse} from "../shared/models/CanvasResponse.js";
 
 export class RequestHandler
 {
@@ -105,16 +106,17 @@ export class RequestHandler
                 console.error("Error: invalid canvas get request type passed to RequestHandler")
         }
 
-        return {id: request.id, 
-            text: await response.text(), 
-            bodyUsed: response.bodyUsed,
-            link: this.#parseLinkHeader(response.headers.get("Link")),
-            ok: response.ok,
-            redirected: response.redirected,
-            status: response.status, 
-            statusText: response.statusText, 
-            type: response.type
-            };
+        return new CanvasResponse(
+          request.id,
+          await response.text(),
+          response.bodyUsed,
+          this.#parseLinkHeader(response.headers.get("Link") ? response.headers.get("Link") : response.headers.get("link")),
+          response.ok,
+          response.redirected,
+          response.status,
+          response.statusText,
+          response.type
+        );
     }
 
     async run()

@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path, { resolve } from 'path';
 
+const isProduction = process.env.NODE_ENV === 'production';
 const rootDir = resolve(__dirname);
 const srcDir = resolve(rootDir, 'src');
 
@@ -12,6 +13,7 @@ export default defineConfig({
   outDir: resolve(rootDir, 'dist'),
   build:
   {
+    minify: isProduction, // is false in dev mode
     rollupOptions: 
       {
           input: {

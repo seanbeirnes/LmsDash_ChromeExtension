@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build_contentScript": "rollup --config contentScript.rollup.config.js",
     "build_manifest": "cp manifest.json dist",
     "build_vite": "vite build",
-    "build": "npm run build_vite && npm run build_contentScript && npm run build_manifest",
+    "build_app": "npm run build_vite && npm run build_contentScript && npm run build_manifest",
+    "build": "NODE_ENV=production npm run build_app",
+    "dev": "NODE_ENV=development npm run build_app",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

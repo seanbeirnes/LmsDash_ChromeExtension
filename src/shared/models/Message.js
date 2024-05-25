@@ -11,24 +11,40 @@ export class Message
 
     // Enums for message types
     static Type = {
-        // General info messages
-        STATUS: {
-            IS_ALIVE: 0,
-            INFO: 1
+        // Canvas requests (for making content script API requests)
+        Canvas: {
+            REQUESTS: 1,
+            RESPONSES: 2,
         },
-    
-        // Error message types
-        ERROR: {
-            CONNECTION_LOST: 100,
-            CSRF_MISSING: 101,
-            UNAUTHORIZED: 102
-        },
-    
-        // Request message types
-        REQUEST: {
-            NEW: 200,
-            OK: 201,
-            PROGRESS: 210
+
+        // Tasks for serviceWorker (called from SidePanel and response to SidePanel)
+        Task: {
+            Request: {
+                App: {
+                    STATE: 100, // Application info and state
+                },
+                Info: {
+                    USER: 200, // User info
+                    SEARCH_TERMS: 210
+                },
+                Scanner: {
+                    NEW: 300,
+                    PROGRESS: 301
+                }
+            },
+            Response: {
+                App: {
+                    STATE: 100, // Application info and state
+                },
+                Info: {
+                    USER: 200, // User info
+                    SEARCH_TERMS: 210
+                },
+                Scanner: {
+                    NEW: 300,
+                    PROGRESS: 301
+                }
+            }
         }
     }
 

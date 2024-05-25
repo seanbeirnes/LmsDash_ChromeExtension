@@ -11,7 +11,7 @@ console.log(tabHandler.getTabId());
 
 chrome.runtime.onMessage.addListener(
     async (message, sender, response) => {
-        if(message.target === Message.Target.SERVICE_WORKER && message.type === Message.Type.REQUEST.NEW) {
+        if(message.target === Message.Target.SERVICE_WORKER && message.type === Message.Type.Task.Request.App.STATE) {
             console.log(message.text, message.type)
 
             let tabId = tabHandler.getTabId()
@@ -26,22 +26,29 @@ chrome.runtime.onMessage.addListener(
                 new CanvasRequest(CanvasRequest.Get.Course, [message.text])
             ]
 
-            const mes = new Message(Message.Target.TAB, Message.Type.REQUEST.NEW, "", requests)
+            const msg = new Message(Message.Target.TAB, Message.Type.Canvas.REQUESTS, "", requests)
 
                 await chrome.tabs.sendMessage(
                     tabId,
-                    mes
+                    msg
                 )
             }
         }
 
         console.log(message);
 
-        if(message.target === Message.Target.SERVICE_WORKER && message.type === Message.Type.REQUEST.OK)
+        if(message.target === Message.Target.SERVICE_WORKER && message.type === Message.Type.Canvas.RESPONSES)
         {
             const res = message.data
 
             res.forEach(async (response) => console.log(await JSON.parse(response.text), response))
+            chrome.runtime.sendMessage(new Message(Message.Target.SIDE_PANEL, Message.Type.Task.Response, "Response Received", {}));
         }
     }
 )
+
+// TO-DO: 
+/*
+Convert RequestHandler response obj into a CanvasResponse model like CanvasMessage is?
+
+*/
