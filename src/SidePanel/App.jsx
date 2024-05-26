@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import {Message} from '../shared/models/Message.js'
 import {MessageListener} from '../shared/observers/MessageListener.js'
 import * as Popover from '@radix-ui/react-popover';
-import './App.css'
+import ButtonPrimary from "./components/shared/ButtonPrimary.jsx";
 
 function App()
 {
@@ -44,26 +44,18 @@ function App()
             </div>
             <h1>LMS Dash</h1>
             <div className="card">
-                <button onClick={() =>
-                {
-                    const courseId = prompt("Enter course ID");
-                    chrome.runtime.sendMessage(
-                        new Message(Message.Target.SERVICE_WORKER, Message.Type.Task.Request.App.STATE, courseId)
-                    )
-                }
-                }>
-                    Click me!
-                </button>
+
                 <p>{message}</p>
-              <Popover.Root>
-                <Popover.Trigger>More info</Popover.Trigger>
-                <Popover.Portal>
-                  <Popover.Content>
-                    Some more info…
-                    <Popover.Arrow />
-                  </Popover.Content>
-                </Popover.Portal>
-              </Popover.Root>
+
+              <ButtonPrimary onClick={() =>
+              {
+                const courseId = prompt("Enter course ID");
+                chrome.runtime.sendMessage(
+                  new Message(Message.Target.SERVICE_WORKER, Message.Type.Task.Request.App.STATE, courseId)
+                )
+              }}>
+                <span>Hello World!</span>
+              </ButtonPrimary>
             </div>
         </>
     )
