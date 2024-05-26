@@ -30,7 +30,6 @@ export class MessageListener
   {
     if(this.target !== message.target) return null;
 
-    console.log(this);
     if (this.args !== null)
     {
       this.callback(message, this.args);
@@ -39,5 +38,4 @@ export class MessageListener
       this.callback(message);
     }
   }
-
 }

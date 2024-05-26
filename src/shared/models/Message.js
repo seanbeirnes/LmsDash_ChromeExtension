@@ -14,7 +14,7 @@ export class Message
         // Canvas requests (for making content script API requests)
         Canvas: {
             REQUESTS: 1,
-            RESPONSES: 2,
+            RESPONSES: 2
         },
 
         // Tasks for serviceWorker (called from SidePanel and response to SidePanel)

@@ -24,7 +24,6 @@ function App()
         function handleMessage(msg)
         {
             console.log(msg.data);
-            alert(msg.data);
             setMessage(msg.text);
         }
        const messageListener = new MessageListener(

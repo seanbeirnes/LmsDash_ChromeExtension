@@ -17,6 +17,11 @@ export class TabHandler
         }
     }
 
+    hasTabs()
+    {
+        return this.#canvasTabs.length > 0;
+    }
+
     static async #isValidTab(tabId)
     {
         const tab = await chrome.tabs.get(Number(tabId));
