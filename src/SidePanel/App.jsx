@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 import {Message} from '../shared/models/Message.js'
 import {MessageListener} from '../shared/observers/MessageListener.js'
+import * as Popover from '@radix-ui/react-popover';
 import './App.css'
 
 function App()
@@ -38,7 +39,7 @@ function App()
 
     return (
         <>
-            <div>
+            <div className="p-5 animate__animated animate__zoomIn">
                 <img src="/img/icon-color.svg" alt="LMS Dash"/>
             </div>
             <h1>LMS Dash</h1>
@@ -54,6 +55,15 @@ function App()
                     Click me!
                 </button>
                 <p>{message}</p>
+              <Popover.Root>
+                <Popover.Trigger>More info</Popover.Trigger>
+                <Popover.Portal>
+                  <Popover.Content>
+                    Some more info…
+                    <Popover.Arrow />
+                  </Popover.Content>
+                </Popover.Portal>
+              </Popover.Root>
             </div>
         </>
     )
