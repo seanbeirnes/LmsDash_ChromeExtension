@@ -9,10 +9,12 @@ export class AppState
     this.isOnline = navigator.onLine;
     this.networkInfo = navigator.connection;
 
+    this.activeTabId = null;
+    this.activeTab = null;
+
     this.hasTabs = false;
-
     this.isAdmin = false;
-
     this.hasOpenSidePanel = false;
+
   }
 }

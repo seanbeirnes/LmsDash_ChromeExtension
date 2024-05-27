@@ -40,6 +40,7 @@ export class AppController
     if(this.state.hasOpenSidePanel === true) return;
 
     this.state.hasOpenSidePanel = true;
+    this.state.timeChanged = Date.now();
     this.#notifySidePanel();
   }
 
@@ -48,18 +49,25 @@ export class AppController
   {
     this.state.timeUpdated = Date.now();
 
-    let newIsOnline = navigator.onLine;
-    let newHasTabs = this.tabHandler.hasTabs();
+    const newActiveTabId = this.tabHandler.getLastActiveTabId();
+    const newIsOnline = navigator.onLine;
+    const newHasTabs = this.tabHandler.hasTabs();
     let newIsAdmin = this.state.isAdmin;
 
+    const isChanged_isOnline = (this.state.isOnline !== newIsOnline);
+    const isChanged_hasTabs = (this.state.hasTabs !== newHasTabs);
+    const isChanged_activeTabId = (this.state.activeTabId !== newActiveTabId);
+
+    // Update activeTab if activeTabId changed
+    if(isChanged_activeTabId) this.state.activeTab = newActiveTabId !== null ?
+      await chrome.tabs.get(newActiveTabId) : null;
+
     // Check if non-dependant rules changed
-    let isChanged = false;
-    isChanged = (this.state.isOnline !== newIsOnline ||
-      this.state.hasTabs !== newHasTabs);
+    let isChanged = (isChanged_isOnline || isChanged_hasTabs || isChanged_activeTabId);
 
     // Check if isAdmin changed
     // Will only run if is admin is false AND checked < 5 times OR at the max app loop count
-    if(isChanged||
+    if(isChanged ||
       ( this.countCheckedIsAdmin < 5 && this.state.isAdmin === false ) ||
       (counter === AppController.APP_LOOP_MS * AppController.APP_LOOP_MULTIPLIER))
     {
@@ -81,10 +89,12 @@ export class AppController
     this.state.isOnline = newIsOnline;
     this.state.hasTabs = newHasTabs;
     this.state.isAdmin = newIsAdmin;
+    this.state.activeTabId = newActiveTabId;
 
     // If any changed, send update to SidePanel
     if(isChanged)
     {
+      this.state.timeChanged = Date.now();
       this.#notifySidePanel();
     }
   }
@@ -92,8 +102,6 @@ export class AppController
   // Message the side panel of the app state
   #notifySidePanel()
   {
-    this.state.timeChanged = Date.now();
-
     this.messageHandler.sendSidePanelMessage("app state", this.state);
 
     console.log(this.state);

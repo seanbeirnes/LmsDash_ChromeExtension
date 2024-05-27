@@ -3,6 +3,7 @@ export class TabHandler
 {
     // Tracks valid canvas tabs open in browser
     #canvasTabs = [];
+    #lastActiveTabId = null;
 
     // Returns a valid Canvas tabId
     getTabId()
@@ -15,6 +16,18 @@ export class TabHandler
         {
             return null;
         }
+    }
+
+    getLastActiveTabId()
+    {
+        if(this.#lastActiveTabId === null) return null;
+
+        if(this.#canvasTabs.includes(this.#lastActiveTabId))
+        {
+            return this.#lastActiveTabId;
+        }
+
+        return null;
     }
 
     hasTabs()
@@ -63,48 +76,33 @@ export class TabHandler
 
         return null;
     }
+
+    async #updateActiveTab()
+    {
+        const response = await chrome.tabs.query({active: true, currentWindow: true});
+
+        if(response.length < 1) return;
+
+        const newTab = response[0];
+        if(this.#canvasTabs.includes(newTab.id)) this.#lastActiveTabId = newTab.id;
+    }
     
     init()
     {
-        // If a valid tab URL is found, a new tab opens to start the content script
-        /*
-        chrome.runtime.onStartup.addListener(async () => {
-            const tabs = await chrome.tabs.query({})
-            console.log(tabs)
-
-            for(let i = 0; i < tabs.length; i++)
-            {
-                if(TabHandler.#isValidTab(tabs[i].id))
-                {
-                    chrome.tabs.create({url: tabs[i].url});
-                    return;
-                }
-            }
-        });
-        */
-
-        // If a valid tab URL is found, a new tab opens to start the content script
-        /*
-        chrome.runtime.onInstalled.addListener(async () => {
-            const tabs = await chrome.tabs.query({})
-
-            for(let i = 0; i < tabs.length; i++)
-            {
-                if(TabHandler.#isValidTab(tabs[i].id))
-                {
-                    chrome.tabs.create({url: tabs[i].url});
-                    return;
-                }
-            }
-        });
-        */
-
+        // Add listeners to track all valid tabs
         chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
             this.#updateValidTabs(tabId);
+            this.#lastActiveTabId = tabId;
         });
 
         chrome.tabs.onRemoved.addListener(async (tabId, info) => {
             this.#removeTab(tabId);
+            if(this.#lastActiveTabId === tabId) this.#lastActiveTabId = null;
+        });
+
+        // Add listener to track last active tab
+        chrome.tabs.onActivated.addListener( async () => {
+            this.#updateActiveTab();
         });
 
         return null;
