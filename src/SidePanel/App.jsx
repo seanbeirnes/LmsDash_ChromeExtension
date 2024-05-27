@@ -9,16 +9,13 @@ function App()
   // const [count, setCount] = useState(0)
   const [message, setMessage] = useState("")
 
-  // useEffect( () => {
-  //   function handleMessage(message, sender, sendResponse)
-  //   {
-  //       console.log(message);
-  //       setMessage(message);
-  //       chrome.runtime.onMessage.removeListener(handleMessage)
-  //   }
-
-  //   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => handleMessage(message, sender, sendResponse))
-  // }, [])
+  // Let serviceWorker know the panel has been opened
+  chrome.runtime.sendMessage(
+    new Message(Message.Target.SERVICE_WORKER,
+      Message.Sender.SIDE_PANEL,
+      Message.Type.Task.Request.App.SET_PANEL_OPENED,
+      "SidePanel was opened")
+  );
 
   useEffect(() =>
   {
@@ -51,7 +48,9 @@ function App()
         <ButtonPrimary onClick={() =>
         {
           chrome.runtime.sendMessage(
-            new Message(Message.Target.SERVICE_WORKER, Message.Type.Task.Request.App.STATE)
+            new Message( Message.Target.SERVICE_WORKER,
+              Message.Target.SIDE_PANEL,
+              Message.Type.Task.Request.App.STATE)
           )
         }}>
           <span>Hello World!</span>

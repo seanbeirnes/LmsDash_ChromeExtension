@@ -1,8 +1,9 @@
 export class Message 
 {
-    constructor(target, type, text = "", data = {}, time = Date.now())
+    constructor(target, sender, type, text = "", data = {}, time = Date.now())
     {
         this.target = target;
+        this.sender = sender;
         this.type = type;
         this.text = text;
         this.data = data;
@@ -22,6 +23,7 @@ export class Message
             Request: {
                 App: {
                     STATE: 100, // Application info and state
+                    SET_PANEL_OPENED: 101
                 },
                 Info: {
                     USER: 200, // User info
@@ -52,5 +54,11 @@ export class Message
         SERVICE_WORKER: 100,
         SIDE_PANEL: 200,
         TAB: 300
+    }
+
+    static Sender = {
+        SERVICE_WORKER: 101,
+        SIDE_PANEL: 201,
+        TAB: 301
     }
 }

@@ -24,7 +24,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) =>
         const responses = await requestHandler.run(); // Array of responses returned
 
         sendResponse(
-          new Message(Message.Target.SERVICE_WORKER, Message.Type.Canvas.RESPONSES, "Response", responses)
+          new Message( Message.Target.SERVICE_WORKER,
+            Message.Sender.TAB,
+            Message.Type.Canvas.RESPONSES,
+            "Response",
+            responses )
         );
       }
     })();

@@ -12,5 +12,7 @@ export class AppState
     this.hasTabs = false;
 
     this.isAdmin = false;
+
+    this.hasOpenSidePanel = false;
   }
 }
