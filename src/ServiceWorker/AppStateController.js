@@ -35,7 +35,7 @@ export class AppStateController
     let isChanged = false;
     isChanged = (this.appState.isOnline !== newIsOnline || this.appState.hasTabs !== newHasTabs);
 
-    if(isChanged) this.appState.timeChanged = Date.now();
+    if (isChanged) this.appState.timeChanged = Date.now();
 
     this.appState.isOnline = newIsOnline;
     this.appState.hasTabs = newHasTabs;
@@ -47,7 +47,7 @@ export class AppStateController
   {
     let message = null;
 
-    if(this.isAdminRunning || !this.appState.hasTabs) return message;
+    if (this.isAdminRunning || !this.appState.hasTabs) return message;
 
     this.isAdminRunning = true;
 
@@ -67,24 +67,27 @@ export class AppStateController
         "get-courses-by-account request to check if admin",
         [new CanvasRequest(CanvasRequest.Get.CoursesAccount)]
       )
-    ).catch( e => {console.error("Content script not available:\n" + e)});
+    ).catch(e =>
+    {
+      console.error("Content script not available:\n" + e)
+    });
 
     async function sleep(time)
     {
-      return new Promise ( (resolve) =>
-        {
-          setTimeout(resolve, time)
-        })
+      return new Promise((resolve) =>
+      {
+        setTimeout(resolve, time)
+      })
     }
 
     let counter = 0;
-    while(counter < 30 && message === null)
+    while (counter < 30 && message === null)
     {
       await sleep(Math.pow(counter, 2));
       counter++
     }
 
-    if(message !== null)
+    if (message !== null)
     {
       this.appState.isAdmin = message.data[0].status !== 401;
     }

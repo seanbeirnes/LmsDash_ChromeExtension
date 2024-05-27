@@ -1,27 +1,34 @@
-import { Message } from "../shared/models/Message.js";
-import { RequestHandler } from "./RequestHandler.js";
+import {Message} from "../shared/models/Message.js";
+import {RequestHandler} from "./RequestHandler.js";
 
 const requestHandler = new RequestHandler();
 
-chrome.runtime.onMessage.addListener(
-    async (message, sender, sendResponse) =>
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) =>
+  {
+    const isTarget = (message.target === Message.Target.TAB && message.type === Message.Type.Canvas.REQUESTS);
+
+    (async () =>
     {
-        // Only accept messages for the conent script
-        if(message.target !== Message.Target.TAB)
-        {
-            return;
-        }
+      console.log(message);
+      // Only accept messages for the conent script
+      if(message.target !== Message.Target.TAB)
+      {
+        return;
+      }
 
-        // If message is a request, make requests in batches and send respones back in a message
-        if(message.type === Message.Type.Canvas.REQUESTS)
-        {
-            requestHandler.enqueueList(message.data);
+      // If message is a request, make requests in batches and send respones back in a message
+      if(isTarget)
+      {
+        requestHandler.enqueueList(message.data);
 
-            const responses = await requestHandler.run(); // Array of responses returned
+        const responses = await requestHandler.run(); // Array of responses returned
 
-            chrome.runtime.sendMessage(
-                new Message(Message.Target.SERVICE_WORKER, Message.Type.Canvas.RESPONSES, "Response", responses)
-            )
-        }
-    }
+        sendResponse(
+          new Message(Message.Target.SERVICE_WORKER, Message.Type.Canvas.RESPONSES, "Response", responses)
+        );
+      }
+    })();
+
+    if(isTarget) return true;
+  }
 )
