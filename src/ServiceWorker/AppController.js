@@ -37,8 +37,6 @@ export class AppController
   // Set the sidePanel as open in app state and notify sidePanel of state change
   setSidePanelOpen()
   {
-    if(this.state.hasOpenSidePanel === true) return;
-
     this.state.hasOpenSidePanel = true;
     this.state.timeChanged = Date.now();
     this.#notifySidePanel();

@@ -46,7 +46,6 @@ function App()
       );
       handleMessage(response);
 
-      console.log(appState)
       return true;
     }
 
