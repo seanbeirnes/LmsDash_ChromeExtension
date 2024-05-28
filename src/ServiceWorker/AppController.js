@@ -57,19 +57,22 @@ export class AppController
     const isChanged_isOnline = (this.state.isOnline !== newIsOnline);
     const isChanged_hasTabs = (this.state.hasTabs !== newHasTabs);
     const isChanged_activeTabId = (this.state.activeTabId !== newActiveTabId);
+    let isChanged_activeTab = false;
 
     // Update activeTab if activeTabId changed
-    if(isChanged_activeTabId) this.state.activeTab = newActiveTabId !== null ?
-      await chrome.tabs.get(newActiveTabId) : null;
+    if(isChanged_activeTabId || (newActiveTabId !== null && this.state.activeTab !== null))
+    {
+      let newActiveTab = await chrome.tabs.get(newActiveTabId);
+      if(newActiveTab.url !== this.state.activeTab?.url) isChanged_activeTab = true;
+      this.state.activeTab = newActiveTab;
+    }
 
     // Check if non-dependant rules changed
-    let isChanged = (isChanged_isOnline || isChanged_hasTabs || isChanged_activeTabId);
+    let isChanged = (isChanged_isOnline || isChanged_hasTabs || isChanged_activeTabId || isChanged_activeTab);
 
     // Check if isAdmin changed
     // Will only run if is admin is false AND checked < 5 times OR at the max app loop count
-    if(isChanged ||
-      ( this.countCheckedIsAdmin < 5 && this.state.isAdmin === false ) ||
-      (counter === AppController.APP_LOOP_MS * AppController.APP_LOOP_MULTIPLIER))
+    if( ((isChanged || this.countCheckedIsAdmin < 5) && this.state.isAdmin === false ) || (counter === AppController.APP_LOOP_MS * AppController.APP_LOOP_MULTIPLIER))
     {
       if(this.state.hasTabs)
       {
