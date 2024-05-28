@@ -60,6 +60,7 @@ export class TabHandler
         if(isValid && !this.#canvasTabs.includes(tabId))
         {
             this.#canvasTabs.push(tabId)
+            this.#lastActiveTabId = tabId;
         }
         else if (!isValid && this.#canvasTabs.includes(tabId))
         {
@@ -92,7 +93,6 @@ export class TabHandler
         // Add listeners to track all valid tabs
         chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
             this.#updateValidTabs(tabId);
-            this.#lastActiveTabId = tabId;
         });
 
         chrome.tabs.onRemoved.addListener(async (tabId, info) => {
