@@ -11,13 +11,13 @@ export class MessageHandler
 
   init()
   {
-    chrome.runtime.onMessage.addListener((message, sender, response) =>
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) =>
       {
         if(message.target !== Message.Target.SERVICE_WORKER) return;
 
         if(message.sender === Message.Sender.SIDE_PANEL)
         {
-          this.handleSidePanelMessage(message);
+          this.handleSidePanelMessage(message, sender, sendResponse);
         }
 
         // if(message.sender === Message.Sender.TAB)
@@ -29,7 +29,7 @@ export class MessageHandler
     )
   }
 
-  async handleSidePanelMessage(message)
+  async handleSidePanelMessage(message, sender, sendResponse)
   {
     switch(message.type)
     {
@@ -45,6 +45,15 @@ export class MessageHandler
       case Message.Type.Task.Request.App.SET_PANEL_OPENED:
       {
         this.appController.setSidePanelOpen();
+        sendResponse(
+          new Message(
+            Message.Target.SIDE_PANEL,
+            Message.Sender.SERVICE_WORKER,
+            Message.Type.Task.Response.App.SET_PANEL_OPENED,
+            "SidePanel was opened",
+            this.appController.state
+          )
+        )
       }
         break;
 
