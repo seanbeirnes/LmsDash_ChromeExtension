@@ -12,7 +12,7 @@ export class MessageHandler
   init()
   {
     chrome.runtime.onMessage.addListener((message, sender, sendResponse) =>
-      {
+      { ( async () => {
         if(message.target !== Message.Target.SERVICE_WORKER) return;
 
         if(message.sender === Message.Sender.SIDE_PANEL)
@@ -25,6 +25,8 @@ export class MessageHandler
         //   // Future: Handle messages initiated by contentScript
         //   return;
         // }
+      })();
+        return true;
       }
     )
   }
@@ -35,10 +37,7 @@ export class MessageHandler
     {
       case Message.Type.Task.Request.App.STATE:
       {
-        const responses = await this.sendCanvasRequests(
-          [new CanvasRequest(CanvasRequest.Get.UsersSelf)]
-        );
-        console.log(responses);
+       //TO DO: return App State
       }
         break;
 
@@ -52,6 +51,24 @@ export class MessageHandler
             Message.Type.Task.Response.App.SET_PANEL_OPENED,
             "SidePanel was opened",
             this.appController.state
+          )
+        )
+      }
+        break;
+
+      case Message.Type.Task.Request.Info.USER:
+      {
+        const response = await this.sendCanvasRequests(
+          [new CanvasRequest(CanvasRequest.Get.UsersSelf)]
+        )
+
+        sendResponse(
+          new Message(
+            Message.Target.SIDE_PANEL,
+            Message.Sender.SERVICE_WORKER,
+            Message.Type.Task.Response.Info.USER,
+            "User info response",
+            response
           )
         )
       }
@@ -97,6 +114,6 @@ export class MessageHandler
       console.warn("Content script not available:\n" + e)
     });
 
-    return responseMsg?.data;
+    return responseMsg ? responseMsg.data : null;
   }
 }

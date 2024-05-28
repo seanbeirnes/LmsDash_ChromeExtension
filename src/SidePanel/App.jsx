@@ -4,6 +4,7 @@ import {MessageListener} from '../shared/observers/MessageListener.js'
 import PageRouter from "./components/router/PageRouter.jsx";
 
 export const AppStateContext = createContext({});
+export const UserInfoContext = createContext({});
 
 function App()
 {
@@ -15,6 +16,17 @@ function App()
     timeChanged: 0,
     timeUpdated: 0,
   })
+
+  const [userInfo, setUserInfo] = useState({
+    timeChecked: 0,
+    firstName: "",
+    lastName: "",
+    fullName: "",
+    shortName: "",
+    email: "",
+    sis_user_id: "",
+    lmsInstance: "",
+  });
 
   useEffect(() =>
   {
@@ -36,7 +48,7 @@ function App()
 
     const notifyIsOpened = async () =>
     {
-      if(appState.timeUpdated !== 0) return false;
+      if(appState.timeUpdated !== 0) return;
       // Let serviceWorker know the panel has been opened
       const response = await chrome.runtime.sendMessage(
         new Message(Message.Target.SERVICE_WORKER,
@@ -45,11 +57,41 @@ function App()
           "SidePanel was opened")
       );
       handleMessage(response);
-
-      return true;
     }
 
-    notifyIsOpened()
+    const requestUserInfo = async () =>
+    {
+      if(userInfo.timeChecked !== 0 || !appState.hasTabs) return;
+
+      // Request user info
+      const response = await chrome.runtime.sendMessage(
+        new Message(Message.Target.SERVICE_WORKER,
+          Message.Sender.SIDE_PANEL,
+          Message.Type.Task.Request.Info.USER,
+          "User info request")
+      );
+
+      if(response.data === null) return;
+
+      const userData = await JSON.parse(response.data[0].text);
+
+      setUserInfo(() =>
+        {
+         return {
+           timeChecked: Date.now(),
+           firstName: userData.first_name,
+           lastName: userData.last_name,
+           fullName: userData.name,
+           shortName: userData.short_name,
+           email: userData.email,
+           sis_user_id: userData.sis_user_id,
+           lmsInstance: new URL(appState.activeTab.url).origin,
+         }
+        });
+    }
+
+    notifyIsOpened();
+    requestUserInfo();
 
     const messageListener = new MessageListener(
       Message.Target.SIDE_PANEL,
@@ -59,13 +101,15 @@ function App()
     messageListener.listen();
 
     return () => messageListener.remove();
-  }, [appState]);
+  }, [appState, userInfo]);
 
   return (
     <AppStateContext.Provider value={appState}>
-      <div className="bg-gray-300">
-        <PageRouter></PageRouter>
-      </div>
+      <UserInfoContext.Provider value={userInfo}>
+        <div className="bg-gray-300">
+          <PageRouter></PageRouter>
+        </div>
+      </UserInfoContext.Provider>
     </AppStateContext.Provider>
   )
 }

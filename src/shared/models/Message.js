@@ -36,15 +36,16 @@ export class Message
             },
             Response: {
                 App: {
-                    STATE: 100, // Application info and state
+                    STATE: 1001, // Application info and state
+                    SET_PANEL_OPENED: 1011
                 },
                 Info: {
-                    USER: 200, // User info
-                    SEARCH_TERMS: 210
+                    USER: 2001, // User info
+                    SEARCH_TERMS: 2101
                 },
                 Scanner: {
-                    NEW: 300,
-                    PROGRESS: 301
+                    NEW: 3001,
+                    PROGRESS: 3011
                 }
             }
         }
