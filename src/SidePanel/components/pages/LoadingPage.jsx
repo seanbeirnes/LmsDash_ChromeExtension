@@ -37,11 +37,11 @@ function LoadingPage({callback})
   return (
     <>
       <Header></Header>
-      <main className="p-4 h-[calc(100vh-100px)] flex flex-col items-center justify-center animate__animated animate__zoomIn">
+      <main className="p-4 h-[calc(100vh-100px)] flex flex-col items-center justify-center text-base text-gray-700 text-center animate__animated animate__zoomIn">
           <img src="/img/icon-color.svg" className="w-48 md:w-64 max-w-lg "/>
-          {isLoading && <RadialProgress text={getLoadingText()}/>}
+          {(isLoading && <RadialProgress text={getLoadingText()}/>) || <RadialProgress text={"Getting things ready..."}/>}
           <div className="p-4 text-base text-gray-700">
-            {!appState.hasTabs && <p className="p-8 animate-pulse">Please open or refresh a Canvas tab to begin</p>}
+            {(!appState.hasTabs && <p className="p-8 animate-pulse">Please open or refresh a Canvas tab to begin</p>)}
           </div>
       </main>
       <Footer></Footer>
