@@ -1,7 +1,8 @@
 import {useState, useEffect, createContext} from 'react'
 import {Message} from '../shared/models/Message.js'
 import {MessageListener} from '../shared/observers/MessageListener.js'
-import PageRouter from "./components/router/PageRouter.jsx";
+import PageRouter from "./router/PageRouter.jsx";
+import AppStateModalController from "./controllers/AppStateModalController.jsx";
 
 export const AppStateContext = createContext({});
 export const UserInfoContext = createContext({});
@@ -107,7 +108,9 @@ function App()
     <AppStateContext.Provider value={appState}>
       <UserInfoContext.Provider value={userInfo}>
         <div className="bg-gray-300">
-          <PageRouter></PageRouter>
+          <AppStateModalController>
+            <PageRouter></PageRouter>
+          </AppStateModalController>
         </div>
       </UserInfoContext.Provider>
     </AppStateContext.Provider>

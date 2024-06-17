@@ -24,7 +24,7 @@ function Footer()
   }
 
   return (
-      <div className={`w-full h-9 p-4 absolute bottom-0 flex flex-row items-center ${!appState.isOnline || !appState.hasTabs ? "justify-center" : "justify-between" } text-sm ${getColor()}`}>
+      <div className={`w-full h-9 p-4 fixed bottom-0 flex flex-row items-center ${!appState.isOnline || !appState.hasTabs ? "justify-center" : "justify-between" } text-sm ${getColor()}`}>
         { (appState.isOnline && appState.hasTabs) &&
           <>
             <p className="hidden sm:block">{userInfo.fullName}</p>

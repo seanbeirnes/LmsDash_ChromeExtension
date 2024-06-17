@@ -1,7 +1,10 @@
-import {useState} from "react";
+import {createContext, useState} from "react";
 import LoadingPage from "../pages/LoadingPage.jsx";
 import MenuPage from "../pages/MenuPage.jsx";
 import ErrorPage from "../pages/ErrorPage.jsx";
+import {AppStateContext} from "../App.jsx";
+
+export const PageRouterContext = createContext({})
 
 function PageRouter()
 {
@@ -12,7 +15,7 @@ function PageRouter()
     switch(page)
     {
       case "LoadingPage":
-        return <LoadingPage callback={() => setPage("MenuPage")} />
+        return <LoadingPage />
 
       case "MenuPage":
         return <MenuPage />
@@ -24,7 +27,9 @@ function PageRouter()
 
   return (
     <>
-      {renderPage(page)}
+      <PageRouterContext.Provider value={{page: page, setPage: setPage}}>
+        {renderPage(page)}
+      </PageRouterContext.Provider>
     </>
   )
 }
