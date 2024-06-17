@@ -39,9 +39,9 @@ class GetRequests
             CanvasAPIClient.formatURL("/courses?per_page=100")
         )
     }
-    static async CoursesAccount(page=1){
+    static async CoursesAccount(page=1, perPage=10){
         return await HTTPClient.get(
-            CanvasAPIClient.formatURL(`/accounts/1/courses?page=${page}&per_page=100`)
+            CanvasAPIClient.formatURL(`/accounts/1/courses?page=${page}&per_page=${perPage}`)
         )
     }
 

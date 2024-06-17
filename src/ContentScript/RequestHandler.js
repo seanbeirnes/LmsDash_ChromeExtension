@@ -75,7 +75,7 @@ export class RequestHandler
                 break;
 
             case CanvasRequest.Get.CoursesAccount:
-                response = await this.client.Get.CoursesAccount(0 in request.params ? request.params[0] : 1); // page
+                response = await this.client.Get.CoursesAccount(0 in request.params ? request.params[0] : 1, 1 in request.params ? request.params[1] : 10); // page
                 break;
 
             case CanvasRequest.Get.Discussions:
