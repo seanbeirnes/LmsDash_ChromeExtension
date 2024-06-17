@@ -70,7 +70,7 @@ export class AppController
 
     // Check if isAdmin changed
     // Will only run if is admin is false AND checked < 5 times OR at the max app loop count
-    if( ((isChanged || this.countCheckedIsAdmin < 5) && this.state.isAdmin === false ) || (counter === AppController.APP_LOOP_MS * AppController.APP_LOOP_MULTIPLIER))
+    if( ((isChanged || this.countCheckedIsAdmin < 5 || counter % 100 === 0) && this.state.isAdmin !== true ))
     {
       if(this.state.hasTabs)
       {
