@@ -19,8 +19,13 @@ function MenuPage() {
           <h1 className="m-4 text-lg font-bold text-center">Welcome, {userInfo.fullName}!</h1>
           <div className="grid grid-cols-1 grid-flow-row gap-2 justify-items-center w-full max-w-lg">
             <button className={buttonClasses}><MagnifyingGlassIcon/>Scan Courses</button>
-            <button className={buttonClasses}><RocketIcon/>External Tools</button>
-            <button className={buttonClasses}><BackpackIcon/>Admin Tools</button>
+            {/*TO DO:
+              - If user is not admin, they should only see "Scan Course" button if they have a course open in the active tab.
+              - If user is admin, they should see a "Scan Courses" button that become a dropdown with "Scan this course" and "Scan courses in a term" options.
+            */}
+            {/*Admin only buttons go below this line*/}
+            {appState.isAdmin && <button className={buttonClasses}><RocketIcon/>External Tools</button>}
+            {appState.isAdmin && <button className={buttonClasses}><BackpackIcon/>Admin Tools</button>}
           </div>
         </div>
       </Main>
