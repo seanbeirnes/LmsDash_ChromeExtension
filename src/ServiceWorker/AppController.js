@@ -60,7 +60,6 @@ export class AppController
     // Update activeTab if activeTabId changed
     if((isChanged_activeTabId && newActiveTabId !== null)|| (newActiveTabId !== null && this.state.activeTab !== null))
     {
-      console.log("CurTab:", newActiveTabId);
       let newActiveTab = await chrome.tabs.get(newActiveTabId);
       if(newActiveTab.url !== this.state.activeTab?.url) isChanged_activeTab = true;
       this.state.activeTab = newActiveTab;
