@@ -2,7 +2,7 @@ import Header from "../components/layout/Header.jsx";
 import Footer from "../components/layout/Footer.jsx";
 import {AppStateContext, UserInfoContext} from "../App.jsx";
 import {useContext, useState} from "react";
-import {MagnifyingGlassIcon, RocketIcon, BackpackIcon} from "@radix-ui/react-icons";
+import {MagnifyingGlassIcon, RocketIcon, BackpackIcon, InfoCircledIcon} from "@radix-ui/react-icons";
 import Main from "../components/layout/Main.jsx";
 import {PageRouterContext} from "../router/PageRouter.jsx";
 import MenuButton from "../components/shared/buttons/MenuButton.jsx";
@@ -60,6 +60,10 @@ function MenuPage()
             </MenuButton>}
             {/*Admin only buttons go above this line*/}
 
+            <MenuButton onClick={() => pageRouterState.setPage("AboutPage")}>
+              <InfoCircledIcon/>
+              About
+            </MenuButton>
           </div>
         </div>
       </Main>
