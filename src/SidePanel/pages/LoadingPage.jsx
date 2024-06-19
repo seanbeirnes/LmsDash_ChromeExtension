@@ -5,6 +5,7 @@ import {useContext, useEffect, useState} from "react";
 import Footer from "../components/layout/Footer.jsx";
 import {PageRouterContext} from "../router/PageRouter.jsx";
 import Main from "../components/layout/Main.jsx";
+import {Utils} from "../../shared/utils/Utils.js";
 
 function LoadingPage(props)
 {
@@ -31,10 +32,12 @@ function LoadingPage(props)
   return (
     <>
       <Header></Header>
-      <Main>
+      <Main animated={false}>
         <div className="w-full flex flex-col items-center">
-          <img src="/img/icon-color.svg" className="w-48 md:w-64 max-w-lg "/>
-          <RadialProgress text={"Getting things ready..."}/>
+          <img src="/img/icon-color.svg" className="w-48 md:w-64 max-w-lg"/>
+          <div className="animate__animated animate__fadeIn animate__delay-4s">
+            <RadialProgress text={"Getting things ready..."} />
+          </div>
         </div>
       </Main>
       <Footer></Footer>
