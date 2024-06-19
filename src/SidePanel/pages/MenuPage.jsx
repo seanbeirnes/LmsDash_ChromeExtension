@@ -39,7 +39,7 @@ function MenuPage() {
       <Header></Header>
       <Main>
         <div className="place-self-start p-4 w-full grid grid-cols-1 grid-flow-row justify-items-start">
-          <h2 className="w-full mt-4 text-lg font-bold">Welcome {userInfo.fullName}</h2>
+          <h2 className="w-full mt-2 text-lg font-bold">Welcome {userInfo.fullName}</h2>
           <p className="mb-4 text-sm">{saying}</p>
           <div className="grid grid-cols-1 grid-flow-row gap-2 justify-items-center w-full max-w-lg">
             <button className={buttonClasses}><MagnifyingGlassIcon/>Course Scanner</button>
