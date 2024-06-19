@@ -31,7 +31,7 @@ function LoadingPage(props)
 
   return (
     <>
-      <Header></Header>
+      <Header animated={true}></Header>
       <Main animated={false}>
         <div className="w-full flex flex-col items-center">
           <img src="/img/icon-color.svg" className="w-48 md:w-64 max-w-lg"/>
