@@ -5,7 +5,6 @@ import {useContext, useEffect, useState} from "react";
 import Footer from "../components/layout/Footer.jsx";
 import {PageRouterContext} from "../router/PageRouter.jsx";
 import Main from "../components/layout/Main.jsx";
-import {Utils} from "../../shared/utils/Utils.js";
 
 function LoadingPage(props)
 {

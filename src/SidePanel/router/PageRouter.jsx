@@ -3,6 +3,9 @@ import LoadingPage from "../pages/LoadingPage.jsx";
 import MenuPage from "../pages/MenuPage.jsx";
 import ErrorPage from "../pages/ErrorPage.jsx";
 import {AppStateContext} from "../App.jsx";
+import CourseScannerPage from "../pages/CourseScannerPage.jsx";
+import ExternalToolsPage from "../pages/ExternalToolsPage.jsx";
+import AdminToolsPage from "../pages/AdminToolsPage.jsx";
 
 export const PageRouterContext = createContext({})
 
@@ -14,6 +17,15 @@ function PageRouter()
   {
     switch(page)
     {
+      case "AdminToolsPage":
+        return <AdminToolsPage />;
+
+      case "CourseScannerPage":
+        return <CourseScannerPage />;
+
+      case "ExternalToolsPage":
+        return <ExternalToolsPage />;
+
       case "LoadingPage":
         return <LoadingPage />
 
