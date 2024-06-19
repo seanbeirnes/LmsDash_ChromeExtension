@@ -9,9 +9,9 @@ function Footer()
 
   function getColor()
   {
-    if(!appState.isOnline) return "bg-red-600 text-white";
+    if(!appState.isOnline) return "bg-red-600 text-red-100";
     if(!appState.hasTabs) return "bg-red-600 text-red-100";
-    if(appState.isAdmin) return "bg-amber-600 text-amber-100";
+    if(appState.isAdmin) return "bg-blue-800 text-blue-100";
     return "bg-blue-600 text-blue-100";
   }
 
