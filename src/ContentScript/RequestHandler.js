@@ -59,15 +59,15 @@ export class RequestHandler
         switch(request.type)
         {
             case CanvasRequest.Get.Announcements:
-                response = await this.client.Get.Announcements(request.params[0], 1 in request.params ? request.params[1] : 1); // courseID, page
+                response = await this.client.Get.Announcements(request.params.courseId, request.params.page);
                 break;
 
             case CanvasRequest.Get.Assignments:
-                response = await this.client.Get.Assignments(request.params[0], 1 in request.params ? request.params[1] : 1); // courseID, page
+                response = await this.client.Get.Assignments(request.params.courseId, request.params.page);
                 break;
 
             case CanvasRequest.Get.Course:
-                response = await this.client.Get.Course(request.params[0]); // courseID
+                response = await this.client.Get.Course(request.params.courseId);
                 break;
 
             case CanvasRequest.Get.CoursesUser:
@@ -75,27 +75,27 @@ export class RequestHandler
                 break;
 
             case CanvasRequest.Get.CoursesAccount:
-                response = await this.client.Get.CoursesAccount(0 in request.params ? request.params[0] : 1, 1 in request.params ? request.params[1] : 10); // page
+                response = await this.client.Get.CoursesAccount(request.params.page, request.params.perPage);
                 break;
 
             case CanvasRequest.Get.Discussions:
-                response = await this.client.Get.Discussions(request.params[0], 1 in request.params ? request.params[1] : 1); // courseID, page
+                response = await this.client.Get.Discussions(request.params.courseId, request.params.page);
                 break;
 
             case CanvasRequest.Get.Modules:
-                response = await this.client.Get.Modules(request.params[0], 1 in request.params ? request.params[1] : 1); // courseID, page
+                response = await this.client.Get.Modules(request.params.courseId, request.params.page);
                 break;
 
             case CanvasRequest.Get.ModuleItems:
-                response = await this.client.Get.ModuleItems(request.params[0], request.params[1], 2 in request.params ? request.params[2] : 1); // courseId, moduleId, page
+                response = await this.client.Get.ModuleItems(request.params.courseId, request.params.moduleId, request.params.page);
                 break;
 
             case CanvasRequest.Get.Pages:
-                response = await this.client.Get.Pages(request.params[0], 1 in request.params ? request.params[1] : 1); // courseID, page
+                response = await this.client.Get.Pages(request.params.courseId, request.params.page);
                 break;
                
             case CanvasRequest.Get.Tabs:
-                response = await this.client.Get.Tabs(request.params[0], 1 in request.params ? request.params[1] : 1); // courseID, page
+                response = await this.client.Get.Tabs(request.params.courseId, request.params.page);
                 break;
                 
             case CanvasRequest.Get.UsersSelf:

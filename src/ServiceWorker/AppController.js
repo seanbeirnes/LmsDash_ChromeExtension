@@ -114,7 +114,7 @@ export class AppController
   async #checkIsAdmin()
   {
     const response = await this.messageHandler.sendCanvasRequests(
-      [new CanvasRequest(CanvasRequest.Get.CoursesAccount)]
+      [new CanvasRequest(CanvasRequest.Get.CoursesAccount, {page: 1, perPage: 10})]
     )
 
     return response && response[0].status !== 401;

@@ -1,7 +1,7 @@
 // Enum for cnavas request types to assist in message passing.
 export class CanvasRequest
 {
-    constructor(type, params = [], id = crypto.randomUUID(), created = Date.now())
+    constructor(type, params = {}, id = crypto.randomUUID(), created = Date.now())
     {
         this.created = created;
         this.started = null;
