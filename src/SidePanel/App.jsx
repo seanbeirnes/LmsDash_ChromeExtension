@@ -1,8 +1,11 @@
 import {useState, useEffect, createContext} from 'react'
+import { QueryClient, QueryClientProvider} from '@tanstack/react-query'
 import {Message} from '../shared/models/Message.js'
 import {MessageListener} from '../shared/observers/MessageListener.js'
 import PageRouter from "./router/PageRouter.jsx";
 import AppStateModalController from "./controllers/AppStateModalController.jsx";
+
+const queryClient = new QueryClient({});
 
 export const AppStateContext = createContext({});
 export const UserInfoContext = createContext({});
@@ -105,15 +108,17 @@ function App()
   }, [appState, userInfo]);
 
   return (
-    <AppStateContext.Provider value={appState}>
-      <UserInfoContext.Provider value={userInfo}>
-        <div className="bg-gray-300">
-          <AppStateModalController>
-            <PageRouter></PageRouter>
-          </AppStateModalController>
-        </div>
-      </UserInfoContext.Provider>
-    </AppStateContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <AppStateContext.Provider value={appState}>
+        <UserInfoContext.Provider value={userInfo}>
+         <div className="bg-gray-300">
+            <AppStateModalController>
+              <PageRouter></PageRouter>
+            </AppStateModalController>
+          </div>
+        </UserInfoContext.Provider>
+      </AppStateContext.Provider>
+    </QueryClientProvider>
   )
 }
 
