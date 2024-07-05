@@ -1,7 +1,5 @@
-import * as Switch from "@radix-ui/react-switch";
 import ButtonPrimary from "../../../components/shared/buttons/ButtonPrimary.jsx";
 import PrimaryCard from "../../../components/shared/cards/PrimaryCard.jsx";
-import {TrashIcon} from "@radix-ui/react-icons";
 import SearchTermInput from "./SearchTermInput.jsx";
 
 function CourseScanSelectSearchTerms({searchTerms, setSearchTerms})
