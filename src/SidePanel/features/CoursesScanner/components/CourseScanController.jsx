@@ -2,12 +2,13 @@ import CourseScanSelectItems from "./CourseScanSelectItems.jsx";
 import {useState} from "react";
 import PrimaryCardLayout from "../../../components/shared/cards/PrimaryCardLayout.jsx";
 import CourseScanSelectSettings from "./CourseScanSelectSettings.jsx";
+import CourseScanSelectSearchTerms from "./CourseScanSelectSearchTerms.jsx";
 
 function CourseScanController()
 {
   const [scanType, setScanType] = useState([]);
   const [courseIds, setCourseIds] = useState([]);
-  const [searchTerms, setSearchTerms] = useState([]);
+  const [searchTerms, setSearchTerms] = useState([""]);
   const [scannedItems, setScannedItems] = useState([
     "announcements",
     "assignments",
@@ -22,6 +23,7 @@ function CourseScanController()
 
   return(
     <PrimaryCardLayout>
+      <CourseScanSelectSearchTerms searchTerms={searchTerms} setSearchTerms={setSearchTerms} />
       <CourseScanSelectItems scannedItems={scannedItems} setScannedItems={setScannedItems} error={error}/>
       <CourseScanSelectSettings settings={settings} setSettings={setSettings} runScanCallback={ () => console.log(
         scanType,

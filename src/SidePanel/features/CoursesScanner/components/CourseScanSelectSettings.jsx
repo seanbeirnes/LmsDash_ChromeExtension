@@ -61,7 +61,7 @@ function CourseScanSelectSettings({settings, setSettings, runScanCallback})
       </div>
       <div className="self-end">
         <ButtonPrimary onClick={runScanCallback}>
-          <span className="text-white font-bold text-base">Start Scan</span>
+          <span>Start Scan</span>
         </ButtonPrimary>
       </div>
     </PrimaryCard>
