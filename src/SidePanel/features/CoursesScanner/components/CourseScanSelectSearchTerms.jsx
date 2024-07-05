@@ -33,7 +33,7 @@ function CourseScanSelectSearchTerms({searchTerms, setSearchTerms})
     <PrimaryCard fixedWidth={true}>
       <div className="grid grid-cols-1 grid-flow-row start justify-start content-start gap-2">
         <h3 className="text-gray-700 text-xl text-center">Search Terms</h3>
-        <div className="flex flex-col gap-2">
+        <div className={`flex flex-col gap-2 max-h-56 ${searchTerms.length > 5 ? "overflow-y-scroll" : ""}`}>
           {
             searchTerms.map((term, index) =>
             {
