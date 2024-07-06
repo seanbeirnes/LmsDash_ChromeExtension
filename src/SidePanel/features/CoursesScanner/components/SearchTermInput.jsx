@@ -9,7 +9,7 @@ function SearchTermInput({index, value, updateSearchTerm, removeSearchTerm, plac
 
   return (
     <div className="w-full flex flex-row justify-between items-center gap-2">
-      <input className={`px-2 py-1 flex-grow text-base text-gray-700 rounded shadow-inner border-2 border-gray-200`}
+      <input className={`px-2 py-1 flex-grow text-base text-gray-700 rounded shadow-inner border-2 border-gray-200 outline-blue-500`}
              value={value}
              onChange={ (event) => updateSearchTerm(index, event.target.value) }
              aria-label={"Search term " + index}
