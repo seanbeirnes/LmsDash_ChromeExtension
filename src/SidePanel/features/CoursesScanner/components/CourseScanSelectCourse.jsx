@@ -21,7 +21,6 @@ function CourseScanSelectCourse({scanType, setScanType}) {
     setScanType([type]);
   }
 
-  console.log(activeTabCourseId);
   return (
     <PrimaryCard fixedWidth={true}>
       <div className="grid grid-cols-1 grid-flow-row start justify-start content-start gap-2">
