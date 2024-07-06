@@ -24,7 +24,7 @@ function CourseScanController()
 
   return(
     <PrimaryCardLayout>
-      <CourseScanSelectCourse scanType={scanType} setScanType={setScanType} />
+      <CourseScanSelectCourse scanType={scanType} setScanType={setScanType} setCourseIds={setCourseIds} />
       <CourseScanSelectSearchTerms searchTerms={searchTerms} setSearchTerms={setSearchTerms} />
       <CourseScanSelectItems scannedItems={scannedItems} setScannedItems={setScannedItems} error={error}/>
       <CourseScanSelectSettings settings={settings} setSettings={setSettings} runScanCallback={ () => console.log(

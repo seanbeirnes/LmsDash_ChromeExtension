@@ -18,7 +18,7 @@ function ScanModeDropdown({value, onChange}) {
          <ChevronUpIcon />
          </Select.ScrollUpButton>
          <Select.Viewport className={"p-1"}>
-             <SelectItem value={"single-course"}>Single Course</SelectItem>
+             <SelectItem value={"single-course"}>This Course</SelectItem>
              <SelectItem value={"term"}>Term</SelectItem>
              <SelectItem value={"csv-import"} disabled>CSV Import</SelectItem>
          </Select.Viewport>

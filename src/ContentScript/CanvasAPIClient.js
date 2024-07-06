@@ -39,6 +39,13 @@ class GetRequests
             CanvasAPIClient.formatURL("/courses?per_page=100")
         )
     }
+
+    static async CoursesByAdminSearch(searchTerm, page=1, perPage=10){
+        return await HTTPClient.get(
+          CanvasAPIClient.formatURL(`/accounts/1/courses?search_term=${searchTerm}&page=${page}&per_page=${perPage}`)
+        )
+    }
+
     static async CoursesAccount(page=1, perPage=10){
         return await HTTPClient.get(
             CanvasAPIClient.formatURL(`/accounts/1/courses?page=${page}&per_page=${perPage}`)
@@ -72,6 +79,13 @@ class GetRequests
     static async Tabs(courseId, page=1){
         return await HTTPClient.get(
             CanvasAPIClient.formatURL(`/courses/${courseId}/tabs?page=${page}&per_page=100`)
+        )
+    }
+
+    static async TermsBySearch(searchTerm, page=1, perPage=10)
+    {
+        return await HTTPClient.get(
+            CanvasAPIClient.formatURL(`/accounts/1/terms?term_name=${searchTerm}&page=${page}&per_page=${perPage}`)
         )
     }
 

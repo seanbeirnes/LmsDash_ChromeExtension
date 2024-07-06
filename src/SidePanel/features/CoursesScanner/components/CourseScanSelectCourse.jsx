@@ -3,15 +3,16 @@ import ButtonPrimary from "../../../components/shared/buttons/ButtonPrimary.jsx"
 import ScanModeDropdown from "./ScanModeDropdown.jsx";
 import {useContext, useMemo} from "react";
 import {AppStateContext} from "../../../App.jsx";
+import SelectCourse from "./SelectCourse.jsx";
 
-function CourseScanSelectCourse({scanType, setScanType}) {
+function CourseScanSelectCourse({scanType, setScanType, setCourseIds}) {
   const appState = useContext(AppStateContext);
 
   function updateActiveTabCourseId()
   {
     const pattern = /courses\/(\d+)/
     const matches = appState.activeTab?.url.match(pattern);
-    if(matches && matches.length > 0) return matches[0];
+    if(matches && matches.length >= 2) return matches[1];
     return null;
   }
   const activeTabCourseId = useMemo(updateActiveTabCourseId, [appState]);
@@ -27,19 +28,12 @@ function CourseScanSelectCourse({scanType, setScanType}) {
         <h3 className="text-gray-700 text-xl text-center">Select Course(s)</h3>
         <div className={`flex flex-col gap-2`}>
           <ScanModeDropdown value={scanType[0]} onChange={updateScanType}/>
+          {scanType[0] === "single-course" &&
+            (
+              <SelectCourse courseId={activeTabCourseId} setCourseIds={setCourseIds} />
+            )}
         </div>
       </div>
-      {
-        scanType.includes("single-course") &&
-        (
-          <div className="self-end">
-            <ButtonPrimary disabled={activeTabCourseId === null}>
-              <span>Select This Course</span>
-            </ButtonPrimary>
-          </div>
-        )
-      }
-
     </PrimaryCard>
   )
 }

@@ -35,6 +35,22 @@ export class MessageHandler
   {
     switch(message.type)
     {
+      case Message.Type.Canvas.REQUESTS:
+      {
+        const response = await this.sendCanvasRequests(message.data)
+
+        sendResponse(
+          new Message(
+            Message.Target.SIDE_PANEL,
+            Message.Sender.SERVICE_WORKER,
+            Message.Type.Canvas.RESPONSES,
+            "Canvas Responses",
+            response
+          )
+        )
+      }
+        break;
+
       case Message.Type.Task.Request.App.STATE:
       {
        //TO DO: return App State

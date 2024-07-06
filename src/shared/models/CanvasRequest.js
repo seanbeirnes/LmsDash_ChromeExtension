@@ -58,12 +58,14 @@ export class CanvasRequest
         Assignments: 101,
         Course: 102,
         CoursesUser: 103,
-        CoursesAccount: 104,
-        Discussions: 105,
-        Modules: 106,
-        ModuleItems: 107,
-        Pages: 108,
-        Tabs: 109,
-        UsersSelf: 110
+        CoursesByAdminSearch: 104,
+        CoursesAccount: 105,
+        Discussions: 106,
+        Modules: 107,
+        ModuleItems: 108,
+        Pages: 109,
+        Tabs: 110,
+        TermsBySearch: 111,
+        UsersSelf: 112
     }
 }

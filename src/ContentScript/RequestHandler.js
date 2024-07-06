@@ -74,6 +74,10 @@ export class RequestHandler
                 response = await this.client.Get.CoursesUser();
                 break;
 
+            case CanvasRequest.Get.CoursesByAdminSearch:
+                response = await this.client.Get.CoursesByAdminSearch(request.params.searchTerm, request.params.page, request.params.perPage);
+                break;
+
             case CanvasRequest.Get.CoursesAccount:
                 response = await this.client.Get.CoursesAccount(request.params.page, request.params.perPage);
                 break;
@@ -97,7 +101,11 @@ export class RequestHandler
             case CanvasRequest.Get.Tabs:
                 response = await this.client.Get.Tabs(request.params.courseId, request.params.page);
                 break;
-                
+
+            case CanvasRequest.Get.TermsBySearch:
+                response = await this.client.Get.TermsBySearch(request.params.searchTerm, request.params.page, request.params.perPage);
+                break;
+
             case CanvasRequest.Get.UsersSelf:
                 response = await this.client.Get.UsersSelf();
                 break;
