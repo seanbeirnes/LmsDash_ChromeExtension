@@ -1,9 +1,10 @@
 import PrimaryCard from "../../../components/shared/cards/PrimaryCard.jsx";
 import * as Switch from '@radix-ui/react-switch';
 import useScannedItemsPermissions from "../hooks/useScannedItemsPermissions.js";
-import {useContext} from "react";
+import {useContext, useEffect, useMemo} from "react";
 import {AppStateContext} from "../../../App.jsx";
 import ProgressSpinner from "../../../components/shared/progress/ProgressSpinner.jsx";
+import CourseItem from "../../../../shared/models/CourseItem.js";
 
 function CourseScanSelectItems({scannedItems, setScannedItems})
 {
@@ -23,6 +24,35 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
       setScannedItems([...scannedItems, value]);
     }
   }
+
+  function calcUnauthorizedItems()
+  {
+    const unAuthorizedItems = []
+
+    if(!data) return unAuthorizedItems;
+
+    if(!data.hasAnnouncements) unAuthorizedItems.push(CourseItem.Type.ANNOUNCEMENT);
+    if(!data.hasAssignments) unAuthorizedItems.push(CourseItem.Type.ASSIGNMENT);
+    if(!data.hasTabs) unAuthorizedItems.push(CourseItem.Type.COURSE_NAV_LINK);
+    if(!data.hasDiscussions) unAuthorizedItems.push(CourseItem.Type.DISCUSSION);
+    if(!data.hasFiles) unAuthorizedItems.push(CourseItem.Type.FILE);
+    if(!data.hasModules) unAuthorizedItems.push(CourseItem.Type.MODULE_LINK);
+    if(!data.hasPages) unAuthorizedItems.push(CourseItem.Type.PAGE);
+    if(!data.hasSyllabus) unAuthorizedItems.push(CourseItem.Type.SYLLABUS);
+
+    return unAuthorizedItems;
+  }
+
+  const unAuthorizedItems = useMemo(calcUnauthorizedItems, [data])
+
+  useEffect( () =>
+    {
+      // If scannedItems has an unauthorized item, remove it
+      scannedItems.forEach(scannedItem =>
+      {
+        if(unAuthorizedItems.includes(scannedItem)) handleSwitchChange(scannedItem);
+      })
+    }, [unAuthorizedItems])
 
   const switchRootClasses = "relative w-8 h-5 bg-gray-200 data-[state='checked']:bg-blue-500 transition shadow-inner rounded-full";
   const switchThumbClasses = "block w-4 h-4 bg-white shadow-sm transition-all translate-x-0.5 data-[state='checked']:translate-x-[0.85rem] rounded-full";
@@ -73,97 +103,97 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
         <h3 className="text-gray-700 text-xl text-center">Scanned Items</h3>
 
         {data.hasAnnouncements && (<div className="flex items-center gap-2">
-          <Switch.Root id="announcements"
+          <Switch.Root id={CourseItem.Type.ANNOUNCEMENT}
                        className={switchRootClasses}
-                       checked={scannedItems.indexOf("announcements") >= 0}
-                       onCheckedChange={() => handleSwitchChange("announcements")}>
+                       checked={scannedItems.indexOf(CourseItem.Type.ANNOUNCEMENT) >= 0}
+                       onCheckedChange={() => handleSwitchChange(CourseItem.Type.ANNOUNCEMENT)}>
             <Switch.Thumb className={switchThumbClasses}/>
           </Switch.Root>
-          <label className={switchLabelClasses} htmlFor="announcements">
+          <label className={switchLabelClasses} htmlFor={CourseItem.Type.ANNOUNCEMENT}>
             Announcements
           </label>
         </div>)}
 
         {data.hasAssignments && (<div className="flex items-center gap-2">
-          <Switch.Root id="assignments"
+          <Switch.Root id={CourseItem.Type.ASSIGNMENT}
                        className={switchRootClasses}
-                       checked={scannedItems.indexOf("assignments") >= 0}
-                       onCheckedChange={() => handleSwitchChange("assignments")}>
+                       checked={scannedItems.indexOf(CourseItem.Type.ASSIGNMENT) >= 0}
+                       onCheckedChange={() => handleSwitchChange(CourseItem.Type.ASSIGNMENT)}>
             <Switch.Thumb className={switchThumbClasses}/>
           </Switch.Root>
-          <label className={switchLabelClasses} htmlFor="assignments">
+          <label className={switchLabelClasses} htmlFor={CourseItem.Type.ASSIGNMENT}>
             Assignments
           </label>
         </div>)}
 
         {data.hasTabs && (<div className="flex items-center gap-2">
-          <Switch.Root id="course-nav-links"
+          <Switch.Root id={CourseItem.Type.COURSE_NAV_LINK}
                        className={switchRootClasses}
-                       checked={scannedItems.indexOf("course-nav-links") >= 0}
-                       onCheckedChange={() => handleSwitchChange("course-nav-links")}>
+                       checked={scannedItems.indexOf(CourseItem.Type.COURSE_NAV_LINK) >= 0}
+                       onCheckedChange={() => handleSwitchChange(CourseItem.Type.COURSE_NAV_LINK)}>
             <Switch.Thumb className={switchThumbClasses}/>
           </Switch.Root>
-          <label className={switchLabelClasses} htmlFor="course-nav-links">
+          <label className={switchLabelClasses} htmlFor={CourseItem.Type.COURSE_NAV_LINK}>
             Course Navigation Links
           </label>
         </div>)}
 
         {data.hasDiscussions && (<div className="flex items-center gap-2">
-          <Switch.Root id="discussions"
+          <Switch.Root id={CourseItem.Type.DISCUSSION}
                        className={switchRootClasses}
-                       checked={scannedItems.indexOf("discussions") >= 0}
-                       onCheckedChange={() => handleSwitchChange("discussions")}>
+                       checked={scannedItems.indexOf(CourseItem.Type.DISCUSSION) >= 0}
+                       onCheckedChange={() => handleSwitchChange(CourseItem.Type.DISCUSSION)}>
             <Switch.Thumb className={switchThumbClasses}/>
           </Switch.Root>
-          <label className={switchLabelClasses} htmlFor="discussions">
+          <label className={switchLabelClasses} htmlFor={CourseItem.Type.DISCUSSION}>
             Discussions
           </label>
         </div>)}
 
         {data.hasFiles && (<div className="flex items-center gap-2">
-          <Switch.Root id="file-names"
+          <Switch.Root id={CourseItem.Type.FILE}
                        className={switchRootClasses}
-                       checked={scannedItems.indexOf("file-names") >= 0}
-                       onCheckedChange={() => handleSwitchChange("file-names")}>
+                       checked={scannedItems.indexOf(CourseItem.Type.FILE) >= 0}
+                       onCheckedChange={() => handleSwitchChange(CourseItem.Type.FILE)}>
             <Switch.Thumb className={switchThumbClasses}/>
           </Switch.Root>
-          <label className={switchLabelClasses} htmlFor="file-names">
+          <label className={switchLabelClasses} htmlFor={CourseItem.Type.FILE}>
             File Names
           </label>
         </div>)}
 
         {data.hasModules && (<div className="flex items-center gap-2">
-          <Switch.Root id="module-links"
+          <Switch.Root id={CourseItem.Type.MODULE_LINK}
                        className={switchRootClasses}
-                       checked={scannedItems.indexOf("module-links") >= 0}
-                       onCheckedChange={() => handleSwitchChange("module-links")}>
+                       checked={scannedItems.indexOf(CourseItem.Type.MODULE_LINK) >= 0}
+                       onCheckedChange={() => handleSwitchChange(CourseItem.Type.MODULE_LINK)}>
             <Switch.Thumb className={switchThumbClasses}/>
           </Switch.Root>
-          <label className={switchLabelClasses} htmlFor="module-links">
+          <label className={switchLabelClasses} htmlFor={CourseItem.Type.MODULE_LINK}>
             Module Links
           </label>
         </div>)}
 
         {data.hasPages && (<div className="flex items-center gap-2">
-          <Switch.Root id="pages"
+          <Switch.Root id={CourseItem.Type.PAGE}
                        className={switchRootClasses}
-                       checked={scannedItems.indexOf("pages") >= 0}
-                       onCheckedChange={() => handleSwitchChange("pages")}>
+                       checked={scannedItems.indexOf(CourseItem.Type.PAGE) >= 0}
+                       onCheckedChange={() => handleSwitchChange(CourseItem.Type.PAGE)}>
             <Switch.Thumb className={switchThumbClasses}/>
           </Switch.Root>
-          <label className={switchLabelClasses} htmlFor="pages">
+          <label className={switchLabelClasses} htmlFor={CourseItem.Type.PAGE}>
             Pages
           </label>
         </div>)}
 
         {data.hasSyllabus && (<div className="flex items-center gap-2">
-          <Switch.Root id="syllabus"
+          <Switch.Root id={CourseItem.Type.SYLLABUS}
                        className={switchRootClasses}
-                       checked={scannedItems.indexOf("syllabus") >= 0}
-                       onCheckedChange={() => handleSwitchChange("syllabus")}>
+                       checked={scannedItems.indexOf(CourseItem.Type.SYLLABUS) >= 0}
+                       onCheckedChange={() => handleSwitchChange(CourseItem.Type.SYLLABUS)}>
             <Switch.Thumb className={switchThumbClasses}/>
           </Switch.Root>
-          <label className={switchLabelClasses} htmlFor="syllabus">
+          <label className={switchLabelClasses} htmlFor={CourseItem.Type.SYLLABUS}>
             Syllabus
           </label>
         </div>)}
