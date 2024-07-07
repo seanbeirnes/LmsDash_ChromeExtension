@@ -10,6 +10,7 @@ function CourseScanSelectCourse({scanType, setScanType, setCourseIds}) {
   function updateScanType(type)
   {
     setScanType([type]);
+    setCourseIds([]);
   }
 
   return (
