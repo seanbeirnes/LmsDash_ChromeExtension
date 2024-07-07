@@ -6,12 +6,12 @@ import {AppStateContext} from "../../../App.jsx";
 import ProgressSpinner from "../../../components/shared/progress/ProgressSpinner.jsx";
 import CourseItem from "../../../../shared/models/CourseItem.js";
 
-function CourseScanSelectItems({scannedItems, setScannedItems})
+function CourseScanSelectItems({scannedItems, setScannedItems, scanType})
 {
   const appState = useContext(AppStateContext);
   const {isPending, isError, data, error} = useScannedItemsPermissions(appState.activeTabCourseId)
+  const isSingleCourseScan = scanType.includes("single-course");
 
-  // TO-DO: Check if user has access to API for each of the items. If not, disabled it
   function handleSwitchChange(value)
   {
     const index = scannedItems.indexOf(value);
@@ -29,7 +29,7 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
   {
     const unAuthorizedItems = []
 
-    if(!data) return unAuthorizedItems;
+    if(!data || !isSingleCourseScan) return unAuthorizedItems;
 
     if(!data.hasAnnouncements) unAuthorizedItems.push(CourseItem.Type.ANNOUNCEMENT);
     if(!data.hasAssignments) unAuthorizedItems.push(CourseItem.Type.ASSIGNMENT);
@@ -59,7 +59,7 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
   const switchLabelClasses = "text-base text-gray-700";
 
 
-  if(!appState.activeTabCourseId)
+  if(!appState.activeTabCourseId && isSingleCourseScan)
   {
     return(
       <PrimaryCard fixedWidth={true}>
@@ -71,7 +71,7 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
     )
   }
 
-  if(isPending || !data)
+  if((isPending || !data) && isSingleCourseScan)
   {
     return(
       <PrimaryCard fixedWidth={true}>
@@ -85,7 +85,7 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
   )
   }
 
-  if(isError)
+  if(isError && isSingleCourseScan)
   {
     return(
       <PrimaryCard fixedWidth={true}>
@@ -102,7 +102,7 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
       <div className="grid grid-cols-1 grid-flow-row start justify-start content-start gap-2">
         <h3 className="text-gray-700 text-xl text-center">Scanned Items</h3>
 
-        {data.hasAnnouncements && (<div className="flex items-center gap-2">
+        { (data?.hasAnnouncements || !isSingleCourseScan) && (<div className="flex items-center gap-2">
           <Switch.Root id={CourseItem.Type.ANNOUNCEMENT}
                        className={switchRootClasses}
                        checked={scannedItems.indexOf(CourseItem.Type.ANNOUNCEMENT) >= 0}
@@ -114,7 +114,7 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
           </label>
         </div>)}
 
-        {data.hasAssignments && (<div className="flex items-center gap-2">
+        { (data?.hasAssignments || !isSingleCourseScan) && (<div className="flex items-center gap-2">
           <Switch.Root id={CourseItem.Type.ASSIGNMENT}
                        className={switchRootClasses}
                        checked={scannedItems.indexOf(CourseItem.Type.ASSIGNMENT) >= 0}
@@ -126,7 +126,7 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
           </label>
         </div>)}
 
-        {data.hasTabs && (<div className="flex items-center gap-2">
+        { (data?.hasTabs || !isSingleCourseScan) && (<div className="flex items-center gap-2">
           <Switch.Root id={CourseItem.Type.COURSE_NAV_LINK}
                        className={switchRootClasses}
                        checked={scannedItems.indexOf(CourseItem.Type.COURSE_NAV_LINK) >= 0}
@@ -138,7 +138,7 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
           </label>
         </div>)}
 
-        {data.hasDiscussions && (<div className="flex items-center gap-2">
+        { (data?.hasDiscussions || !isSingleCourseScan) && (<div className="flex items-center gap-2">
           <Switch.Root id={CourseItem.Type.DISCUSSION}
                        className={switchRootClasses}
                        checked={scannedItems.indexOf(CourseItem.Type.DISCUSSION) >= 0}
@@ -150,7 +150,7 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
           </label>
         </div>)}
 
-        {data.hasFiles && (<div className="flex items-center gap-2">
+        { (data?.hasFiles || !isSingleCourseScan) && (<div className="flex items-center gap-2">
           <Switch.Root id={CourseItem.Type.FILE}
                        className={switchRootClasses}
                        checked={scannedItems.indexOf(CourseItem.Type.FILE) >= 0}
@@ -162,7 +162,7 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
           </label>
         </div>)}
 
-        {data.hasModules && (<div className="flex items-center gap-2">
+        { (data?.hasModules || !isSingleCourseScan) && (<div className="flex items-center gap-2">
           <Switch.Root id={CourseItem.Type.MODULE_LINK}
                        className={switchRootClasses}
                        checked={scannedItems.indexOf(CourseItem.Type.MODULE_LINK) >= 0}
@@ -174,7 +174,7 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
           </label>
         </div>)}
 
-        {data.hasPages && (<div className="flex items-center gap-2">
+        { (data?.hasPages || !isSingleCourseScan) && (<div className="flex items-center gap-2">
           <Switch.Root id={CourseItem.Type.PAGE}
                        className={switchRootClasses}
                        checked={scannedItems.indexOf(CourseItem.Type.PAGE) >= 0}
@@ -186,7 +186,7 @@ function CourseScanSelectItems({scannedItems, setScannedItems})
           </label>
         </div>)}
 
-        {data.hasSyllabus && (<div className="flex items-center gap-2">
+        { (data?.hasSyllabus || !isSingleCourseScan) && (<div className="flex items-center gap-2">
           <Switch.Root id={CourseItem.Type.SYLLABUS}
                        className={switchRootClasses}
                        checked={scannedItems.indexOf(CourseItem.Type.SYLLABUS) >= 0}
