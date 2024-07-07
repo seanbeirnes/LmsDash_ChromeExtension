@@ -13,7 +13,7 @@ function ScanModeDropdown({value, onChange}) {
      </Select.Trigger>
 
      <Select.Portal>
-       <Select.Content className={"overflow-hidden bg-white rounded shadow-md"}>
+       <Select.Content className={"overflow-hidden bg-white rounded shadow-md"} position={"popper"}>
          <Select.ScrollUpButton className={"flex items-center justify-center h-6 bg-white text-blue-600 cursor-default"}>
          <ChevronUpIcon />
          </Select.ScrollUpButton>

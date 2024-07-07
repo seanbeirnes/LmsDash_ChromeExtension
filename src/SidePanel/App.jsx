@@ -4,6 +4,7 @@ import {Message} from '../shared/models/Message.js'
 import {MessageListener} from '../shared/observers/MessageListener.js'
 import PageRouter from "./router/PageRouter.jsx";
 import AppStateModalController from "./controllers/AppStateModalController.jsx";
+import getActiveTabCourseId from "./hooks/getActiveTabCourseId.js";
 
 const queryClient = new QueryClient({});
 
@@ -14,6 +15,7 @@ function App()
 {
   const [appState, setAppState] = useState({
     activeTab: null,
+    activeTabCourseId: null,
     hasTabs: false,
     isAdmin: false,
     isOnline: false,
@@ -41,6 +43,7 @@ function App()
       {
         return {
           activeTab: msg.data.activeTab,
+          activeTabCourseId: getActiveTabCourseId(msg.data.activeTab),
           hasTabs: msg.data.hasTabs,
           isAdmin: msg.data.isAdmin,
           isOnline: msg.data.isOnline,
