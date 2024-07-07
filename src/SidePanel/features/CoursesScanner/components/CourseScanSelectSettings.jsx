@@ -1,9 +1,13 @@
 import * as Switch from "@radix-ui/react-switch";
 import PrimaryCard from "../../../components/shared/cards/PrimaryCard.jsx";
 import ButtonPrimary from "../../../components/shared/buttons/ButtonPrimary.jsx";
+import {AppStateContext} from "../../../App.jsx";
+import {useContext} from "react";
 
 function CourseScanSelectSettings({settings, setSettings, runScanCallback})
 {
+  const appState = useContext(AppStateContext);
+
   function handleSwitchChange(value)
   {
     const index = settings.indexOf(value);
@@ -47,7 +51,8 @@ function CourseScanSelectSettings({settings, setSettings, runScanCallback})
             Include HTML
           </label>
         </div>
-        <div className="flex items-center gap-2">
+        {appState.isAdmin &&
+          (<div className="flex items-center gap-2">
           <Switch.Root id="only-published-items"
                        className={switchRootClasses}
                        checked={settings.indexOf("only-published-items") >= 0}
@@ -57,7 +62,7 @@ function CourseScanSelectSettings({settings, setSettings, runScanCallback})
           <label className={switchLabelClasses} htmlFor="only-published-items">
             Only Published Items
           </label>
-        </div>
+        </div>)}
       </div>
       <div className="self-end">
         <ButtonPrimary onClick={runScanCallback}>
