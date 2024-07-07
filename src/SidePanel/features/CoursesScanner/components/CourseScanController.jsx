@@ -10,15 +10,7 @@ function CourseScanController()
   const [scanType, setScanType] = useState(["single-course"]);
   const [courseIds, setCourseIds] = useState([]);
   const [searchTerms, setSearchTerms] = useState([""]);
-  const [scannedItems, setScannedItems] = useState([
-    "announcements",
-    "assignments",
-    "course-nav-links",
-    "discussions",
-    "module-links",
-    "pages",
-    "syllabus"
-  ]);
+  const [scannedItems, setScannedItems] = useState([]);
   const [settings, setSettings] = useState([]);
   const [error, setError] = useState([]);
 

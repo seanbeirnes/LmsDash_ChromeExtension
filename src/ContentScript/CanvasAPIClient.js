@@ -16,21 +16,27 @@ export class CanvasAPIClient
 
 class GetRequests
 {
-    static async Announcements(courseId, page=1){
+    static async Announcements(courseId, page=1, perPage=10){
         return await HTTPClient.get(
-            CanvasAPIClient.formatURL(`/courses/${courseId}/discussion_topics?only_announcements=true&page=${page}&per_page=100`)
+            CanvasAPIClient.formatURL(`/courses/${courseId}/discussion_topics?only_announcements=true&page=${page}&per_page=${perPage}`)
         )
     }
 
-    static async Assignments(courseId, page=1){
+    static async Assignments(courseId, page=1, perPage=10){
         return await HTTPClient.get(
-            CanvasAPIClient.formatURL(`/courses/${courseId}/assignments?page=${page}&per_page=100`)
+            CanvasAPIClient.formatURL(`/courses/${courseId}/assignments?page=${page}&per_page=${perPage}`)
         )
     }
 
-    static async Course(courseId){
+    static async Course(courseId, syllabusBody = false){
         return await HTTPClient.get(
-            CanvasAPIClient.formatURL("/courses/" + courseId)
+            CanvasAPIClient.formatURL(`/courses/${courseId}${syllabusBody ? "/?include[]=syllabus_body" : ""}`)
+        )
+    }
+
+    static async CourseFiles(courseId, onlyNames = true, page=1, perPage=1){
+        return await HTTPClient.get(
+          CanvasAPIClient.formatURL(`/courses/${courseId}/files?${onlyNames ? "only[]=names&" : ""}page=${page}&per_page=${perPage}`)
         )
     }
 
@@ -52,15 +58,15 @@ class GetRequests
         )
     }
 
-    static async Discussions(courseId, page=1){
+    static async Discussions(courseId, page=1, perPage=10){
         return await HTTPClient.get(
-            CanvasAPIClient.formatURL(`/courses/${courseId}/discussion_topics?page=${page}&per_page=100`)
+            CanvasAPIClient.formatURL(`/courses/${courseId}/discussion_topics?page=${page}&per_page=${perPage}`)
         )
     }
 
-    static async Modules(courseId, page=1){
+    static async Modules(courseId, page=1, perPage=10){
         return await HTTPClient.get(
-            CanvasAPIClient.formatURL(`/courses/${courseId}/modules?page=${page}&per_page=100`)
+            CanvasAPIClient.formatURL(`/courses/${courseId}/modules?page=${page}&per_page=${perPage}`)
         )
     }
 
@@ -70,15 +76,15 @@ class GetRequests
         )
     }
 
-    static async Pages(courseId, page=1){
+    static async Pages(courseId, includeBody = false, page=1, perPage=10){
         return await HTTPClient.get(
-            CanvasAPIClient.formatURL(`/courses/${courseId}/pages?include[]=body&page=${page}&per_page=100`)
+            CanvasAPIClient.formatURL(`/courses/${courseId}/pages?${includeBody ? "include[]=body&" : ""}page=${page}&per_page=${perPage}`)
         )
     }
 
-    static async Tabs(courseId, page=1){
+    static async Tabs(courseId, page=1, perPage=10){
         return await HTTPClient.get(
-            CanvasAPIClient.formatURL(`/courses/${courseId}/tabs?page=${page}&per_page=100`)
+            CanvasAPIClient.formatURL(`/courses/${courseId}/tabs?page=${page}&per_page=${perPage}`)
         )
     }
 

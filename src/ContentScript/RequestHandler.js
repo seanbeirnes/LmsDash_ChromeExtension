@@ -35,13 +35,9 @@ export class RequestHandler
         list.forEach( (link) => {
             const LINK_PATTERN = /^<([\w\/\.&?:\[\]=]+)>;\srel="(\w+)"$/
             const matches = link.match(LINK_PATTERN)
-            if(matches.length === 3)
+            if(matches && matches.length === 3)
             {
                 links[matches[2]] = matches[1];
-            }
-            else
-            {
-                console.error("LMS Dash Error: Could not parse 'Link' header")
             }
         })
 
@@ -59,15 +55,25 @@ export class RequestHandler
         switch(request.type)
         {
             case CanvasRequest.Get.Announcements:
-                response = await this.client.Get.Announcements(request.params.courseId, request.params.page);
+                response = await this.client.Get.Announcements(request.params.courseId, request.params.page, request.params.perPage);
                 break;
 
             case CanvasRequest.Get.Assignments:
-                response = await this.client.Get.Assignments(request.params.courseId, request.params.page);
+                response = await this.client.Get.Assignments(request.params.courseId, request.params.page, request.params.perPage);
                 break;
 
             case CanvasRequest.Get.Course:
-                response = await this.client.Get.Course(request.params.courseId);
+                response = await this.client.Get.Course(
+                  request.params.courseId,
+                  request.params.syllabusBody ? request.params.syllabusBody : false);
+                break;
+
+            case CanvasRequest.Get.CourseFiles:
+                response = await this.client.Get.CourseFiles(
+                  request.params.courseId,
+                  request.params.onlyNames ? request.params.onlyNames : true,
+                  request.params.page,
+                  request.params.perPage)
                 break;
 
             case CanvasRequest.Get.CoursesUser:
@@ -83,11 +89,11 @@ export class RequestHandler
                 break;
 
             case CanvasRequest.Get.Discussions:
-                response = await this.client.Get.Discussions(request.params.courseId, request.params.page);
+                response = await this.client.Get.Discussions(request.params.courseId, request.params.page, request.params.perPage);
                 break;
 
             case CanvasRequest.Get.Modules:
-                response = await this.client.Get.Modules(request.params.courseId, request.params.page);
+                response = await this.client.Get.Modules(request.params.courseId, request.params.page, request.params.perPage);
                 break;
 
             case CanvasRequest.Get.ModuleItems:
@@ -95,11 +101,18 @@ export class RequestHandler
                 break;
 
             case CanvasRequest.Get.Pages:
-                response = await this.client.Get.Pages(request.params.courseId, request.params.page);
+                response = await this.client.Get.Pages(
+                  request.params.courseId,
+                  request.params.includeBody ? request.params.includeBody : false,
+                  request.params.page,
+                  request.params.perPage);
                 break;
                
             case CanvasRequest.Get.Tabs:
-                response = await this.client.Get.Tabs(request.params.courseId, request.params.page);
+                response = await this.client.Get.Tabs(
+                  request.params.courseId,
+                  request.params.page,
+                  request.params.perPage ? request.params.perPage : 10);
                 break;
 
             case CanvasRequest.Get.TermsBySearch:

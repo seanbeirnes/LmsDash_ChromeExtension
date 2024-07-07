@@ -23,7 +23,7 @@ function SelectCourse({courseId, setCourseIds})
 
     return msgResponse;
   }
-  const {isPending, isError, data, error} = useQuery({queryKey: ["get-course", {courseId}], queryFn:fetchCourse})
+  const {isPending, isError, data, error} = useQuery({queryKey: ["get-course", {courseId}], queryFn:fetchCourse, enabled: !!courseId})
 
   const course = data ? JSON.parse(data.data[0].text) : null;
 

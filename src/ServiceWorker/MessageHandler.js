@@ -1,5 +1,6 @@
 import {Message} from "../shared/models/Message.js";
 import {CanvasRequest} from "../shared/models/CanvasRequest.js";
+import {Utils} from "../shared/utils/Utils.js";
 
 export class MessageHandler
 {
@@ -95,7 +96,7 @@ export class MessageHandler
     }
   }
 
-  sendSidePanelMessage(text, data)
+  sendSidePanelMessage(text, data, counter = 0)
   {
     if(this.appController.state.hasOpenSidePanel === false) return;
 
@@ -107,13 +108,22 @@ export class MessageHandler
       data
     )).catch(e =>
     {
-      console.log("SidePanel not available:\n" + e);
-      this.appController.state.hasOpenSidePanel = false;
+      if(counter < 4)
+      {
+        this.sendSidePanelMessage(text, data, ++counter);
+      }
+      else
+      {
+        console.log("SidePanel not available:\n" + e);
+        this.appController.state.hasOpenSidePanel = false;
+      }
     });
   }
 
-  async sendCanvasRequests(requests)
+  async sendCanvasRequests(requests, counter = 0)
   {
+    if(counter > 0) await Utils.sleep(Math.pow(10,counter))
+
     let tabId = this.appController.tabHandler.getTabId();
 
     if(!tabId) return null;
@@ -127,7 +137,14 @@ export class MessageHandler
         requests)
     ).catch(e =>
     {
-      console.warn("Content script not available:\n" + e)
+      if(counter < 4)
+      {
+        this.sendCanvasRequests(requests, ++counter);
+      }
+      else
+      {
+        console.warn("Content script not available:\n" + e)
+      }
     });
 
     return responseMsg ? responseMsg.data : null;
