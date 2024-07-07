@@ -13,7 +13,7 @@ function ScanModeDropdown({value, onChange}) {
      </Select.Trigger>
 
      <Select.Portal>
-       <Select.Content className={"overflow-hidden bg-white rounded shadow-md"} position={"popper"}>
+       <Select.Content className={"w-[--radix-select-trigger-width] overflow-hidden bg-white rounded shadow-md"} position={"popper"}>
          <Select.ScrollUpButton className={"flex items-center justify-center h-6 bg-white text-blue-600 cursor-default"}>
          <ChevronUpIcon />
          </Select.ScrollUpButton>
@@ -36,14 +36,14 @@ const SelectItem = forwardRef(({ children, className, ...props }, forwardedRef) 
   return (
     <Select.Item
       className={
-        "text-sm leading-none text-blue-600 rounded flex items-center h-6 pr-8 pl-6 relative select-none data-[disabled]:text-gray-200 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-blue-500 data-[highlighted]:text-white"
+        "text-base leading-none text-blue-600 rounded flex items-center h-9 pr-9 pl-9 relative select-none data-[disabled]:text-gray-200 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-blue-500 data-[highlighted]:text-white"
       }
       {...props}
       ref={forwardedRef}
     >
       <Select.ItemText>{children}</Select.ItemText>
-      <Select.ItemIndicator className="absolute left-0 w-6 inline-flex items-center justify-center">
-        <CheckIcon />
+      <Select.ItemIndicator className="absolute left-0 w-9 p-2 inline-flex items-center justify-center">
+        <CheckIcon className={"w-9 h-9"} />
       </Select.ItemIndicator>
     </Select.Item>
   );
