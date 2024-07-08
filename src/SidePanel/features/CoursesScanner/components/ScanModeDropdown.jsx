@@ -20,12 +20,12 @@ function ScanModeDropdown({value, onChange}) {
          <Select.Viewport className={"p-1"}>
              <SelectItem value={"single-course"}>This Course</SelectItem>
              <SelectItem value={"term"}>Term</SelectItem>
-             <SelectItem value={"csv-import"} disabled>CSV Import</SelectItem>
+             {/*<SelectItem value={"csv-import"} disabled>CSV Import</SelectItem>*/}
          </Select.Viewport>
          <Select.ScrollDownButton  className={"flex items-center justify-center h-6 bg-white text-blue-600 cursor-default"}>
           <ChevronDownIcon />
          </Select.ScrollDownButton>
-         <Select.Arrow />
+         <Select.Arrow  className="fill-gray-200"/>
        </Select.Content>
      </Select.Portal>
    </Select.Root>
@@ -42,7 +42,7 @@ const SelectItem = forwardRef(({ children, className, ...props }, forwardedRef) 
       ref={forwardedRef}
     >
       <Select.ItemText>{children}</Select.ItemText>
-      <Select.ItemIndicator className="absolute left-0 w-9 p-2 inline-flex items-center justify-center">
+      <Select.ItemIndicator className="absolute left-0 w-9 h-9 p-2 inline-flex items-center justify-center">
         <CheckIcon className={"w-9 h-9"} />
       </Select.ItemIndicator>
     </Select.Item>
