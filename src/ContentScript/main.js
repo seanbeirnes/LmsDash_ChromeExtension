@@ -1,5 +1,6 @@
 import {Message} from "../shared/models/Message.js";
 import {RequestHandler} from "./RequestHandler.js";
+import Logger from "../shared/utils/Logger.js";
 
 const requestHandler = new RequestHandler();
 
@@ -9,7 +10,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) =>
 
     (async () =>
     {
-      console.log(message);
+      Logger.debug(__dirname, JSON.stringify(message))
+
       // Only accept messages for the conent script
       if(message.target !== Message.Target.TAB)
       {

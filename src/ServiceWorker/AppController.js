@@ -2,6 +2,7 @@ import {TabHandler} from "./TabHandler.js";
 import {AppState} from "../shared/models/AppState.js";
 import {CanvasRequest} from "../shared/models/CanvasRequest.js";
 import {MessageHandler} from "./MessageHandler.js";
+import Logger from "../shared/utils/Logger.js";
 
 export class AppController
 {
@@ -37,6 +38,7 @@ export class AppController
   // Set the sidePanel as open in app state and notify sidePanel of state change
   setSidePanelOpen()
   {
+    Logger.debug(__dirname, "Side panel set to OPEN");
     this.state.hasOpenSidePanel = true;
     this.state.timeChanged = Date.now();
     this.#notifySidePanel();
@@ -105,7 +107,7 @@ export class AppController
   {
     this.messageHandler.sendSidePanelMessage("app state", this.state);
 
-    console.log(this.state);
+    Logger.debug(__dirname, JSON.stringify(this.state));
   }
 
   // Sends Canvas account courses request /api/v1/accounts/1/courses...

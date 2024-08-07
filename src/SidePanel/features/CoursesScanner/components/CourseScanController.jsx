@@ -4,6 +4,7 @@ import PrimaryCardLayout from "../../../components/shared/cards/PrimaryCardLayou
 import CourseScanSelectSettings from "./CourseScanSelectSettings.jsx";
 import CourseScanSelectSearchTerms from "./CourseScanSelectSearchTerms.jsx";
 import CourseScanSelectCourse from "./CourseScanSelectCourse.jsx";
+import Logger from "../../../../shared/utils/Logger.js";
 
 function CourseScanController()
 {
@@ -19,13 +20,9 @@ function CourseScanController()
       <CourseScanSelectCourse scanType={scanType} setScanType={setScanType} setCourseIds={setCourseIds} />
       <CourseScanSelectSearchTerms searchTerms={searchTerms} setSearchTerms={setSearchTerms} />
       <CourseScanSelectItems scannedItems={scannedItems} setScannedItems={setScannedItems} scanType={scanType} />
-      <CourseScanSelectSettings settings={settings} setSettings={setSettings} runScanCallback={ () => console.log(
-        scanType,
-        courseIds,
-        searchTerms,
-        scannedItems,
-        settings,
-        error) }/>
+      <CourseScanSelectSettings settings={settings} setSettings={setSettings} runScanCallback={ () => Logger.debug(__dirname,
+        `${scanType}\n${courseIds}\n${searchTerms}\n${scannedItems}\n${settings}\n${error}`)
+      }/>
     </PrimaryCardLayout>
   )
 }
