@@ -66,7 +66,7 @@ function SelectCourse({courseId, setCourseIds})
     <div className="text-base text-gray-700">
       <p><span className={"font-bold"}>Title: </span>{course["name"]}</p>
       <p><span className={"font-bold"}>Code:  </span>{course["course_code"]}</p>
-      <p><span className={"font-bold"}>SISID: </span>{course["sis_course_id"]}</p>
+      {course["sis_course_id"] && (<p><span className={"font-bold"}>SISID: </span>{course["sis_course_id"]}</p>)}
     </div>
   )
 }
