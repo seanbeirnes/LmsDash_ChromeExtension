@@ -12,7 +12,7 @@ export default {
 	},
     plugins: [replace({
 			'process.env.NODE_ENV': () => isProduction ? JSON.stringify('production') : JSON.stringify('development'),
-			__dirname: (id) => `'${path.dirname(id)}'`,
+			__dirname: (id) => `'${id}'`,
 		}),
 			isProduction && terser()]
 };

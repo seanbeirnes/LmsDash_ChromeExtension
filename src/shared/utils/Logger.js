@@ -2,13 +2,15 @@ import Config from "../config/Config.js";
 
 export default class Logger
 {
-  static log(module, message)
+  static log(message)
   {
-    console.log(module + "\n" + message);
+    const date = new Date();
+    console.log(date.toUTCString() + "      " + message);
   }
 
-  static debug(module, message)
+  static debug(filePath, message)
   {
-    if(Config.DEBUG_MODE) console.log(module + "\n" + message);
+    const date = new Date();
+    if(Config.DEBUG_MODE) console.log(date.toUTCString() + "      " + filePath + "      " + message);
   }
 }
