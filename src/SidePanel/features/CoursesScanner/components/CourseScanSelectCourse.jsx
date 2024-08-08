@@ -3,6 +3,7 @@ import ScanModeDropdown from "./ScanModeDropdown.jsx";
 import {useContext} from "react";
 import {AppStateContext} from "../../../App.jsx";
 import SelectCourse from "./SelectCourse.jsx";
+import SelectTerm from "./SelectTerm.jsx";
 
 function CourseScanSelectCourse({scanType, setScanType, setCourseIds}) {
   const appState = useContext(AppStateContext);
@@ -22,6 +23,10 @@ function CourseScanSelectCourse({scanType, setScanType, setCourseIds}) {
           {scanType[0] === "single-course" &&
             (
               <SelectCourse courseId={appState.activeTabCourseId} setCourseIds={setCourseIds} />
+            )}
+          {scanType[0] === "term" &&
+            (
+              <SelectTerm setScanType={setScanType} />
             )}
         </div>
       </div>
