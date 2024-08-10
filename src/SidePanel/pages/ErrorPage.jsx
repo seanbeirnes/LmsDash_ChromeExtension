@@ -1,6 +1,7 @@
 import Header from "../components/layout/Header.jsx";
 import Footer from "../components/layout/Footer.jsx";
 import Main from "../components/layout/Main.jsx";
+import GenericErrorMessage from "../components/shared/error/GenericErrorMessage.jsx";
 
 function ErrorPage()
 {
@@ -8,11 +9,7 @@ function ErrorPage()
     <>
       <Header></Header>
       <Main>
-        <div>
-          <p className="my-4 text-gray-700 text-2xl font-bold text-center">¯\_(ツ)_/¯</p>
-          <p className="my-4 text-gray-700 text-base text-center">Something went wrong...<br/>Please reopen the
-            extension</p>
-        </div>
+        <GenericErrorMessage />
       </Main>
       <Footer></Footer>
     </>
