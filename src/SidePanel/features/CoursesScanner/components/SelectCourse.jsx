@@ -42,15 +42,18 @@ function SelectCourse({courseId, setCourseIds})
   if(!courseId)
   {
     return(
-      <p>No course selected.</p>
+      <>
+        <p>No course selected.</p>
+        <p>Navigate to a course and it will automatically be selected.</p>
+      </>
     )
   }
 
   if(isPending || !data)
   {
-    return(
+    return (
       <div className="w-full flex justify-center">
-        <ProgressSpinner />
+      <ProgressSpinner />
       </div>
     )
   }
