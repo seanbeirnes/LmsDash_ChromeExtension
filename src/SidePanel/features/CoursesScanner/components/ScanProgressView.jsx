@@ -4,7 +4,7 @@ import * as Progress from '@radix-ui/react-progress';
 import ButtonPrimaryDanger from "../../../components/shared/buttons/ButtonPrimaryDanger.jsx";
 import {useEffect, useState} from "react";
 
-function ScanProgressView()
+function ScanProgressView({stopScanCallback})
 {
   const [progress, setProgress] = useState(50)
 
@@ -29,7 +29,7 @@ function ScanProgressView()
           <p className="text-gray-700 text-base text-left">Scanning pages in course 2023-AAA-3333-1OL</p>
         </div>
         <div className="justify-self-center self-end w-full max-w-sm">
-          <ButtonPrimaryDanger>Stop Scan</ButtonPrimaryDanger>
+          <ButtonPrimaryDanger onClick={stopScanCallback}>Stop Scan</ButtonPrimaryDanger>
         </div>
       </PrimaryCard>
     </PrimaryCardLayout>

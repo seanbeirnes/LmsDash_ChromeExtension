@@ -21,10 +21,16 @@ function CourseScanController()
     setViewState(VIEW_STATE.progress);
   }
 
+  function stopScanCallback()
+  {
+    Logger.debug(__dirname, "Stopping Scan");
+    setViewState(VIEW_STATE.settings);
+  }
+
   if(viewState === VIEW_STATE.progress)
   {
     return (
-      <ScanProgressView />
+      <ScanProgressView stopScanCallback={stopScanCallback} />
     )
   } else if(viewState === VIEW_STATE.results)
   {
