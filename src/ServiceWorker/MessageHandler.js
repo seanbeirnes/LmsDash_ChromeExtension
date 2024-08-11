@@ -91,6 +91,22 @@ export class MessageHandler
       }
         break;
 
+      case Message.Type.Task.Request.NEW:
+      {
+        const task = this.enqueueTask(message.data);
+
+          sendResponse(
+            new Message(
+              Message.Target.SIDE_PANEL,
+              Message.Sender.SERVICE_WORKER,
+              Message.Type.Task.Response.NEW,
+              task ? "New task created" : "Task creation failed",
+              task ? task : null
+            )
+          )
+      }
+        break;
+
       default:
         return;
     }
@@ -148,5 +164,11 @@ export class MessageHandler
     });
 
     return responseMsg ? responseMsg.data : null;
+  }
+
+  enqueueTask(task)
+  {
+    if(!task || !task.type) return null; // Check for a bad task model format
+    return this.appController.taskController.enqueue(task); //Enqueue the task and return it with the new id
   }
 }

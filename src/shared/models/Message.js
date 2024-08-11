@@ -29,10 +29,10 @@ export class Message
                     USER: 200, // User info
                     SEARCH_TERMS: 210
                 },
-                Scanner: {
-                    NEW: 300,
-                    PROGRESS: 301
-                }
+                NEW: 300,
+                PROGRESS: 301,
+                DATA: 302,
+                BY_TYPE: 303
             },
             Response: {
                 App: {
@@ -43,10 +43,10 @@ export class Message
                     USER: 2001, // User info
                     SEARCH_TERMS: 2101
                 },
-                Scanner: {
-                    NEW: 3001,
-                    PROGRESS: 3011
-                }
+                NEW: 3000,
+                PROGRESS: 3001,
+                DATA: 3002,
+                BY_TYPE: 3003
             }
         }
     }

@@ -3,6 +3,7 @@ import {AppState} from "../shared/models/AppState.js";
 import {CanvasRequest} from "../shared/models/CanvasRequest.js";
 import {MessageHandler} from "./MessageHandler.js";
 import Logger from "../shared/utils/Logger.js";
+import TaskController from "./TaskController.js";
 
 export class AppController
 {
@@ -19,6 +20,8 @@ export class AppController
     this.messageHandler = new MessageHandler(this);
     this.messageHandler.init();
 
+    this.taskController = new TaskController();
+
     // Update hasTabs var
     this.tabHandler = new TabHandler();
     this.tabHandler.init();
@@ -32,7 +35,8 @@ export class AppController
 
   runTasks()
   {
-    return 0;
+    this.taskController.runTasks();
+    return true;
   }
 
   // Set the sidePanel as open in app state and notify sidePanel of state change

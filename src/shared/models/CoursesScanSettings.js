@@ -3,9 +3,13 @@
  */
 export class CoursesScanSettings
 {
-  scanType = []; // 'course' for single course or 'term' for term
-  courseIds = []; // ids of courses to scan
-  searchTerms = []; // search terms to scan for
-  scannedItems = []; // Canvas items to scan for
-  settings = []; // Additional settings
+
+  constructor(scanType, courseIds, searchTerms, scannedItems, settings)
+  {
+    this.scanType = scanType; // 'course' for single course or 'term' for term
+    this.courseIds = courseIds; // ids of courses to scan
+    this.searchTerms = searchTerms; // search terms to scan for
+    this.scannedItems = scannedItems; // Canvas items to scan for
+    this.settings = settings; // Additional settings
+  }
 }

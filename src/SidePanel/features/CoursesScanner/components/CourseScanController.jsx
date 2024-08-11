@@ -5,6 +5,10 @@ import ScanSettingsView from "./ScanSettingsView.jsx";
 import {VIEW_STATE} from "../enums/enums.js";
 import Logger from "../../../../shared/utils/Logger.js";
 import ScanProgressView from "./ScanProgressView.jsx";
+import {Message} from "../../../../shared/models/Message.js";
+import Task from "../../../../shared/models/Task.js";
+import {CoursesScanSettings} from "../../../../shared/models/CoursesScanSettings.js";
+import {useMutation} from "@tanstack/react-query";
 
 function CourseScanController()
 {
@@ -15,9 +19,23 @@ function CourseScanController()
   const [scannedItems, setScannedItems] = useState([]);
   const [settings, setSettings] = useState([]);
 
+  const createTask = useMutation({
+  mutationFn: async (scanSettings) => {
+    const msgResponse = await chrome.runtime.sendMessage(
+      new Message(Message.Target.SERVICE_WORKER,
+        Message.Sender.SIDE_PANEL,
+        Message.Type.Task.Request.NEW,
+        "New course scan request",
+        new Task(Task.type.coursesScan, scanSettings))
+    )
+    return msgResponse.data
+  }
+})
+
   function runScanCallback()
   {
     Logger.debug(__dirname, `\n${scanType}\n${courseIds}\n${searchTerms}\n${scannedItems}\n${settings}`)
+    createTask.mutate(new CoursesScanSettings(scanType, courseIds, searchTerms, scannedItems, settings));
     setViewState(VIEW_STATE.progress);
   }
 
