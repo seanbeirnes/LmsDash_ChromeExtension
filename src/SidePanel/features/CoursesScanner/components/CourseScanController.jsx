@@ -8,7 +8,7 @@ import ScanProgressView from "./ScanProgressView.jsx";
 
 function CourseScanController()
 {
-  const [viewState, setViewState] = useState(VIEW_STATE.progress); // changed for testing, defaults should be settings
+  const [viewState, setViewState] = useState(VIEW_STATE.settings);
   const [scanType, setScanType] = useState(["single-course"]);
   const [courseIds, setCourseIds] = useState([]);
   const [searchTerms, setSearchTerms] = useState([""]);
