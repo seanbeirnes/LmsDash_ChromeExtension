@@ -4,10 +4,11 @@ import GenericErrorMessage from "../../../components/shared/error/GenericErrorMe
 import ScanSettingsView from "./ScanSettingsView.jsx";
 import {VIEW_STATE} from "../enums/enums.js";
 import Logger from "../../../../shared/utils/Logger.js";
+import ScanProgressView from "./ScanProgressView.jsx";
 
 function CourseScanController()
 {
-  const [viewState, setViewState] = useState(VIEW_STATE.settings);
+  const [viewState, setViewState] = useState(VIEW_STATE.progress); // changed for testing, defaults should be settings
   const [scanType, setScanType] = useState(["single-course"]);
   const [courseIds, setCourseIds] = useState([]);
   const [searchTerms, setSearchTerms] = useState([""]);
@@ -23,9 +24,7 @@ function CourseScanController()
   if(viewState === VIEW_STATE.progress)
   {
     return (
-      <PrimaryCardLayout>
-        <p>Progress view...</p>
-      </PrimaryCardLayout>
+      <ScanProgressView />
     )
   } else if(viewState === VIEW_STATE.results)
   {
