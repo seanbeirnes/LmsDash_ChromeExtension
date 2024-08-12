@@ -1,20 +1,21 @@
 import Task from "../shared/models/Task.js";
 import Logger from "../shared/utils/Logger.js";
+import CoursesScanController from "./features/CoursesScanner/CoursesScanController.js";
 
 export default class TaskRunner
 {
-  static runTask(task)
+  static runTask(task, appController)
   {
     let isRunning = false;
 
     switch(task.type)
     {
       case Task.type.coursesScan:
-        isRunning = TaskRunner.runCoursesScan(task);
+        isRunning = TaskRunner.runCoursesScan(task, appController);
         break;
 
       default:
-        Logger.debug(__dirname, "Task type not found. Could not run task: \n" + JSON.stringify(task));
+        Logger.debug(__dirname, "Task type not found. Could not run task: \n" + task.toString());
     }
 
     task.setTimeStarted();
@@ -32,10 +33,12 @@ export default class TaskRunner
     return isRunning;
   }
 
-  static runCoursesScan(task)
+  static runCoursesScan(task, appController)
   {
-    Logger.debug(__dirname, "Running Courses Scan Task: " + JSON.stringify(task));
+    task.controller = new CoursesScanController(task, appController);
+    task.controller.start();
 
+    Logger.debug(__dirname, "Running Courses Scan Task: " + task.toString());
     return true;
   }
 }

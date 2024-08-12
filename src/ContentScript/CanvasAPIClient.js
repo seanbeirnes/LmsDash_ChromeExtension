@@ -52,6 +52,12 @@ class GetRequests
         )
     }
 
+    static async CoursesByTermId(termId, page=1, perPage=10){
+        return await HTTPClient.get(
+          CanvasAPIClient.formatURL(`/accounts/1/courses?enrollment_term_id=${termId}&page=${page}&per_page=${perPage}`)
+        )
+    }
+
     static async CoursesAccount(page=1, perPage=10){
         return await HTTPClient.get(
             CanvasAPIClient.formatURL(`/accounts/1/courses?page=${page}&per_page=${perPage}`)

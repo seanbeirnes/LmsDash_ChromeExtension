@@ -15,6 +15,7 @@ export default class Task
     this.errorsData = null;
     this.settingsData = settingsData;
     this.resultsData = null;
+    this.controller = null;
   }
 
   #updateTime()
@@ -112,6 +113,22 @@ export default class Task
   {
     this.resultsData = data;
     this.#updateTime();
+  }
+
+  toString() {
+    return `ID: ${this.id}\n` +
+      `UUID: ${this.uuid}\n` +
+      `Type: ${this.type}\n` +
+      `Status: ${this.status}\n` +
+      `Time Created: ${new Date(this.timeCreated).toISOString()}\n` +
+      `Time Started: ${this.timeStarted ? new Date(this.timeStarted).toISOString() : 'Not started'}\n` +
+      `Time Updated: ${new Date(this.timeUpdated).toISOString()}\n` +
+      `Time Finished: ${this.timeFinished ? new Date(this.timeFinished).toISOString() : 'Not finished'}\n` +
+      `Progress: ${this.progress}\n` +
+      `Progress Data: ${JSON.stringify(this.progressData)}\n` +
+      `Errors Data: ${JSON.stringify(this.errorsData)}\n` +
+      `Settings Data: ${JSON.stringify(this.settingsData)}\n` +
+      `Results Data: ${JSON.stringify(this.resultsData)}`;
   }
 
   // STATIC ENUMS

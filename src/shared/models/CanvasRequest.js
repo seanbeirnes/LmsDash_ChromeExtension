@@ -67,6 +67,7 @@ export class CanvasRequest
         Pages: 110,
         Tabs: 111,
         TermsBySearch: 112,
-        UsersSelf: 113
+        UsersSelf: 113,
+        CoursesByTermId: 114
     }
 }

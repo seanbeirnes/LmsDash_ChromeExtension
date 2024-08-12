@@ -20,7 +20,7 @@ export class AppController
     this.messageHandler = new MessageHandler(this);
     this.messageHandler.init();
 
-    this.taskController = new TaskController();
+    this.taskController = new TaskController(this);
 
     // Update hasTabs var
     this.tabHandler = new TabHandler();

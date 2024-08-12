@@ -33,7 +33,7 @@ export class RequestHandler
         const list = linkHeader.split(",")
 
         list.forEach( (link) => {
-            const LINK_PATTERN = /^<([\w\/\.&?:\[\]=]+)>;\srel="(\w+)"$/
+            const LINK_PATTERN = /^<([\w\/\.&%?:\-\[\]=]+)>;\srel="(\w+)"$/
             const matches = link.match(LINK_PATTERN)
             if(matches && matches.length === 3)
             {
@@ -82,6 +82,10 @@ export class RequestHandler
 
             case CanvasRequest.Get.CoursesByAdminSearch:
                 response = await this.client.Get.CoursesByAdminSearch(request.params.searchTerm, request.params.page, request.params.perPage);
+                break;
+
+            case CanvasRequest.Get.CoursesByTermId:
+                response = await this.client.Get.CoursesByTermId(request.params.termId, request.params.page, request.params.perPage);
                 break;
 
             case CanvasRequest.Get.CoursesAccount:

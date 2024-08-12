@@ -4,8 +4,9 @@ import Task from "../shared/models/Task.js";
 
 export default class TaskController
 {
-  constructor()
+  constructor(appController)
   {
+    this.appController = appController;
     this.nextId = 0;
     this.newTasks = [];
     this.runningTasks = [];
@@ -26,15 +27,15 @@ export default class TaskController
     while(this.newTasks.length > 0)
     {
       const task = this.newTasks.shift();
-      const isRunning = TaskRunner.runTask(task);
+      const isRunning = TaskRunner.runTask(task, this.appController);
       if(isRunning)
       {
         this.runningTasks.push(task);
-        Logger.debug(__dirname, "Started task: \n" + JSON.stringify(task));
+        Logger.debug(__dirname, "Started task: \n" + task.toString());
       } else
       {
         this.finishedTasks.push(task);
-        Logger.debug(__dirname, "Failed to start task: \n" + JSON.stringify(task));
+        Logger.debug(__dirname, "Failed to start task: \n" + task.toString());
       }
     }
   }
