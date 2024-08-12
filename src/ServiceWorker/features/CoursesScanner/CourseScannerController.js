@@ -36,8 +36,6 @@ export default class CourseScannerController
 
     this.courseInfo = JSON.parse(response[0].text);
 
-    console.log(this.courseInfo);
-
     return true;
   }
 
