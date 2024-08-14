@@ -1,18 +1,10 @@
+/**
+ * Holds the data for a course item that contained a match in the scan process.
+ */
+
 export default class CourseItemScanResult
 {
-  static type = {
-    announcement: "announcement",
-    assignment: "assignment",
-    courseNavLink: "course-nav-link",
-    discussion: "discussion",
-    fileName: "file",
-    moduleLink: "module-link",
-    page: "page",
-    syllabus: "syllabus",
-    scanError: "scan-error",
-  }
-
-  constructor(type, id, name = "", matches = "", preview = "", url = "", published = null)
+  constructor(type, id, name = "", matches = "", preview = "", url = "", published = null, errors = null)
   {
     this.type = type;
     this.id = id;
@@ -21,5 +13,6 @@ export default class CourseItemScanResult
     this.preview = preview;
     this.url = url;
     this.published = published;
+    this.errors = errors;
   }
 }

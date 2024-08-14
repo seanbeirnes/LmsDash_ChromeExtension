@@ -1,12 +1,14 @@
 import {CanvasRequest} from "../../../shared/models/CanvasRequest.js";
 import Logger from "../../../shared/utils/Logger.js";
 import CourseItemScanResult from "../../../shared/models/CourseItemScanResult.js";
+import Scannable from "./Scannable.js";
+import ScannablesBuilder from "./ScannablesBuilder.js";
+import Requester from "./Requester.js";
 
 export default class CourseScannerController
 {
-  constructor(scanIndex, courseId, scanSettings, coursesScanController)
+  constructor(courseId, scanSettings, coursesScanController)
   {
-    this.scanIndex = scanIndex;
     this.courseId = courseId;
     this.scanSettings = scanSettings;
     this.coursesScanController = coursesScanController;
@@ -23,12 +25,13 @@ export default class CourseScannerController
     this.courseInfo = null;
   }
 
+  // Get the info of the course and update it to the class field
   async collectCourseInfo()
   {
     const response = await this.coursesScanController.sendCanvasRequests([
       new CanvasRequest(
         CanvasRequest.Get.Course,
-        {courseId: this.courseId, syllabusBody: this.scanSettings.scannedItems.includes("syllabus")})
+        {courseId: this.courseId, syllabusBody: this.scanSettings.scannedItems.includes(Scannable.Type.SYLLABUS)})
     ])
 
     Logger.debug(__dirname, "Course info response: " + JSON.stringify(response))
@@ -39,136 +42,67 @@ export default class CourseScannerController
     return true;
   }
 
-  async getScannableItems(currentPages)
-  {
-
-    // Create the requests
-    const requests = {
-      announcement: currentPages.announcement > 0 ? new CanvasRequest(
-          CanvasRequest.Get.Announcements,
-          {courseId: this.courseId, page: currentPages.announcement, perPage: 100})
-        : null,
-      assignment: currentPages.assignment > 0 ? new CanvasRequest(
-          CanvasRequest.Get.Assignments,
-          {courseId: this.courseId, page: currentPages.assignment, perPage: 100})
-        : null,
-      courseNavLink: currentPages.courseNavLink > 0 ? new CanvasRequest(
-          CanvasRequest.Get.Tabs,
-          {courseId: this.courseId, page: currentPages.courseNavLink, perPage: 100})
-        : null,
-      discussion: currentPages.discussion > 0 ? new CanvasRequest(
-          CanvasRequest.Get.Discussions, {courseId: this.courseId, page: currentPages.discussion, perPage: 100})
-        : null,
-      fileName: currentPages.fileName > 0 ? new CanvasRequest(
-          CanvasRequest.Get.CourseFiles, {
-            courseId: this.courseId,
-            onlyNames: true,
-            page: currentPages.fileName,
-            perPage: 100
-          })
-        : null,
-      page: currentPages.page > 0 ? new CanvasRequest(
-          CanvasRequest.Get.Pages, {courseId: this.courseId, includeBody: true, page: currentPages.page, perPage: 100})
-        : null
-    }
-
-    // Build the request array
-    const requestTypes = Object.keys(requests);
-    const canvasRequests = []
-    requestTypes.forEach(requestType =>
-    {
-      if(requests[requestType]) canvasRequests.push(requests[requestType]);
-    })
-    Logger.debug(__dirname, canvasRequests.toString());
-
-    // Check for empty request
-    if(canvasRequests.length === 0) return null;
-
-    // Send the requests
-    const responses = await this.coursesScanController.sendCanvasRequests(canvasRequests);
-
-    // Object to store response data
-    const responseData = {
-      announcement: null,
-      assignment: null,
-      courseNavLink: null,
-      discussion: null,
-      fileName: null,
-      page: null
-    }
-
-    // Convert response data to hashmap
-    requestTypes.forEach(requestType => {
-      if(!requests[requestType]) return;
-
-      const requestId = requests[requestType].id;
-      const response = responses.find((res) => res.id === requestId);
-
-      // Update page numbers or set to "-1" to indicate no more pages remain
-      currentPages[requestType] = (!response.link || !response.link.next) ? -1 : ++currentPages[requestType];
-
-      // Convert JSON to JS objects
-      responseData[requestType] = JSON.parse(response.text);
-    })
-
-    return responseData
-  }
-
   async scanCourseItems()
   {
-    // TO-DO: Scan Syllabus if need
-    console.log("TO DO: Scan Syllabus")
+    const scannables = ScannablesBuilder.build(this.scanSettings.scannedItems);
+    Logger.debug(__dirname, "" + scannables.length + " Scannables: " + scannables.toString());
+    const requester = new Requester(this.courseId, this.courseInfo, this.coursesScanController);
 
-    // TO-DO: Scan module links
-    console.log("TO DO: Scan module links")
-
-    // Collect pages of scannable items and scan each item in each page until not pages remain
-    // Page >= 1 needs scanning, -1 = done scanning or not in settings
-    const currentPages = {
-      announcement: this.scanSettings.scannedItems.includes(CourseItemScanResult.type.announcement) ? 1 : -1,
-      assignment: this.scanSettings.scannedItems.includes(CourseItemScanResult.type.assignment) ? 1 : -1,
-      courseNavLink: this.scanSettings.scannedItems.includes(CourseItemScanResult.type.courseNavLink) ? 1 : -1,
-      discussion: this.scanSettings.scannedItems.includes(CourseItemScanResult.type.discussion) ? 1 : -1,
-      fileName: this.scanSettings.scannedItems.includes(CourseItemScanResult.type.fileName) ? 1 : -1,
-      page: this.scanSettings.scannedItems.includes(CourseItemScanResult.type.page) ? 1 : -1,
-    }
-    while((currentPages.announcement + currentPages.assignment + currentPages.courseNavLink + currentPages.discussion + currentPages.fileName + currentPages.page) > -6)
+    while(scannables.length > 0 && this.coursesScanController.running)
     {
-      Logger.debug(__dirname, "Current pages: \n" + JSON.stringify(currentPages))
-      // Get the next page of each scannable item category
-      const scannableItems = await this.getScannableItems(currentPages);
-      console.log(scannableItems);
-      // Scan items
+      // Make requests for each scannable, update items and update isLastPage
+      const success = await requester.request(scannables);
 
-      // Update progress
+      // Iterate backwards so new items can be added while old items can be removed
+      for(let i = scannables.length - 1; i >= 0; i--)
+      {
+        const scannable = scannables[i];
+        // If type "MODULE," create new Scannable of type "MODULE_ITEMS"
+        if(scannable.type === Scannable.Type.MODULE)
+        {
+          scannable.items.forEach((module) =>
+          {
+            scannables.push(new Scannable(Scannable.Type.MODULE_ITEM, module["id"]));
+          })
+        }
 
+        // Scan items in each scannable (except modules) AND add results to results
+
+        console.log("TO DO: Scan Items");
+
+        // Remove if isLastPage and update progress OR prepare for next iteration
+        if(scannable.isLastPage)
+        {
+          scannables.splice(i, 1);
+
+          // Increment progress once for all types except MODULE_ITEM
+          if(scannable.type !== Scannable.Type.MODULE_ITEM) this.coursesScanController.incrementProgress();
+
+          // Only increment progress for last MODULE_ITEM
+          if(scannable.type === Scannable.Type.MODULE_ITEM && 0 > scannables.findIndex(
+            (item) => item.type === Scannable.Type.MODULE_ITEM)
+          ) this.coursesScanController.incrementProgress();
+
+        } else
+        {
+          scannable.incrementPage();
+          scannable.clearItems();
+        }
+      }
     }
   }
 
   async run()
   {
-    // Get course info
+    // Prepare for course scan
     const hasCourseInfo = await this.collectCourseInfo();
-    if(!hasCourseInfo) return new CourseItemScanResult(CourseItemScanResult.type.scanError, this.courseId);
-    this.#updateProgressData();
+    console.log("TO DO: Handle error when there is no course info returned");
+    this.coursesScanController.updateProgressData(this.courseInfo["name"]);
 
     // Scan course
     await this.scanCourseItems();
 
+    console.log("TO DO: Return scan results")
     return true;
-  }
-
-
-  #updateProgress(progress)
-  {
-    this.coursesScanController.task.setProgress(progress);
-  }
-
-  #updateProgressData()
-  {
-    this.coursesScanController.task.setProgressData([
-      `Scanning course ${this.scanIndex + 1} of ${this.scanSettings.courseIds.length}`,
-      `Scanning items in course ${this.courseInfo["name"]}`
-    ]);
   }
 }
