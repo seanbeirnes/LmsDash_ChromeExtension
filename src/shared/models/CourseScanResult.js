@@ -4,14 +4,14 @@
 
 export default class CourseScanResult
 {
-  constructor(id, name, courseCode, sisCourseId, published, url, errors = null)
+  constructor()
   {
-    this.id = id;
-    this.name = name;
-    this.courseCode = courseCode;
-    this.sisCourseId = sisCourseId;
-    this.published = published;
-    this.url = url;
+    this.id = null;
+    this.name = null
+    this.courseCode = null;
+    this.sisCourseId = null;
+    this.published = null;
+    this.url = null;
     this.items = {
       announcement: [],
       assignment: [],
@@ -22,7 +22,18 @@ export default class CourseScanResult
       page: [],
       syllabus: []
     }
-    this.errors = errors;
+    this.errors = null;
+  }
+
+  // Sets the fields of the class from the courseInfo object
+  setFields(courseInfo, baseUrl)
+  {
+    this.id = courseInfo["id"];
+    this.name = courseInfo["name"];
+    this.courseCode = courseInfo["course_code"];
+    this.sisCourseId = courseInfo["sis_course_id"];
+    this.published = courseInfo["workflow_state"] === "available";
+    this.url = baseUrl + "/courses/" + this.id;
   }
 
   append = {

@@ -1,6 +1,5 @@
 import {CanvasRequest} from "../../../shared/models/CanvasRequest.js";
 import Logger from "../../../shared/utils/Logger.js";
-import CourseItemScanResult from "../../../shared/models/CourseItemScanResult.js";
 import Scannable from "./Scannable.js";
 import ScannablesBuilder from "./ScannablesBuilder.js";
 import Requester from "./Requester.js";
@@ -88,13 +87,24 @@ export default class CourseScannerController
   {
     // Prepare for course scan
     const hasCourseInfo = await this.collectCourseInfo();
-    console.log("TO DO: Handle error when there is no course info returned");
+
+    // Handle error if there is no course info returned
+    if(!hasCourseInfo)
+    {
+      console.warn(`No course info found for course ${this.courseId}`);
+      this.courseScanResult.errors = ["No course info found for course"];
+      return this.courseScanResult;
+    }
+
+    // Update scan result model info and progress
+    this.courseScanResult.setFields(this.courseInfo, this.scanSettings.lmsBaseUrl);
     this.coursesScanController.updateProgressData(this.courseInfo["name"]);
 
+    console.log(this.courseScanResult);
     // Scan course
     await this.scanCourseItems();
 
-    console.log("TO DO: Return scan results")
-    return true;
+    // Return the course scan result model
+    return this.courseScanResult;
   }
 }
