@@ -4,6 +4,7 @@ import CourseItemScanResult from "../../../shared/models/CourseItemScanResult.js
 import Scannable from "./Scannable.js";
 import ScannablesBuilder from "./ScannablesBuilder.js";
 import Requester from "./Requester.js";
+import CourseScanResult from "../../../shared/models/CourseScanResult.js";
 
 export default class CourseScannerController
 {
@@ -12,16 +13,7 @@ export default class CourseScannerController
     this.courseId = courseId;
     this.scanSettings = scanSettings;
     this.coursesScanController = coursesScanController;
-    this.results = {
-      announcements: [],
-      assignments: [],
-      courseNavLinks: [],
-      discussions: [],
-      fileNames: [],
-      moduleLinks: [],
-      pages: [],
-      syllabus: [],
-    }
+    this.courseScanResult = new CourseScanResult();
     this.courseInfo = null;
   }
 
