@@ -36,6 +36,10 @@ function CourseScanController()
   {
     Logger.debug(__dirname, `\n${scanType}\n${courseIds}\n${searchTerms}\n${scannedItems}\n${settings}`)
     createTask.mutate(new CoursesScanSettings(scanType, courseIds, searchTerms, scannedItems, settings));
+
+    // Clear term id to prevent running scan again without a selected term in the UI
+    if(scanType[0] === "term") setScanType(["term"]);
+
     setViewState(VIEW_STATE.progress);
   }
 

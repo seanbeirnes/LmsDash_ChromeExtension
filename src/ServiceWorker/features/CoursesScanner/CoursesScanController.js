@@ -20,8 +20,6 @@ export default class CoursesScanController
     this.courseScanResults = [];
   }
 
-  function
-
   start()
   {
     this.running = true;
