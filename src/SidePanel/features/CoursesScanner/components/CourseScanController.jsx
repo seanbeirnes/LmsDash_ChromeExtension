@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import PrimaryCardLayout from "../../../components/shared/cards/PrimaryCardLayout.jsx";
 import GenericErrorMessage from "../../../components/shared/error/GenericErrorMessage.jsx";
 import ScanSettingsView from "./ScanSettingsView.jsx";
@@ -9,9 +9,12 @@ import {Message} from "../../../../shared/models/Message.js";
 import Task from "../../../../shared/models/Task.js";
 import {CoursesScanSettings} from "../../../../shared/models/CoursesScanSettings.js";
 import {useMutation} from "@tanstack/react-query";
+import {UserInfoContext} from "../../../App.jsx";
 
 function CourseScanController()
 {
+  const userInfo = useContext(UserInfoContext);
+
   const [viewState, setViewState] = useState(VIEW_STATE.settings);
   const [scanType, setScanType] = useState(["single-course"]);
   const [courseIds, setCourseIds] = useState([]);
@@ -34,8 +37,8 @@ function CourseScanController()
 
   function runScanCallback()
   {
-    Logger.debug(__dirname, `\n${scanType}\n${courseIds}\n${searchTerms}\n${scannedItems}\n${settings}`)
-    createTask.mutate(new CoursesScanSettings(scanType, courseIds, searchTerms, scannedItems, settings));
+    Logger.debug(__dirname, `\n${scanType}\n${courseIds}\n${searchTerms}\n${scannedItems}\n${settings}\n${userInfo.lmsInstance}`)
+    createTask.mutate(new CoursesScanSettings(scanType, courseIds, searchTerms, scannedItems, settings, userInfo.lmsInstance));
 
     // Clear term id to prevent running scan again without a selected term in the UI
     if(scanType[0] === "term") setScanType(["term"]);
