@@ -58,8 +58,10 @@ export default class CoursesScanController
       );
 
       this.incrementProgress();
-      const scanResults = await courseScanController.run();
-      console.log("TO DO: Update scanResults field")
+
+      const scanResult = await courseScanController.run();
+      this.courseScanResults.push(scanResult);
+
       this.incrementCoursesScanned();
     }
 

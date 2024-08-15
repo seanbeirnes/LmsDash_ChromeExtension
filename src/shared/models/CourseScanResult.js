@@ -1,6 +1,7 @@
 /**
  * Holds the resulting data for a course scan
  */
+import CourseItem from "./CourseItem.js";
 
 export default class CourseScanResult
 {
@@ -45,5 +46,52 @@ export default class CourseScanResult
     moduleLink: (item) => this.items.moduleLink.push(item),
     page: (item) => this.items.page.push(item),
     syllabus: (item) => this.items.syllabus.push(item)
+  }
+
+  appendResults(scanResults)
+  {
+    for(let i = 0; i < scanResults.length; i++)
+    {
+      const scanResult = scanResults[i];
+      if(!scanResult) continue; // Do not append null values
+
+      switch(scanResult.type)
+      {
+        case CourseItem.Type.ANNOUNCEMENT:
+          this.append.announcement(scanResult);
+          break;
+
+        case CourseItem.Type.ASSIGNMENT:
+          this.append.assignment(scanResult);
+          break;
+
+        case CourseItem.Type.COURSE_NAV_LINK:
+          this.append.courseNavLink(scanResult);
+          break;
+
+        case CourseItem.Type.DISCUSSION:
+          this.append.discussion(scanResult);
+          break;
+
+        case CourseItem.Type.FILE:
+          this.append.file(scanResult);
+          break;
+
+        case CourseItem.Type.MODULE_LINK:
+          this.append.moduleLink(scanResult);
+          break;
+
+        case CourseItem.Type.PAGE:
+          this.append.page(scanResult);
+          break;
+
+        case CourseItem.Type.SYLLABUS:
+          this.append.syllabus(scanResult);
+          break;
+
+        default:
+          throw new Error("Unrecognized item type for scan result")
+      }
+    }
   }
 }

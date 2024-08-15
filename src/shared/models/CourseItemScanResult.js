@@ -4,7 +4,7 @@
 
 export default class CourseItemScanResult
 {
-  constructor(type, id, name = "", matches = "", preview = "", url = "", published = null, errors = null)
+  constructor(type, id, name, url, published, matches = [], preview = [], errors = [])
   {
     this.type = type;
     this.id = id;

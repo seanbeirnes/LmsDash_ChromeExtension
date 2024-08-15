@@ -4,6 +4,7 @@ import Scannable from "./Scannable.js";
 import ScannablesBuilder from "./ScannablesBuilder.js";
 import Requester from "./Requester.js";
 import CourseScanResult from "../../../shared/models/CourseScanResult.js";
+import Scanner from "./Scanner.js";
 
 export default class CourseScannerController
 {
@@ -48,7 +49,12 @@ export default class CourseScannerController
       for(let i = scannables.length - 1; i >= 0; i--)
       {
         const scannable = scannables[i];
-        // If type "MODULE," create new Scannable of type "MODULE_ITEMS"
+
+        ////// Scan items in each scannable (except modules) AND add results to results
+        const scanResults = Scanner.scanItems(scannable.items, scannable.type, this.scanSettings, this.courseInfo);
+        this.courseScanResult.appendResults(scanResults);
+
+        ////// If type "MODULE," create new Scannable of type "MODULE_ITEMS"
         if(scannable.type === Scannable.Type.MODULE)
         {
           scannable.items.forEach((module) =>
@@ -57,11 +63,7 @@ export default class CourseScannerController
           })
         }
 
-        // Scan items in each scannable (except modules) AND add results to results
-
-        console.log("TO DO: Scan Items");
-
-        // Remove if isLastPage and update progress OR prepare for next iteration
+        ////// Remove if isLastPage and update progress OR prepare for next iteration
         if(scannable.isLastPage)
         {
           scannables.splice(i, 1);
@@ -100,7 +102,6 @@ export default class CourseScannerController
     this.courseScanResult.setFields(this.courseInfo, this.scanSettings.lmsBaseUrl);
     this.coursesScanController.updateProgressData(this.courseInfo["name"]);
 
-    console.log(this.courseScanResult);
     // Scan course
     await this.scanCourseItems();
 
