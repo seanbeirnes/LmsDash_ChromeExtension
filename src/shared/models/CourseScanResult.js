@@ -33,7 +33,8 @@ export default class CourseScanResult
     this.name = courseInfo["name"];
     this.courseCode = courseInfo["course_code"];
     this.sisCourseId = courseInfo["sis_course_id"];
-    this.published = courseInfo["workflow_state"] === "available";
+    // "available" courses are visible, "completed" courses are visible in read only state
+    this.published = courseInfo["workflow_state"] === "available" || courseInfo["workflow_state"] === "completed";
     this.url = baseUrl + "/courses/" + this.id;
   }
 
