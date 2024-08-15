@@ -165,7 +165,7 @@ export default class Scanner
     }
 
     // Check if any properties are null
-    if(!properties.type || !properties.id || !properties.name || !properties.url || !properties.published) console.warn("Null property in scan properties");
+    if(properties.type === null || properties.id === null || properties.name === null || properties.url === null || properties.published === null) console.warn("Null property in scan properties");
 
     Logger.debug(__dirname, "Scan Properties: \n" + JSON.stringify(properties));
 
