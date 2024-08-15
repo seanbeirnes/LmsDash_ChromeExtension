@@ -26,13 +26,14 @@ export default class Scanner
 
   static scan(item, type, scanSettings, courseInfo)
   {
-    ////// Ignore items based on scan settings and other criteria
     // Only scan module links
-    if(type === Scannable.Type.MODULE_ITEM &&
-      !(item["type"] === "File") || item["type"] === "ExternalUrl" || item["type"] === "ExternalTool") return null;
+    if(type === Scannable.Type.MODULE_ITEM && item["type"] !== "File" && item["type"] !== "ExternalUrl" && item["type"] !== "ExternalTool") return null;
 
-    ////// Prepare to scan
+    // Prepare to scan
     const scanProperties = Scanner.#getScanProperties(item, type, scanSettings.lmsBaseUrl, courseInfo);
+
+    // If "only published items" setting, do not scan unpublished items
+    if(scanSettings.settings.includes("only-published-items") && !scanProperties.published) return null;
 
     ////// Scan
     const matches = new Set ();
@@ -154,7 +155,7 @@ export default class Scanner
 
       case Scannable.Type.SYLLABUS:
         properties.type = CourseItem.Type.SYLLABUS;
-        properties.id = 0
+        properties.id = 1;
         properties.name = "Syllabus";
         properties.url = baseUrl + "/courses/" + courseId + "/assignments/syllabus";
         properties.published = true;
@@ -179,6 +180,7 @@ export default class Scanner
 
     // Scan text for each searchTerm
     console.log("TO DO: Scan text for each search term", text)
+    // handle "case sensitive" setting... should be case insensitive by default
 
     // Return results
     return {matches: matches, previews: preview};
@@ -192,6 +194,7 @@ export default class Scanner
 
     // Scan html for each searchTerm
     console.log("TO DO: Scan html for each search term", html)
+    // handle "include html" and "case sensitive" settings... should be case insensitive by default
 
     // Return results
     return {matches: matches, preview: preview};
