@@ -78,7 +78,7 @@ export default class CoursesScanController
     let page = 1;
     const courseIds = []
 
-    while(hasNextLink)
+    while(hasNextLink && this.running)
     {
       const response = await this.sendCanvasRequests([
         new CanvasRequest(CanvasRequest.Get.CoursesByTermId, {
