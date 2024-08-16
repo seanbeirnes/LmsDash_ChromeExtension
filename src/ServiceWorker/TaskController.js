@@ -27,8 +27,6 @@ export default class TaskController
   {
     this.#handleFinished();
     this.#handleNew();
-
-    console.log(this.newTasks, this.runningTasks, this.finishedTasks);
   }
 
   // Removes finished tasks from running tasks array
