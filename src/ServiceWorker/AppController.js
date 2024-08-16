@@ -33,9 +33,9 @@ export class AppController
     return this.state;
   }
 
-  runTasks()
+  updateTasks()
   {
-    this.taskController.runTasks();
+    this.taskController.update();
     return true;
   }
 

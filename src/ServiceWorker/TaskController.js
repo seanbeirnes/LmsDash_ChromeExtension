@@ -22,11 +22,45 @@ export default class TaskController
     return task;
   }
 
-  runTasks()
+  // Handle changes in task status and new tasks
+  update()
   {
-    while(this.newTasks.length > 0)
+    this.#handleFinished();
+    this.#handleNew();
+
+    console.log(this.newTasks, this.runningTasks, this.finishedTasks);
+  }
+
+  // Removes finished tasks from running tasks array
+  #handleFinished()
+  {
+    for(let i = this.runningTasks.length - 1 ; i >= 0; i--)
     {
-      const task = this.newTasks.shift();
+      // Ignore running tasks
+      if(this.runningTasks[i].status === Task.status.running) continue;
+
+      // Move to finished
+      const task = this.runningTasks[i];
+      this.finishedTasks.push(task);
+      this.runningTasks.splice(i, 1);
+    }
+  }
+
+  // Runs tasks that are not started
+  #handleNew()
+  {
+    // Count down so tasks added back do not get scanned again this round
+    for(let i = this.newTasks.length - 1; i >= 0; i--)
+    {
+      // Run task
+      let task = this.newTasks.shift();
+
+      // Do not start process intensive tasks if more than one is running
+      if(this.runningTasks.findIndex((task) => task.type === Task.type.coursesScan) >= 0 && task.type === Task.type.coursesScan)
+      {
+        this.newTasks.push(task);
+      }
+
       const isRunning = TaskRunner.runTask(task, this.appController);
       if(isRunning)
       {

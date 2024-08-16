@@ -10,7 +10,7 @@ const appController = new AppController();
 // Run the program loop
 async function run()
 {
-  appController.runTasks();
+  appController.updateTasks();
 
   await appController.update(counter);
 
