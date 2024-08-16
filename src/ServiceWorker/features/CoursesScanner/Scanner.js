@@ -2,6 +2,7 @@ import CourseItemScanResult from "../../../shared/models/CourseItemScanResult.js
 import Scannable from "./Scannable.js";
 import Logger from "../../../shared/utils/Logger.js";
 import CourseItem from "../../../shared/models/CourseItem.js";
+import HTMLSanitizer from "../../../shared/utils/HTMLSanitizer.js";
 
 /**
  * A static class responsible for scanning scannable items
@@ -18,7 +19,8 @@ export default class Scanner
     // Do not scan modules
     if(itemType === Scannable.Type.MODULE) return scanResults;
 
-    scannableItems.forEach( (item) => {
+    scannableItems.forEach((item) =>
+    {
       const result = Scanner.scan(item, itemType, scanSettings, courseInfo)
       if(result) scanResults.push(result);
     })
@@ -40,16 +42,18 @@ export default class Scanner
     if(scanSettings.settings.includes("only-published-items") && !scanProperties.published) return null;
 
     ////// Scan
-    const matches = new Set ();
+    const matches = new Set();
     let previews = [];
 
-    scanProperties.text.forEach((text) => {
+    scanProperties.text.forEach((text) =>
+    {
       const results = Scanner.#scanText(text, scanSettings);
       results.matches.forEach((match) => matches.add(match));
       previews = previews.concat(results.previews);
     })
 
-    scanProperties.html.forEach((html) => {
+    scanProperties.html.forEach((html) =>
+    {
       const results = Scanner.#scanHtml(html, scanSettings);
       results.matches.forEach((match) => matches.add(match));
       previews = previews.concat(results.previews);
@@ -184,15 +188,18 @@ export default class Scanner
     const previews = []; // Each preview follows pattern ["preview before", "match","preview after"]
 
     // Handle "case-sensitive" setting
-    text = isCaseSensitive ? text : text.toLowerCase();
+    const scanText = isCaseSensitive ? text : text.toLowerCase();
 
     // Scan text for each searchTerm
     for(let i = 0; i < searchTerms.length; i++)
     {
-      const searchTerm = isCaseSensitive ? searchTerms[i] : searchTerms[i].toLowerCase();
+      const searchTerm = searchTerms[i];
+      if(!searchTerm) continue; // Handle empty search term
+
+      const scanTerm = isCaseSensitive ? searchTerm : searchTerm.toLowerCase();
 
       // Get index of string match
-      const index = text.indexOf(searchTerm);
+      const index = scanText.indexOf(scanTerm);
 
       ////// If no match, go to next loop iteration
       if(index < 0) continue;
@@ -209,7 +216,7 @@ export default class Scanner
       previewLeft = "..." + previewLeft;
       previewRight += "...";
 
-      previews.push([previewLeft, searchTerm, previewRight]);
+      previews.push([previewLeft, text.substring(index, index + searchTerm.length), previewRight]);
     }
 
     // Return results
@@ -224,19 +231,7 @@ export default class Scanner
     // If "include-html" setting, scan full html string like regular text
     if(includeHtml) return Scanner.#scanText(html, scanSettings);
 
-    const matches = new Set(); // Use set so there are no duplicates
-    const previews = []; // Each preview follows pattern ["preview before", "match","preview after"]
-
-    // Scan html for each searchTerm
-    console.log("TO DO: Scan html for each search term")
-    // handle "include html" and "case sensitive" settings... should be case insensitive by default
-
-    // Return results
-    return {matches: Array.from(matches), previews: previews};
-  }
-
-  static #htmlToText(html)
-  {
-
+    // Remove html tags and scan text only
+    return Scanner.#scanText(HTMLSanitizer.sanitize(html), scanSettings)
   }
 }
