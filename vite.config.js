@@ -1,6 +1,6 @@
 import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
-import path, {resolve} from 'path';
+import {resolve} from 'path';
 import replace from "@rollup/plugin-replace";
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -30,7 +30,7 @@ export default defineConfig({
           plugins: [
             replace({
               'process.env.NODE_ENV': () => isProduction ? JSON.stringify('production') : JSON.stringify('development'),
-              __dirname: (id) => `'${id}'`,
+              __dirname: (id) => isProduction ? `''` : `'${id}'`
             }),
           ]
         }

@@ -1,6 +1,5 @@
 import terser from "@rollup/plugin-terser";
 import replace from "@rollup/plugin-replace";
-import path from "path";
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -12,7 +11,7 @@ export default {
 	},
     plugins: [replace({
 			'process.env.NODE_ENV': () => isProduction ? JSON.stringify('production') : JSON.stringify('development'),
-			__dirname: (id) => `'${id}'`,
+			__dirname: (id) => isProduction ? `''` : `'${id}'`
 		}),
 			isProduction && terser()]
 };
