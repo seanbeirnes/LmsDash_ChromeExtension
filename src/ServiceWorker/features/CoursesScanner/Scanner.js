@@ -8,7 +8,7 @@ import CourseItem from "../../../shared/models/CourseItem.js";
  */
 export default class Scanner
 {
-  static #maxPreviewLength = 20;
+  static #maxPreviewLength = 40;
 
   // Takes in scannable.items, scannable.type
   static scanItems(scannableItems, itemType, scanSettings, courseInfo)
@@ -22,6 +22,8 @@ export default class Scanner
       const result = Scanner.scan(item, itemType, scanSettings, courseInfo)
       if(result) scanResults.push(result);
     })
+
+    Logger.debug(__dirname, "Scan Results: \n" + JSON.stringify(scanResults));
 
     return scanResults;
   }
@@ -57,7 +59,7 @@ export default class Scanner
     if(matches.size === 0) return null; // If no matches, return nothing
 
     return new CourseItemScanResult(
-      type,
+      scanProperties.type,
       scanProperties.id,
       scanProperties.name,
       scanProperties.url,
