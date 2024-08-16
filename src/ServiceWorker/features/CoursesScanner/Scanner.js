@@ -8,6 +8,8 @@ import CourseItem from "../../../shared/models/CourseItem.js";
  */
 export default class Scanner
 {
+  static #maxPreviewLength = 20;
+
   // Takes in scannable.items, scannable.type
   static scanItems(scannableItems, itemType, scanSettings, courseInfo)
   {
@@ -37,24 +39,24 @@ export default class Scanner
 
     ////// Scan
     const matches = new Set ();
-    const previews = [];
+    let previews = [];
 
     scanProperties.text.forEach((text) => {
       const results = Scanner.#scanText(text, scanSettings);
       results.matches.forEach((match) => matches.add(match));
-      previews.push(results.preview);
+      previews = previews.concat(results.previews);
     })
 
     scanProperties.html.forEach((html) => {
       const results = Scanner.#scanHtml(html, scanSettings);
       results.matches.forEach((match) => matches.add(match));
-      previews.push(results.preview);
+      previews = previews.concat(results.previews);
     })
 
     ////// Return results
     if(matches.size === 0) return null; // If no matches, return nothing
 
-    const result = new CourseItemScanResult(
+    return new CourseItemScanResult(
       type,
       scanProperties.id,
       scanProperties.name,
@@ -62,8 +64,6 @@ export default class Scanner
       scanProperties.published,
       Array.from(matches),
       previews);
-
-    return result;
   }
 
   static #getScanProperties(item, type, baseUrl, courseInfo)
@@ -175,29 +175,66 @@ export default class Scanner
   // Scans plaintext
   static #scanText(text, scanSettings)
   {
-    const matches = [];
-    const preview = "";
+    const isCaseSensitive = scanSettings.settings.includes("case-sensitive");
+    const searchTerms = scanSettings.searchTerms;
+
+    const matches = new Set(); // Use set so there are no duplicates
+    const previews = []; // Each preview follows pattern ["preview before", "match","preview after"]
+
+    // Handle "case-sensitive" setting
+    text = isCaseSensitive ? text : text.toLowerCase();
 
     // Scan text for each searchTerm
-    console.log("TO DO: Scan text for each search term", text)
-    // handle "case sensitive" setting... should be case insensitive by default
+    for(let i = 0; i < searchTerms.length; i++)
+    {
+      const searchTerm = isCaseSensitive ? searchTerms[i] : searchTerms[i].toLowerCase();
+
+      // Get index of string match
+      const index = text.indexOf(searchTerm);
+
+      ////// If no match, go to next loop iteration
+      if(index < 0) continue;
+
+      ////// If match, create preview and add match
+      matches.add(searchTerm);
+
+      const maxPreviewLength = Scanner.#maxPreviewLength;
+      const previewLeftStart = index - maxPreviewLength > 0 ? index - maxPreviewLength : 0;
+      const previewRightStart = index + searchTerm.length;
+      const previewRightEnd = previewRightStart + maxPreviewLength > text.length ? text.length : previewRightStart + maxPreviewLength;
+      let previewLeft = text.substring(previewLeftStart, index);
+      let previewRight = text.substring(previewRightStart, previewRightEnd);
+      previewLeft = "..." + previewLeft;
+      previewRight += "...";
+
+      previews.push([previewLeft, searchTerm, previewRight]);
+    }
 
     // Return results
-    return {matches: matches, previews: preview};
+    return {matches: Array.from(matches), previews: previews};
   }
 
-  // Scans html
+  // Scans html as plainText or parses HTML to scan only the text
   static #scanHtml(html, scanSettings)
   {
-    const matches = [];
-    const preview = "";
+    const includeHtml = scanSettings.settings.includes("include-html");
+
+    // If "include-html" setting, scan full html string like regular text
+    if(includeHtml) return Scanner.#scanText(html, scanSettings);
+
+    const matches = new Set(); // Use set so there are no duplicates
+    const previews = []; // Each preview follows pattern ["preview before", "match","preview after"]
 
     // Scan html for each searchTerm
-    console.log("TO DO: Scan html for each search term", html)
+    console.log("TO DO: Scan html for each search term")
     // handle "include html" and "case sensitive" settings... should be case insensitive by default
 
     // Return results
-    return {matches: matches, preview: preview};
+    return {matches: Array.from(matches), previews: previews};
   }
 
+  static #htmlToText(html)
+  {
+
+  }
 }
