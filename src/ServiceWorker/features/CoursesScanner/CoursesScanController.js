@@ -4,6 +4,7 @@ import {CanvasRequest} from "../../../shared/models/CanvasRequest.js";
 import Logger from "../../../shared/utils/Logger.js";
 import CourseScannerController from "./CourseScannerController.js";
 import CourseItem from "../../../shared/models/CourseItem.js";
+import Task from "../../../shared/models/Task.js";
 
 export default class CoursesScanController
 {
@@ -18,6 +19,7 @@ export default class CoursesScanController
     this.currentProgressStep = 0;
     this.running = false;
     this.courseScanResults = [];
+    this.stopped = false;
   }
 
   start()
@@ -32,8 +34,8 @@ export default class CoursesScanController
   stop()
   {
     this.running = false;
+    this.stopped = true;
     this.task.setProgressData(["Stopping scan..."]);
-
   }
 
   async #run()
@@ -64,12 +66,15 @@ export default class CoursesScanController
 
       this.incrementCoursesScanned();
     }
+    this.running = false
 
-    // update task results
-    console.log("TO DO: Add scan results to task as JSON")
+    // Update task with results and stop scan
+    this.task.setStatus(this.stopped ? Task.status.failed : Task.status.complete)
+    this.task.setTimeFinished();
+    this.task.setProgressData(this.stopped ? ["Scan stopped"] : ["Scan Complete!",`Scanned ${this.totalCourses} course(s)`]);
+    this.task.setResultsData(this.courseScanResults);
 
-    // stop
-    console.log("TO DO: Finish scan")
+    Logger.debug(__dirname, "Scan Complete! \n" + this.task.toString());
   }
 
   async collectCourseIds()
