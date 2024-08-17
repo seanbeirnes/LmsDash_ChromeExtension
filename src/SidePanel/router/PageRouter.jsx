@@ -2,38 +2,38 @@ import {createContext, useState} from "react";
 import LoadingPage from "../pages/LoadingPage.jsx";
 import MenuPage from "../pages/MenuPage.jsx";
 import ErrorPage from "../pages/ErrorPage.jsx";
-import {AppStateContext} from "../App.jsx";
-import CourseScannerPage from "../pages/CourseScannerPage.jsx";
+import CoursesScannerPage from "../pages/CoursesScannerPage.jsx";
 import ExternalToolsPage from "../pages/ExternalToolsPage.jsx";
 import AdminToolsPage from "../pages/AdminToolsPage.jsx";
 import AboutPage from "../pages/AboutPage.jsx";
+import Pages from "../models/Pages.js";
 
 export const PageRouterContext = createContext({})
 
 function PageRouter()
 {
-  const [page, setPage] = useState("LoadingPage")
+  const [page, setPage] = useState(Pages.page.LOADING)
 
   function renderPage(page)
   {
     switch(page)
     {
-      case "AboutPage":
+      case Pages.page.ABOUT:
         return <AboutPage />;
 
-      case "AdminToolsPage":
+      case Pages.page.ADMIN_TOOLS:
         return <AdminToolsPage />;
 
-      case "CourseScannerPage":
-        return <CourseScannerPage />;
+      case Pages.page.COURSES_SCANNER:
+        return <CoursesScannerPage />;
 
-      case "ExternalToolsPage":
+      case Pages.page.EXTERNAL_TOOLS:
         return <ExternalToolsPage />;
 
-      case "LoadingPage":
+      case Pages.page.LOADING:
         return <LoadingPage />
 
-      case "MenuPage":
+      case Pages.page.MENU:
         return <MenuPage />
 
       default:

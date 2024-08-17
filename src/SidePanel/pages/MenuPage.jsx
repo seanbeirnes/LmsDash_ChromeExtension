@@ -6,6 +6,7 @@ import {MagnifyingGlassIcon, RocketIcon, BackpackIcon, InfoCircledIcon} from "@r
 import Main from "../components/layout/Main.jsx";
 import {PageRouterContext} from "../router/PageRouter.jsx";
 import MenuButton from "../components/shared/buttons/MenuButton.jsx";
+import Pages from "../models/Pages.js";
 
 function MenuPage()
 {
@@ -44,23 +45,23 @@ function MenuPage()
         <div className="justify-self-center self-start p-4 w-full grid grid-cols-1 grid-flow-row justify-items-center">
           <div className="grid grid-cols-1 grid-flow-row gap-2 justify-items-start w-full max-w-lg">
             <div className="my-2">
-              <h2 className="text-lg font-bold">Welcome {userInfo.fullName}</h2>
+              <h2 className="text-lg font-bold">Welcome, {userInfo.fullName} . . .</h2>
               <p className="text-sm">{saying}</p>
             </div>
-            <MenuButton onClick={() => pageRouterState.setPage("CourseScannerPage")}>
+            <MenuButton onClick={() => pageRouterState.setPage(Pages.page.COURSES_SCANNER)}>
               <MagnifyingGlassIcon/>
               Scan Courses
             </MenuButton>
             {/*Admin only buttons go below this line*/}
-            {appState.isAdmin && <MenuButton onClick={() => pageRouterState.setPage("ExternalToolsPage")}>
+            {appState.isAdmin && <MenuButton onClick={() => pageRouterState.setPage(Pages.page.EXTERNAL_TOOLS)}>
               <RocketIcon/>Manage LTIs
             </MenuButton>}
-            {appState.isAdmin && <MenuButton onClick={() => pageRouterState.setPage("AdminToolsPage")}>
+            {appState.isAdmin && <MenuButton onClick={() => pageRouterState.setPage(Pages.page.ADMIN_TOOLS)}>
               <BackpackIcon/>Admin Tools
             </MenuButton>}
             {/*Admin only buttons go above this line*/}
 
-            <MenuButton onClick={() => pageRouterState.setPage("AboutPage")}>
+            <MenuButton onClick={() => pageRouterState.setPage(Pages.page.ABOUT)}>
               <InfoCircledIcon/>
               About
             </MenuButton>

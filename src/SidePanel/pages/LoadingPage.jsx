@@ -5,6 +5,7 @@ import {useContext, useEffect, useState} from "react";
 import Footer from "../components/layout/Footer.jsx";
 import {PageRouterContext} from "../router/PageRouter.jsx";
 import Main from "../components/layout/Main.jsx";
+import Pages from "../models/Pages.js";
 
 function LoadingPage(props)
 {
@@ -24,7 +25,7 @@ function LoadingPage(props)
 
   useEffect(() =>
   {
-    if(!isLoading()) pageRouterState.setPage("MenuPage");
+    if(!isLoading()) pageRouterState.setPage(Pages.page.MENU);
   }, [appState, userInfo]);
 
 

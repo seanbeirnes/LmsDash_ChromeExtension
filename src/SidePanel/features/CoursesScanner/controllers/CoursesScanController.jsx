@@ -11,7 +11,7 @@ import {CoursesScanSettings} from "../../../../shared/models/CoursesScanSettings
 import {useMutation} from "@tanstack/react-query";
 import {UserInfoContext} from "../../../App.jsx";
 
-function CourseScanController()
+function CoursesScanController()
 {
   const userInfo = useContext(UserInfoContext);
 
@@ -87,4 +87,4 @@ function CourseScanController()
   }
 }
 
-export default CourseScanController;
+export default CoursesScanController;

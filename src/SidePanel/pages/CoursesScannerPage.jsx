@@ -5,24 +5,25 @@ import {ArrowLeftIcon} from "@radix-ui/react-icons";
 import IconButton from "../components/shared/buttons/IconButton.jsx";
 import {useContext} from "react";
 import {PageRouterContext} from "../router/PageRouter.jsx";
-import CourseScanController from "../features/CoursesScanner/controllers/CourseScanController.jsx";
+import CoursesScanController from "../features/CoursesScanner/controllers/CoursesScanController.jsx";
+import Pages from "../models/Pages.js";
 
-function CourseScannerPage()
+function CoursesScannerPage()
 {
   const pageRouterState = useContext(PageRouterContext);
   return (
     <>
       <Header>
-        <IconButton animated={true} onClick={() => pageRouterState.setPage("MenuPage")}>
+        <IconButton animated={true} onClick={() => pageRouterState.setPage(Pages.page.MENU)}>
           <ArrowLeftIcon className="w-8 h-8" />
         </IconButton>
       </Header>
       <Main>
-          <CourseScanController />
+          <CoursesScanController />
       </Main>
       <Footer></Footer>
     </>
   )
 }
 
-export default CourseScannerPage;
+export default CoursesScannerPage;

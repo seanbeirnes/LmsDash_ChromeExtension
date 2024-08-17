@@ -8,6 +8,7 @@ import Footer from "../components/layout/Footer.jsx";
 import PrimaryCard from "../components/shared/cards/PrimaryCard.jsx";
 import PrimaryCardLayout from "../components/shared/cards/PrimaryCardLayout.jsx";
 import {AppStateContext, UserInfoContext} from "../App.jsx";
+import Pages from "../models/Pages.js";
 
 function AboutPage()
 {
@@ -18,7 +19,7 @@ function AboutPage()
   return (
     <>
       <Header>
-        <IconButton animated={true} onClick={() => pageRouterState.setPage("MenuPage")}>
+        <IconButton animated={true} onClick={() => pageRouterState.setPage(Pages.page.MENU)}>
           <ArrowLeftIcon className="w-8 h-8"/>
         </IconButton>
       </Header>

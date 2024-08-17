@@ -5,6 +5,7 @@ import {useContext} from "react";
 import {PageRouterContext} from "../router/PageRouter.jsx";
 import IconButton from "../components/shared/buttons/IconButton.jsx";
 import {ArrowLeftIcon} from "@radix-ui/react-icons";
+import Pages from "../models/Pages.js";
 
 function AdminToolsPage()
 {
@@ -13,7 +14,7 @@ function AdminToolsPage()
   return (
     <>
       <Header>
-        <IconButton animated={true} onClick={() => pageRouterState.setPage("MenuPage")}>
+        <IconButton animated={true} onClick={() => pageRouterState.setPage(Pages.page.MENU)}>
           <ArrowLeftIcon className="w-8 h-8" />
         </IconButton>
       </Header>
