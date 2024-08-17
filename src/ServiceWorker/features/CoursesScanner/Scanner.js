@@ -105,7 +105,7 @@ export default class Scanner
         properties.url = item["html_url"];
         properties.published = item["published"];
         properties.text = [item["name"]];
-        properties.html = [item["description"]];
+        properties.html = [item["description"] === null ? "" : item["description"]];
         break;
 
       case Scannable.Type.COURSE_NAV_LINK:
