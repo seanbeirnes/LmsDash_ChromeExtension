@@ -53,16 +53,7 @@ function CoursesScanController()
   //       "Id",
   //       0)
   //   )
-  //
-  //   const taskProgress = await chrome.runtime.sendMessage(
-  //     new Message(Message.Target.SERVICE_WORKER,
-  //       Message.Sender.SIDE_PANEL,
-  //       Message.Type.Task.Request.PROGRESS,
-  //       "Progress",
-  //       0)
-  //   )
-  //
-  //   console.log(taskById, taskProgress);
+  //   console.log(taskById);
   // }
   //
   // testMessages();
@@ -123,7 +114,7 @@ function CoursesScanController()
   if(runningTaskId !== null)
   {
     return (
-      <ProgressView stopScanCallback={stopScanCallback} />
+      <ProgressView taskId={runningTaskId} stopScanCallback={stopScanCallback} />
     )
   }
 
