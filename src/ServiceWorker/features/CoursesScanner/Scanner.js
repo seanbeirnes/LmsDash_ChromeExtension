@@ -213,8 +213,8 @@ export default class Scanner
       const previewRightEnd = previewRightStart + maxPreviewLength > text.length ? text.length : previewRightStart + maxPreviewLength;
       let previewLeft = text.substring(previewLeftStart, index);
       let previewRight = text.substring(previewRightStart, previewRightEnd);
-      previewLeft = "..." + previewLeft;
-      previewRight += "...";
+      if(previewLeftStart > 0) previewLeft = "..." + previewLeft;
+      if(previewRightStart < text.length) previewRight += "...";
 
       previews.push([previewLeft, text.substring(index, index + searchTerm.length), previewRight]);
     }
