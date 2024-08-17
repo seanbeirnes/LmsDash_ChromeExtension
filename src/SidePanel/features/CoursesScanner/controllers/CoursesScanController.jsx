@@ -102,6 +102,13 @@ function CoursesScanController()
     stopTask.mutate(runningTaskId);
   }
 
+  function viewResultsCallback()
+  {
+    Logger.debug(__dirname, "Viewing results")
+    setCompletedTaskId(runningTaskId);
+    setRunningTaskId(null);
+  }
+
   // If waiting on Service Worker message
   if(isPending)
   {
@@ -114,7 +121,7 @@ function CoursesScanController()
   if(runningTaskId !== null)
   {
     return (
-      <ProgressView taskId={runningTaskId} stopScanCallback={stopScanCallback} />
+      <ProgressView taskId={runningTaskId} viewResultsCallback={viewResultsCallback} stopScanCallback={stopScanCallback} />
     )
   }
 
