@@ -154,8 +154,6 @@ export default class CoursesScanController
   #initProgress()
   {
     let stepsPerCourse = this.scanSettings.scannedItems.length; // Total types of items to scan
-    // Module links require fetching the module and then the course items
-    if(this.scanSettings.scannedItems.includes(CourseItem.Type.MODULE_LINK)) stepsPerCourse++;
     // Account for an extra step to increment at the start of each course scan
     stepsPerCourse++
     this.totalProgressSteps = stepsPerCourse * this.scanSettings.courseIds.length;

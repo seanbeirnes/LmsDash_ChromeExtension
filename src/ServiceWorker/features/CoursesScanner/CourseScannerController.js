@@ -70,12 +70,6 @@ export default class CourseScannerController
 
           // Increment progress once for all types except MODULE_ITEM
           if(scannable.type !== Scannable.Type.MODULE_ITEM) this.coursesScanController.incrementProgress();
-
-          // Only increment progress for last MODULE_ITEM
-          if(scannable.type === Scannable.Type.MODULE_ITEM && 0 > scannables.findIndex(
-            (item) => item.type === Scannable.Type.MODULE_ITEM)
-          ) this.coursesScanController.incrementProgress();
-
         } else
         {
           scannable.incrementPage();
