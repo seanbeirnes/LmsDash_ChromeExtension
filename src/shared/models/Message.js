@@ -30,9 +30,10 @@ export class Message
                     SEARCH_TERMS: 210
                 },
                 NEW: 300,
-                PROGRESS: 301,
-                DATA: 302,
-                BY_TYPE: 303
+                STOP: 301,
+                PROGRESS: 302,
+                BY_ID: 303,
+                BY_TYPE: 305
             },
             Response: {
                 App: {
@@ -44,9 +45,10 @@ export class Message
                     SEARCH_TERMS: 2101
                 },
                 NEW: 3000,
-                PROGRESS: 3001,
-                DATA: 3002,
-                BY_TYPE: 3003
+                STOP: 3001,
+                PROGRESS: 3002,
+                BY_ID: 3003,
+                BY_TYPE: 3004
             }
         }
     }

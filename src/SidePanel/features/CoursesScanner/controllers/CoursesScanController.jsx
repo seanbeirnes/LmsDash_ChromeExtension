@@ -22,6 +22,40 @@ function CoursesScanController()
   const [scannedItems, setScannedItems] = useState([]);
   const [settings, setSettings] = useState([]);
 
+
+  ////// FOR TESTING: Test Messages for getting Tasks
+  async function testMessages()
+  {
+    const tasksByType = await chrome.runtime.sendMessage(
+      new Message(Message.Target.SERVICE_WORKER,
+        Message.Sender.SIDE_PANEL,
+        Message.Type.Task.Request.BY_TYPE,
+        "Type",
+      Task.type.coursesScan)
+    )
+
+    const taskById = await chrome.runtime.sendMessage(
+      new Message(Message.Target.SERVICE_WORKER,
+        Message.Sender.SIDE_PANEL,
+        Message.Type.Task.Request.BY_ID,
+        "Id",
+        0)
+    )
+
+    const taskProgress = await chrome.runtime.sendMessage(
+      new Message(Message.Target.SERVICE_WORKER,
+        Message.Sender.SIDE_PANEL,
+        Message.Type.Task.Request.PROGRESS,
+        "Progress",
+        0)
+    )
+
+    console.log(tasksByType, taskById, taskProgress);
+  }
+
+  testMessages();
+  ////// END FOR TESTING
+
   const createTask = useMutation({
   mutationFn: async (scanSettings) => {
     const msgResponse = await chrome.runtime.sendMessage(

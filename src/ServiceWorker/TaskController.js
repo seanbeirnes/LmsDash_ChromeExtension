@@ -123,4 +123,19 @@ export default class TaskController
 
     return null;
   }
+
+  stopTask(taskId)
+  {
+    if(taskId === null) return false;
+
+    const task = this.getTaskById(taskId);
+    if(!task)
+    {
+      console.warn("No task for received task id")
+      return false;
+    }
+
+    task.controller.stop();
+    return true;
+  }
 }
