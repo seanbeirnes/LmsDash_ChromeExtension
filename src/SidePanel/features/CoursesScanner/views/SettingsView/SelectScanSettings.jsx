@@ -1,10 +1,10 @@
 import * as Switch from "@radix-ui/react-switch";
-import PrimaryCard from "../../../components/shared/cards/PrimaryCard.jsx";
-import ButtonPrimary from "../../../components/shared/buttons/ButtonPrimary.jsx";
-import {AppStateContext} from "../../../App.jsx";
+import PrimaryCard from "../../../../components/shared/cards/PrimaryCard.jsx";
+import ButtonPrimary from "../../../../components/shared/buttons/ButtonPrimary.jsx";
+import {AppStateContext} from "../../../../App.jsx";
 import {useContext} from "react";
 
-function CourseScanSelectSettings({settings, setSettings, runScanCallback})
+function SelectScanSettings({settings, setSettings, runScanCallback})
 {
   const appState = useContext(AppStateContext);
 
@@ -73,4 +73,4 @@ function CourseScanSelectSettings({settings, setSettings, runScanCallback})
   )
 }
 
-export default CourseScanSelectSettings;
+export default SelectScanSettings;

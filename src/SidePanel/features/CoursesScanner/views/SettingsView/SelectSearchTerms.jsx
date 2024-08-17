@@ -1,8 +1,8 @@
-import ButtonPrimary from "../../../components/shared/buttons/ButtonPrimary.jsx";
-import PrimaryCard from "../../../components/shared/cards/PrimaryCard.jsx";
+import ButtonPrimary from "../../../../components/shared/buttons/ButtonPrimary.jsx";
+import PrimaryCard from "../../../../components/shared/cards/PrimaryCard.jsx";
 import SearchTermInput from "./SearchTermInput.jsx";
 
-function CourseScanSelectSearchTerms({searchTerms, setSearchTerms})
+function SelectSearchTerms({searchTerms, setSearchTerms})
 {
   function canAddTerm()
   {
@@ -57,4 +57,4 @@ function CourseScanSelectSearchTerms({searchTerms, setSearchTerms})
   )
 }
 
-export default CourseScanSelectSearchTerms
+export default SelectSearchTerms

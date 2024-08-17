@@ -1,16 +1,16 @@
-import PrimaryCardLayout from "../../../components/shared/cards/PrimaryCardLayout.jsx";
-import CourseScanSelectCourse from "./CourseScanSelectCourse.jsx";
-import CourseScanSelectSearchTerms from "./CourseScanSelectSearchTerms.jsx";
-import CourseScanSelectItems from "./CourseScanSelectItems.jsx";
-import CourseScanSelectSettings from "./CourseScanSelectSettings.jsx";
-import AlertModal from "../../../components/modals/AlertModal.jsx";
+import PrimaryCardLayout from "../../../../components/shared/cards/PrimaryCardLayout.jsx";
+import SelectScannedCourses from "./SelectScannedCourses.jsx";
+import SelectSearchTerms from "./SelectSearchTerms.jsx";
+import SelectScannedItems from "./SelectScannedItems.jsx";
+import SelectScanSettings from "./SelectScanSettings.jsx";
+import AlertModal from "../../../../components/modals/AlertModal.jsx";
 import {useState} from "react";
 
 const SETTINGS_VIEW_MODAL_TITLES = {
   startScanError: "Cannot Start Scan",
 }
 
-function ScanSettingsView({
+function SettingsView({
                             scanType,
                             setScanType,
                             courseIds,
@@ -62,10 +62,10 @@ function ScanSettingsView({
   return (
     <>
       <PrimaryCardLayout>
-        <CourseScanSelectCourse scanType={scanType} setScanType={setScanType} setCourseIds={setCourseIds}/>
-        <CourseScanSelectSearchTerms searchTerms={searchTerms} setSearchTerms={setSearchTerms}/>
-        <CourseScanSelectItems scannedItems={scannedItems} setScannedItems={setScannedItems} scanType={scanType}/>
-        <CourseScanSelectSettings settings={settings} setSettings={setSettings} runScanCallback={handleRunScan}/>
+        <SelectScannedCourses scanType={scanType} setScanType={setScanType} setCourseIds={setCourseIds}/>
+        <SelectSearchTerms searchTerms={searchTerms} setSearchTerms={setSearchTerms}/>
+        <SelectScannedItems scannedItems={scannedItems} setScannedItems={setScannedItems} scanType={scanType}/>
+        <SelectScanSettings settings={settings} setSettings={setSettings} runScanCallback={handleRunScan}/>
       </PrimaryCardLayout>
       <AlertModal open={settingsViewModalOptions.text.length > 0}
                   title={settingsViewModalOptions.title}
@@ -81,4 +81,4 @@ function ScanSettingsView({
   )
 }
 
-export default ScanSettingsView;
+export default SettingsView;

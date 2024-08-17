@@ -1,5 +1,5 @@
 import {TrashIcon} from "@radix-ui/react-icons";
-import IconButton from "../../../components/shared/buttons/IconButton.jsx";
+import IconButton from "../../../../components/shared/buttons/IconButton.jsx";
 
 function SearchTermInput({index, value, updateSearchTerm, removeSearchTerm, placeholder = "Enter a search term", deleteDisabled = false}) {
   function handleDeleteClick()

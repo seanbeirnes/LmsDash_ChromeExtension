@@ -5,7 +5,7 @@ import {ArrowLeftIcon} from "@radix-ui/react-icons";
 import IconButton from "../components/shared/buttons/IconButton.jsx";
 import {useContext} from "react";
 import {PageRouterContext} from "../router/PageRouter.jsx";
-import CourseScanController from "../features/CoursesScanner/components/CourseScanController.jsx";
+import CourseScanController from "../features/CoursesScanner/controllers/CourseScanController.jsx";
 
 function CourseScannerPage()
 {

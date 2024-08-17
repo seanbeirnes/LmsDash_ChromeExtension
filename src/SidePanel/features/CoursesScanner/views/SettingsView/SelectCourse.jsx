@@ -1,7 +1,7 @@
-import {Message} from "../../../../shared/models/Message.js";
+import {Message} from "../../../../../shared/models/Message.js";
 import {useQuery} from "@tanstack/react-query";
-import {CanvasRequest} from "../../../../shared/models/CanvasRequest.js";
-import ProgressSpinner from "../../../components/shared/progress/ProgressSpinner.jsx";
+import {CanvasRequest} from "../../../../../shared/models/CanvasRequest.js";
+import ProgressSpinner from "../../../../components/shared/progress/ProgressSpinner.jsx";
 import {useEffect} from "react";
 
 function SelectCourse({courseId, setCourseIds})

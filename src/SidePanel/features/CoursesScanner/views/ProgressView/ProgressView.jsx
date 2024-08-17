@@ -1,10 +1,10 @@
-import PrimaryCardLayout from "../../../components/shared/cards/PrimaryCardLayout.jsx";
-import PrimaryCard from "../../../components/shared/cards/PrimaryCard.jsx";
+import PrimaryCardLayout from "../../../../components/shared/cards/PrimaryCardLayout.jsx";
+import PrimaryCard from "../../../../components/shared/cards/PrimaryCard.jsx";
 import * as Progress from '@radix-ui/react-progress';
-import ButtonPrimaryDanger from "../../../components/shared/buttons/ButtonPrimaryDanger.jsx";
+import ButtonPrimaryDanger from "../../../../components/shared/buttons/ButtonPrimaryDanger.jsx";
 import {useEffect, useState} from "react";
 
-function ScanProgressView({stopScanCallback})
+function ProgressView({stopScanCallback})
 {
   const [progress, setProgress] = useState(50)
 
@@ -36,4 +36,4 @@ function ScanProgressView({stopScanCallback})
   )
 }
 
-export default ScanProgressView;
+export default ProgressView;

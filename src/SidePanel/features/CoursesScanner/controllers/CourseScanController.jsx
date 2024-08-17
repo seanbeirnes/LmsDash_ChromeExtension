@@ -1,10 +1,10 @@
 import {useContext, useState} from "react";
 import PrimaryCardLayout from "../../../components/shared/cards/PrimaryCardLayout.jsx";
 import GenericErrorMessage from "../../../components/shared/error/GenericErrorMessage.jsx";
-import ScanSettingsView from "./ScanSettingsView.jsx";
+import SettingsView from "../views/SettingsView/SettingsView.jsx";
 import {VIEW_STATE} from "../enums/enums.js";
 import Logger from "../../../../shared/utils/Logger.js";
-import ScanProgressView from "./ScanProgressView.jsx";
+import ProgressView from "../views/ProgressView/ProgressView.jsx";
 import {Message} from "../../../../shared/models/Message.js";
 import Task from "../../../../shared/models/Task.js";
 import {CoursesScanSettings} from "../../../../shared/models/CoursesScanSettings.js";
@@ -55,7 +55,7 @@ function CourseScanController()
   if(viewState === VIEW_STATE.progress)
   {
     return (
-      <ScanProgressView stopScanCallback={stopScanCallback} />
+      <ProgressView stopScanCallback={stopScanCallback} />
     )
   } else if(viewState === VIEW_STATE.results)
   {
@@ -67,17 +67,17 @@ function CourseScanController()
   } else if(viewState === VIEW_STATE.settings)
   {
     return (
-      <ScanSettingsView scanType={scanType}
-                        setScanType={setScanType}
-                        courseIds={courseIds}
-                        setCourseIds={setCourseIds}
-                        searchTerms={searchTerms}
-                        setSearchTerms={setSearchTerms}
-                        scannedItems={scannedItems}
-                        setScannedItems={setScannedItems}
-                        settings={settings}
-                        setSettings={setSettings}
-                        runScanCallback={runScanCallback} />
+      <SettingsView scanType={scanType}
+                    setScanType={setScanType}
+                    courseIds={courseIds}
+                    setCourseIds={setCourseIds}
+                    searchTerms={searchTerms}
+                    setSearchTerms={setSearchTerms}
+                    scannedItems={scannedItems}
+                    setScannedItems={setScannedItems}
+                    settings={settings}
+                    setSettings={setSettings}
+                    runScanCallback={runScanCallback} />
     )
   } else
   {

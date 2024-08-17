@@ -1,11 +1,11 @@
-import PrimaryCard from "../../../components/shared/cards/PrimaryCard.jsx";
+import PrimaryCard from "../../../../components/shared/cards/PrimaryCard.jsx";
 import ScanModeDropdown from "./ScanModeDropdown.jsx";
 import {useContext} from "react";
-import {AppStateContext} from "../../../App.jsx";
+import {AppStateContext} from "../../../../App.jsx";
 import SelectCourse from "./SelectCourse.jsx";
 import SelectTerm from "./SelectTerm.jsx";
 
-function CourseScanSelectCourse({scanType, setScanType, setCourseIds}) {
+function SelectScannedCourses({scanType, setScanType, setCourseIds}) {
   const appState = useContext(AppStateContext);
 
   function updateScanType(type)
@@ -34,4 +34,4 @@ function CourseScanSelectCourse({scanType, setScanType, setCourseIds}) {
   )
 }
 
-export default CourseScanSelectCourse;
+export default SelectScannedCourses;

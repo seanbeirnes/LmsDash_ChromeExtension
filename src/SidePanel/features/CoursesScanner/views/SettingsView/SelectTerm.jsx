@@ -1,8 +1,8 @@
 import Select, {components} from "react-select"
 import {useCallback, useState} from "react";
 import {debounce} from "lodash";
-import useTermsSearch from "../hooks/useTermsSearch.js";
-import ProgressSpinner from "../../../components/shared/progress/ProgressSpinner.jsx";
+import useTermsSearch from "../../hooks/useTermsSearch.js";
+import ProgressSpinner from "../../../../components/shared/progress/ProgressSpinner.jsx";
 import {ChevronDownIcon} from "@radix-ui/react-icons";
 
 const LoadingIndicator = () =>

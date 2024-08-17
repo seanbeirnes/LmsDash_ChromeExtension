@@ -1,12 +1,12 @@
-import PrimaryCard from "../../../components/shared/cards/PrimaryCard.jsx";
+import PrimaryCard from "../../../../components/shared/cards/PrimaryCard.jsx";
 import * as Switch from '@radix-ui/react-switch';
-import useScannedItemsPermissions from "../hooks/useScannedItemsPermissions.js";
+import useScannedItemsPermissions from "../../hooks/useScannedItemsPermissions.js";
 import {useContext, useEffect, useMemo} from "react";
-import {AppStateContext} from "../../../App.jsx";
-import ProgressSpinner from "../../../components/shared/progress/ProgressSpinner.jsx";
-import CourseItem from "../../../../shared/models/CourseItem.js";
+import {AppStateContext} from "../../../../App.jsx";
+import ProgressSpinner from "../../../../components/shared/progress/ProgressSpinner.jsx";
+import CourseItem from "../../../../../shared/models/CourseItem.js";
 
-function CourseScanSelectItems({scannedItems, setScannedItems, scanType})
+function SelectScannedItems({scannedItems, setScannedItems, scanType})
 {
   const appState = useContext(AppStateContext);
   const {isPending, isError, data, error} = useScannedItemsPermissions(appState.activeTabCourseId)
@@ -203,4 +203,4 @@ function CourseScanSelectItems({scannedItems, setScannedItems, scanType})
   )
 }
 
-export default CourseScanSelectItems;
+export default SelectScannedItems;
