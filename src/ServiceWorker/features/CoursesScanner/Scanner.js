@@ -95,7 +95,7 @@ export default class Scanner
         properties.url = item["html_url"];
         properties.published = item["published"];
         properties.text = [item["title"]];
-        properties.html = [item["message"]];
+        properties.html = [item["message"] === null ? "" : item["message"]];
         break;
 
       case Scannable.Type.ASSIGNMENT:
@@ -125,7 +125,7 @@ export default class Scanner
         properties.url = item["html_url"];
         properties.published = item["published"];
         properties.text = [item["title"]];
-        properties.html = [item["message"]];
+        properties.html = [item["message"] === null ? "" : item["message"]];
         break;
 
       case Scannable.Type.FILE:
@@ -156,7 +156,7 @@ export default class Scanner
         properties.url = item["html_url"];
         properties.published = item["published"];
         properties.text = [item["title"]];
-        properties.html = [item["body"]];
+        properties.html = [item["body"] === null ? "" : item["body"]];
         break;
 
       case Scannable.Type.SYLLABUS:
