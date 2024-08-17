@@ -51,7 +51,7 @@ export default class CoursesScanController
     // for each course id, while running is true, scan coruse with that id
     for(let i = 0; i < this.scanSettings.courseIds.length; i++)
     {
-      if(!this.running) return; // Check if scan was stopped
+      if(!this.running) break; // Check if scan was stopped
 
       const courseScanController = new CourseScannerController(
         this.scanSettings.courseIds[i],
