@@ -32,7 +32,7 @@ function ProgressView({taskId, viewResultsCallback, stopScanCallback})
   {
     return (
       <PrimaryCardLayout>
-        <PrimaryCard fixedWidth={false} className="w-full">
+        <PrimaryCard fixedWidth={false} minHeight={false} className="w-full min-h-52">
           <div className="self-stretch grid grid-cols-1 grid-flow-row justify-start content-start gap-2">
             <h2
               className="text-gray-700 text-xl text-center font-bold">{(data && data.progressData && data.progressData.length > 0) ? data.progressData[0] : "Fetching data..."}</h2>
@@ -52,7 +52,7 @@ function ProgressView({taskId, viewResultsCallback, stopScanCallback})
 
   return (
     <PrimaryCardLayout>
-      <PrimaryCard fixedWidth={false} className="w-full">
+      <PrimaryCard fixedWidth={false} minHeight={false} className="w-full min-h-52">
         <div className="grid grid-cols-1 grid-flow-row start justify-start content-start gap-2">
           <h2
             className="text-gray-700 text-xl text-center font-bold">{data.progressData.length > 0 ? data.progressData[0] : " "}</h2>
