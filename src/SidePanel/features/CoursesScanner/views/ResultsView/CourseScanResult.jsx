@@ -1,10 +1,16 @@
 import PrimaryCard from "../../../../components/shared/cards/PrimaryCard.jsx";
 import * as Collapsible from "@radix-ui/react-collapsible";
 import {
-  CaretSortIcon
+  CaretSortIcon, FileIcon, FileTextIcon
 } from "@radix-ui/react-icons";
 import {useState} from "react";
 import CaretUnsortIcon from "../../../../components/shared/icons/CaretUnsortIcon.jsx";
+import MegaphoneSimpleIcon from "../../../../components/shared/icons/MegaphoneSimpleIcon.jsx";
+import CourseItemScanResult from "./CourseItemScanResult.jsx";
+import PencilLineIcon from "../../../../components/shared/icons/PencilLineIcon.jsx";
+import LinkSimpleIcon from "../../../../components/shared/icons/LinkSimpleIcon.jsx";
+import ChatCircleTextIcon from "../../../../components/shared/icons/ChatCircleTextIcon.jsx";
+import ClipboardTextIcon from "../../../../components/shared/icons/ClipboardTextIcon.jsx";
 
 function CourseScanResult({courseScanResults, defaultOpen = false})
 {
@@ -30,15 +36,93 @@ function CourseScanResult({courseScanResults, defaultOpen = false})
         <div
           className="w-full sm:w-fit flex flex-col sm:flex-row flex-wrap justify-start items-center content-center gap-2">
           <p
-            className="w-full sm:w-fit px-2 py-1 text-sm text-green-600 bg-green-200 font-bold text-center rounded-full">Published</p>
-          <p className="w-full sm:w-fit px-2 py-1 text-sm text-gray-400 bg-gray-100 text-center rounded-full"><span
-            className="inline-block font-bold">Course Code: </span>AAA-1003-POL</p>
-          <p className="w-full sm:w-fit px-2 py-1 text-sm text-gray-400 bg-gray-100 text-center rounded-full"><span
-            className="inline-block font-bold">SIS ID: </span>1234567890</p>
+            className="w-full sm:w-fit px-4 py-1 text-sm text-green-600 bg-green-200 font-bold text-center rounded-full">Published</p>
+          <p className="w-full sm:w-fit px-4 py-1 text-sm text-gray-400 bg-gray-100 text-center rounded-full"><span
+            className="inline-block font-bold">Course Code:</span> AAA-1003-POL</p>
+          <p className="w-full sm:w-fit px-4 py-1 text-sm text-gray-400 bg-gray-100 text-center rounded-full"><span
+            className="inline-block font-bold">SIS ID: </span> 1234567890</p>
         </div>
         <Collapsible.Content>
-          <p>Assignments</p>
-          <p>Discussions</p>
+          <hr className="my-2 border-gray-400"/>
+          <section className="w-full">
+            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
+              <MegaphoneSimpleIcon
+                className="w-6 h-6 text-gray-400"/>Announcements</h4>
+            <ul className="ml-2">
+              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
+                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
+            </ul>
+          </section>
+          <hr className="my-2 border-gray-400"/>
+          <section className="w-full">
+            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
+              <PencilLineIcon
+                className="w-6 h-6 text-gray-400"/>Assignments</h4>
+            <ul className="ml-2">
+              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
+                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
+            </ul>
+          </section>
+          <hr className="my-2 border-gray-400"/>
+          <section className="w-full">
+            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
+              <LinkSimpleIcon
+                className="w-6 h-6 text-gray-400"/>Course Navigation Links</h4>
+            <ul className="ml-2">
+              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
+                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
+            </ul>
+          </section>
+          <hr className="my-2 border-gray-400"/>
+          <section className="w-full">
+            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
+              <ChatCircleTextIcon
+                className="w-6 h-6 text-gray-400"/>Discussions</h4>
+            <ul className="ml-2">
+              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
+                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
+            </ul>
+          </section>
+          <hr className="my-2 border-gray-400"/>
+          <section className="w-full">
+            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
+              <FileIcon
+                className="w-6 h-6 text-gray-400"/>File Names</h4>
+            <ul className="ml-2">
+              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
+                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
+            </ul>
+          </section>
+          <hr className="my-2 border-gray-400"/>
+          <section className="w-full">
+            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
+              <LinkSimpleIcon
+                className="w-6 h-6 text-gray-400"/>Modules Links</h4>
+            <ul className="ml-2">
+              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
+                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
+            </ul>
+          </section>
+          <hr className="my-2 border-gray-400"/>
+          <section className="w-full">
+            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
+              <FileTextIcon
+                className="w-6 h-6 text-gray-400"/>Pages</h4>
+            <ul className="ml-2">
+              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
+                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
+            </ul>
+          </section>
+          <hr className="my-2 border-gray-400"/>
+          <section className="w-full">
+            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
+              <ClipboardTextIcon
+                className="w-6 h-6 text-gray-400"/>Syllabus</h4>
+            <ul className="ml-2">
+              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
+                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
+            </ul>
+          </section>
         </Collapsible.Content>
       </Collapsible.Root>
     </PrimaryCard>

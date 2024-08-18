@@ -4,13 +4,13 @@
 
 export default class CourseItemScanResult
 {
-  constructor(type, id, name, url, published, matches = [], preview = [], errors = [])
+  constructor(type, id, name, url, published, matches = [], previews = [], errors = [])
   {
     this.type = type;
     this.id = id;
     this.name = name;
     this.matches = matches;
-    this.preview = preview;
+    this.previews = previews;
     this.url = url;
     this.published = published;
     this.errors = errors;
