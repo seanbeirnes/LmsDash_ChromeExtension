@@ -12,6 +12,7 @@ import ProgressSpinner from "../../../components/shared/progress/ProgressSpinner
 import useTasksByType from "../../../hooks/useTasksByType.js";
 import MenuButton from "../../../components/shared/buttons/MenuButton.jsx";
 import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
+import ResultsView from "../views/ResultsView/ResultsView.jsx";
 
 function CoursesScanController()
 {
@@ -111,6 +112,12 @@ function CoursesScanController()
     setRunningTaskId(null);
   }
 
+  function scanAgainCallback()
+  {
+    Logger.debug(__dirname, "Scan again clicked");
+    setCompletedTaskId(null);
+  }
+
   // If waiting on Service Worker message
   if(isPending)
   {
@@ -131,9 +138,7 @@ function CoursesScanController()
   if(completedTaskId !== null)
   {
     return (
-      <PrimaryCardLayout>
-        <p>Results view...</p>
-      </PrimaryCardLayout>
+      <ResultsView taskId={completedTaskId} scanAgainCallback={scanAgainCallback} />
     )
   }
 
