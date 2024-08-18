@@ -11,15 +11,21 @@ import GenericErrorMessage from "../../../../components/shared/error/GenericErro
 function ProgressView({taskId, viewResultsCallback, stopScanCallback})
 {
   const [scanError, setScanError] = useState(false);
+  const [stoppingScan, setStoppingScan] = useState(false);
   const {isProgress, isError, data, error} = useTaskProgress(taskId, 500);
 
   useEffect(() =>
   {
     if(!data || !data.status) return;
     if(data.status === Task.status.complete) viewResultsCallback();
-    if(data.status === Task.status.failed) setScanError(true);
+    if(data.status === Task.status.failed && !stoppingScan) setScanError(true);
   }, [data, viewResultsCallback]);
 
+  function handleStopScanClick()
+  {
+    setStoppingScan(true);
+    stopScanCallback();
+  }
 
   if(scanError)
   {
@@ -68,7 +74,7 @@ function ProgressView({taskId, viewResultsCallback, stopScanCallback})
             className="text-gray-700 text-base text-left">{(data.progressData && data.progressData.length > 1) ? data.progressData[1] : " "}</p>
         </div>
         <div className="justify-self-center self-end w-full max-w-sm">
-          <ButtonPrimaryDanger onClick={stopScanCallback} disabled={data && data.status !== Task.status.running}>Stop
+          <ButtonPrimaryDanger onClick={handleStopScanClick} disabled={data && data.status !== Task.status.running}>Stop
             Scan</ButtonPrimaryDanger>
         </div>
       </PrimaryCard>
