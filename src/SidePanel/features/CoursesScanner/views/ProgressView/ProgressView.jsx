@@ -5,11 +5,28 @@ import ButtonPrimaryDanger from "../../../../components/shared/buttons/ButtonPri
 import useTaskProgress from "../../../../hooks/useTaskProgress.js";
 import ProgressSpinner from "../../../../components/shared/progress/ProgressSpinner.jsx";
 import Task from "../../../../../shared/models/Task.js";
-import ButtonPrimary from "../../../../components/shared/buttons/ButtonPrimary.jsx";
+import {useEffect, useState} from "react";
+import GenericErrorMessage from "../../../../components/shared/error/GenericErrorMessage.jsx";
 
 function ProgressView({taskId, viewResultsCallback, stopScanCallback})
 {
+  const [scanError, setScanError] = useState(false);
   const {isProgress, isError, data, error} = useTaskProgress(taskId, 500);
+
+  useEffect(() =>
+  {
+    if(!data || !data.status) return;
+    if(data.status === Task.status.complete) viewResultsCallback();
+    if(data.status === Task.status.failed) setScanError(true);
+  }, [data, viewResultsCallback]);
+
+
+  if(scanError)
+  {
+    return (
+      <GenericErrorMessage/>
+    )
+  }
 
   if(isProgress || !data || !data.progressData || data.progressData.length === 0 || data.progressData[0] === "Gathering courses...")
   {
@@ -51,10 +68,8 @@ function ProgressView({taskId, viewResultsCallback, stopScanCallback})
             className="text-gray-700 text-base text-left">{(data.progressData && data.progressData.length > 1) ? data.progressData[1] : " "}</p>
         </div>
         <div className="justify-self-center self-end w-full max-w-sm">
-          {(data.status === Task.status.running) ?
-            <ButtonPrimaryDanger onClick={stopScanCallback}>Stop Scan</ButtonPrimaryDanger>
-            :
-            <ButtonPrimary onClick={viewResultsCallback}>View Results</ButtonPrimary>}
+          <ButtonPrimaryDanger onClick={stopScanCallback} disabled={data && data.status !== Task.status.running}>Stop
+            Scan</ButtonPrimaryDanger>
         </div>
       </PrimaryCard>
     </PrimaryCardLayout>
