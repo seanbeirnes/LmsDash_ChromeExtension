@@ -20,6 +20,11 @@ function ResultsView({taskId, scanAgainCallback})
     )
   }
 
+  function handleDownloadClick()
+  {
+    console.log("TO DO: Export as CSV");
+  }
+
   return (
     <PrimaryCardLayout>
       <PrimaryCard fixedWidth={false} minHeight={false} className="w-full">
@@ -44,8 +49,8 @@ function ResultsView({taskId, scanAgainCallback})
             <ButtonPrimary onClick={scanAgainCallback}>New Scan</ButtonPrimary>
           </div>
           <div>
-            <IconButton animated={true}>
-              <DownloadIcon className="w-10 h-10 p-2"/>
+            <IconButton animated={false} onClick={handleDownloadClick} className="text-blue-500 hover:text-blue-400 hover:shadow active:text-blue-400 active:shadow-inner">
+              <DownloadIcon className="w-10 h-10 p-1"/>
             </IconButton>
           </div>
         </div>
