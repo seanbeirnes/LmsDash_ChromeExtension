@@ -5,6 +5,7 @@ import {MessageListener} from '../shared/observers/MessageListener.js'
 import PageRouter from "./router/PageRouter.jsx";
 import AppStateModalController from "./controllers/AppStateModalController.jsx";
 import getActiveTabCourseId from "./hooks/getActiveTabCourseId.js";
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 const queryClient = new QueryClient({});
 
@@ -114,11 +115,13 @@ function App()
     <QueryClientProvider client={queryClient}>
       <AppStateContext.Provider value={appState}>
         <UserInfoContext.Provider value={userInfo}>
-         <div className="bg-gray-300">
-            <AppStateModalController>
-              <PageRouter></PageRouter>
-            </AppStateModalController>
-          </div>
+          <Tooltip.Provider>
+            <div className="bg-gray-300">
+              <AppStateModalController>
+                <PageRouter></PageRouter>
+              </AppStateModalController>
+            </div>
+          </Tooltip.Provider>
         </UserInfoContext.Provider>
       </AppStateContext.Provider>
     </QueryClientProvider>

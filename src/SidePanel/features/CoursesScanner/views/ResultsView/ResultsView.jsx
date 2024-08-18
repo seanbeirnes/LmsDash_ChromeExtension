@@ -3,11 +3,11 @@ import useTaskById from "../../../../hooks/useTaskById.js";
 import ProgressSpinner from "../../../../components/shared/progress/ProgressSpinner.jsx";
 import PrimaryCard from "../../../../components/shared/cards/PrimaryCard.jsx";
 import * as Progress from "@radix-ui/react-progress";
-import Task from "../../../../../shared/models/Task.js";
-import ButtonPrimaryDanger from "../../../../components/shared/buttons/ButtonPrimaryDanger.jsx";
 import ButtonPrimary from "../../../../components/shared/buttons/ButtonPrimary.jsx";
 import {DownloadIcon} from "@radix-ui/react-icons";
 import IconButton from "../../../../components/shared/buttons/IconButton.jsx";
+import CourseScanResult from "./CourseScanResult.jsx";
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 function ResultsView({taskId, scanAgainCallback})
 {
@@ -16,7 +16,7 @@ function ResultsView({taskId, scanAgainCallback})
   if(isPending || !data)
   {
     return (
-      <ProgressSpinner />
+      <ProgressSpinner/>
     )
   }
 
@@ -49,13 +49,26 @@ function ResultsView({taskId, scanAgainCallback})
             <ButtonPrimary onClick={scanAgainCallback}>New Scan</ButtonPrimary>
           </div>
           <div>
-            <IconButton animated={false} onClick={handleDownloadClick} className="text-blue-500 hover:text-blue-400 hover:shadow active:text-blue-400 active:shadow-inner">
-              <DownloadIcon className="w-10 h-10 p-1"/>
-            </IconButton>
+            <Tooltip.Root>
+              <IconButton animated={false} onClick={handleDownloadClick}
+                          className="text-blue-500 hover:text-blue-400 hover:shadow active:text-blue-400 active:shadow-inner">
+                <Tooltip.Trigger asChild>
+                  <DownloadIcon className="w-10 h-10 p-1"/>
+                </Tooltip.Trigger>
+              </IconButton>
+              <Tooltip.Content className="select-none p-2 bg-white rounded shadow-xl animate__animated animate__fadeIn"
+                               sideOffset={0}
+                               side={"bottom"}>
+                Download results as CSV file
+                <Tooltip.Arrow className="fill-white"/>
+              </Tooltip.Content>
+            </Tooltip.Root>
           </div>
         </div>
       </PrimaryCard>
-      <p>{JSON.stringify(data)}</p>
+      <CourseScanResult/>
+      <CourseScanResult/>
+      {/*<p>{JSON.stringify(data)}</p>*/}
     </PrimaryCardLayout>
   )
 }
