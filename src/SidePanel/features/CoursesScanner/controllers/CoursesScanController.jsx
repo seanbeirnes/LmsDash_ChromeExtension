@@ -10,6 +10,8 @@ import {useMutation} from "@tanstack/react-query";
 import {UserInfoContext} from "../../../App.jsx";
 import ProgressSpinner from "../../../components/shared/progress/ProgressSpinner.jsx";
 import useTasksByType from "../../../hooks/useTasksByType.js";
+import MenuButton from "../../../components/shared/buttons/MenuButton.jsx";
+import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
 
 function CoursesScanController()
 {
@@ -137,6 +139,20 @@ function CoursesScanController()
 
   // Otherwise, show the settings view
   return (
+    <div className="w-full h-full">
+      {(lastScannedTaskId !== null) &&
+        <PrimaryCardLayout>
+          <div className="w-72">
+            <MenuButton onClick={() => {
+              setCompletedTaskId(lastScannedTaskId)
+              setLastScannedTaskId(null);
+            }}>
+              <MagnifyingGlassIcon/>
+              View Last Scan Results
+            </MenuButton>
+          </div>
+        </PrimaryCardLayout>
+      }
       <SettingsView scanType={scanType}
                     setScanType={setScanType}
                     courseIds={courseIds}
@@ -148,6 +164,7 @@ function CoursesScanController()
                     settings={settings}
                     setSettings={setSettings}
                     runScanCallback={runScanCallback} />
+    </div>
     )
 }
 
