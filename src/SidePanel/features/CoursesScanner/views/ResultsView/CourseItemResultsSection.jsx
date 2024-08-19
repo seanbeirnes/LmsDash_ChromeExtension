@@ -14,7 +14,7 @@ function CourseItemResultsSection({icon, title, items})
          {
            items.map((item, index) => {
              return <li key={title + "-scan-results-" + index}>
-               <CourseItemScanResult name={item.name} matches={item.matches} previews={item.previews} url={item.url} published={item.published} />
+               <CourseItemScanResult id={item.id} name={item.name} matches={item.matches} previews={item.previews} url={item.url} published={item.published} />
              </li>
            })
          }

@@ -51,6 +51,11 @@ function CourseScanResult({id, name, courseCode, sisCourseId, published, url, it
             <p className="w-full sm:w-fit px-4 py-1 text-sm text-gray-400 bg-gray-100 text-center rounded-full"><span
               className="inline-block font-bold">SIS ID:</span> {sisCourseId}</p>
           }
+          {
+            id &&
+            <p className="w-full sm:w-fit px-4 py-1 text-sm text-gray-400 bg-gray-100 text-center rounded-full"><span
+              className="inline-block font-bold">ID:</span> {id}</p>
+          }
         </div>
         <Collapsible.Content>
           {(items.announcement?.length > 0) &&
