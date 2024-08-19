@@ -53,12 +53,12 @@ function MenuPage()
               Scan Courses
             </MenuButton>
             {/*Admin only buttons go below this line*/}
-            {appState.isAdmin && <MenuButton onClick={() => pageRouterState.setPage(Pages.page.EXTERNAL_TOOLS)}>
-              <RocketIcon/>Manage LTIs
-            </MenuButton>}
-            {appState.isAdmin && <MenuButton onClick={() => pageRouterState.setPage(Pages.page.ADMIN_TOOLS)}>
-              <BackpackIcon/>Admin Tools
-            </MenuButton>}
+            {/*{appState.isAdmin && <MenuButton onClick={() => pageRouterState.setPage(Pages.page.EXTERNAL_TOOLS)}>*/}
+            {/*  <RocketIcon/>Manage LTIs*/}
+            {/*</MenuButton>}*/}
+            {/*{appState.isAdmin && <MenuButton onClick={() => pageRouterState.setPage(Pages.page.ADMIN_TOOLS)}>*/}
+            {/*  <BackpackIcon/>Admin Tools*/}
+            {/*</MenuButton>}*/}
             {/*Admin only buttons go above this line*/}
 
             <MenuButton onClick={() => pageRouterState.setPage(Pages.page.ABOUT)}>
