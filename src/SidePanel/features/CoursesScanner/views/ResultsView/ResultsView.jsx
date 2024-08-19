@@ -4,7 +4,7 @@ import ProgressSpinner from "../../../../components/shared/progress/ProgressSpin
 import PrimaryCard from "../../../../components/shared/cards/PrimaryCard.jsx";
 import * as Progress from "@radix-ui/react-progress";
 import ButtonPrimary from "../../../../components/shared/buttons/ButtonPrimary.jsx";
-import {DownloadIcon} from "@radix-ui/react-icons";
+import {Cross2Icon, DownloadIcon} from "@radix-ui/react-icons";
 import IconButton from "../../../../components/shared/buttons/IconButton.jsx";
 import CourseScanResult from "./CourseScanResult.jsx";
 import * as Tooltip from "@radix-ui/react-tooltip";
@@ -97,21 +97,28 @@ function ResultsView({taskId, scanAgainCallback})
   <Dialog.Root open={curDetails !== null} modal={true}>
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 w-dvw h-dvh bg-gray-700 opacity-50" />
-      <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-dvw max-w-[85dvw] sm:max-w-lg max-h-[85dvh] min-h-32 p-8 text-2xl bg-white shadow-lg rounded">
+      <Dialog.Content onInteractOutside={() => setCurDetails(null)} className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-dvw max-w-[85dvw] sm:max-w-lg max-h-[85dvh] min-h-32 p-8 text-2xl bg-white shadow-lg rounded">
         <Dialog.Title className="text-gray-700 font-bold mb-2">
           Scan Result Details
         </Dialog.Title>
         <Dialog.Description className="text-base text-gray-700">
-          The previews tab show a preview of where the matches are in the course item. The info tab shows more information about the course item.
+          {curDetails.name}
         </Dialog.Description>
         <div>
           <p>{JSON.stringify(curDetails)}</p>
         </div>
-        <div className="mt-6 flex justify-end">
-        <Dialog.Close asChild>
-          <ButtonPrimary onClick={() => setCurDetails(null)}>OK</ButtonPrimary>
-        </Dialog.Close>
+        <div className="w-full flex justify-end">
+          <div className="max-w-32">
+            <Dialog.Close asChild>
+              <ButtonPrimary onClick={() => setCurDetails(null)}>OK</ButtonPrimary>
+            </Dialog.Close>
+          </div>
         </div>
+        <Dialog.Close asChild>
+          <IconButton animated={false} onClick={() => setCurDetails(null)} className="text-gray-700 hover:text-white hover:bg-gray-700 absolute top-3 right-3 appearance-none rounded-full">
+            <Cross2Icon className="w-8 h-8 p-2" />
+          </IconButton>
+        </Dialog.Close>
       </Dialog.Content>
     </Dialog.Portal>
   </Dialog.Root>
