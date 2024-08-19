@@ -19,7 +19,7 @@ function CourseScanResult({id, name, courseCode, sisCourseId, published, url, it
   return (
     <PrimaryCard fixedWidth={false} minHeight={false} className="w-full">
       <Collapsible.Root open={open} onOpenChange={setOpen}>
-        <div className="flex flex-row items-center gap-1 mb-2">
+        <div className={`flex flex-row items-center gap-1 ${open ? "mb-2" : ""}`}>
           <h3 className="basis-full text-xl text-Left">
             <a href={url} target="_blank" title="Link to course"
                className="text-blue-600 hover:text-blue-500 hover:underline active:text-blue-400">{name}</a>
