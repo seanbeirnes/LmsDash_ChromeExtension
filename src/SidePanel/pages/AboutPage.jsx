@@ -32,22 +32,24 @@ function AboutPage()
               <img className="max-h-12" src="/img/icon-color.svg" alt="LMS Dash logo"/>
               <h2 className="text-blue-600 font-bold text-2xl">LMS Dash</h2>
             </div>
-            <h3 className="font-bold text-lg">Current User</h3>
-            <p className="text-sm"><span className="font-bold">Name: </span>{userInfo.fullName}</p>
-            <p className="text-sm"><span className="font-bold">Email: </span>{userInfo.email}</p>
-            <p className="text-sm"><span className="font-bold">ID: </span>{userInfo.sis_user_id}</p>
-            <p className="text-sm"><span className="font-bold">Canvas Instance: </span><a
-              className={"text-blue-600 hover:text-blue-500 active:text-blue-400"} href={userInfo.lmsInstance}
-              target={"_blank"}>{userInfo.lmsInstance}</a></p>
-            <br/>
-            <h3 className={"font-bold text-lg"}>LMS Dash Creator</h3>
-            <p className="text-sm"><span className="font-bold">Description: </span>{Config.APP_DESCRIPTION}</p>
-            <p className="text-sm"><span className="font-bold">Version: </span>{Config.APP_VERSION}</p>
-            <br/>
-            <h3 className={"font-bold text-lg"}>LMS Dash Creator</h3>
-            <a className={"flex items-center text-blue-600 hover:text-blue-500 active:text-blue-400"}
-               href={"https://github.com/seanbeirnes"} target={"_blank"}>Sean Beirnes&nbsp;<GitHubLogoIcon/></a>
-
+            <div className="w-full flex flex-col gap-1 break-words">
+              <h3 className="font-bold text-lg">Current User</h3>
+              <p className="text-sm"><span className="font-bold">Name: </span>{userInfo.fullName}</p>
+              <p className="text-sm"><span className="font-bold">Email: </span>{userInfo.email}</p>
+              <p className="text-sm"><span className="font-bold">ID: </span>{userInfo.sis_user_id}</p>
+              <p className="text-sm"><span className="font-bold">Canvas Instance: </span><a
+                className={"text-blue-600 hover:text-blue-500 active:text-blue-400"} href={userInfo.lmsInstance}
+                target={"_blank"}>{userInfo.lmsInstance}</a></p>
+            </div>
+            <hr className="border-gray-400 my-4"/>
+            <div className="w-full flex flex-col gap-1 break-words">
+              <h3 className={"font-bold text-lg"}>LMS Dash</h3>
+              <p className="text-sm"><span className="font-bold">Description: </span>{Config.APP_DESCRIPTION}</p>
+              <p className="text-sm"><span className="font-bold">Version: </span>{Config.APP_VERSION}</p>
+              <p className="text-sm inline-flex items-center gap-1"><span className="font-bold">Creator: </span><a
+                className={"inline-flex items-center text-blue-600 hover:text-blue-500 active:text-blue-400"}
+                href={"https://github.com/seanbeirnes"} target={"_blank"}>Sean Beirnes&nbsp;<GitHubLogoIcon/></a></p>
+            </div>
           </PrimaryCard>
         </PrimaryCardLayout>
       </Main>
