@@ -1,8 +1,11 @@
 {
   "manifest_version": 3,
   "name": "LMS Dash",
-  "description": "Browser extension for Canvas LMS.",
-  "version": "1.0",
+  "description": "LMS Dash is your Canvas \"assistant.\" This browser extension helps instructors, instructional designers, and administrators manage and use Canvas more efficiently.",
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'"
+  },
+  "version": "0.1.0",
   "icons": {
     "16": "img/icon-16.png",
     "32": "img/icon-32.png",
@@ -24,7 +27,10 @@
     }
   ],
   "side_panel": {
-      "default_path": "src/SidePanel/index.html"
-    },
-  "permissions": ["sidePanel", "tabs"]
+    "default_path": "src/SidePanel/index.html"
+  },
+  "permissions": [
+    "sidePanel",
+    "tabs"
+  ]
 }
