@@ -6,13 +6,13 @@ import {
 import {useState} from "react";
 import CaretUnsortIcon from "../../../../components/shared/icons/CaretUnsortIcon.jsx";
 import MegaphoneSimpleIcon from "../../../../components/shared/icons/MegaphoneSimpleIcon.jsx";
-import CourseItemScanResult from "./CourseItemScanResult.jsx";
 import PencilLineIcon from "../../../../components/shared/icons/PencilLineIcon.jsx";
 import LinkSimpleIcon from "../../../../components/shared/icons/LinkSimpleIcon.jsx";
 import ChatCircleTextIcon from "../../../../components/shared/icons/ChatCircleTextIcon.jsx";
 import ClipboardTextIcon from "../../../../components/shared/icons/ClipboardTextIcon.jsx";
+import CourseItemResultsSection from "./CourseItemResultsSection.jsx";
 
-function CourseScanResult({courseScanResults, defaultOpen = false})
+function CourseScanResult({id, name, courseCode, sisCourseId, published, url, items, defaultOpen = false})
 {
   const [open, setOpen] = useState(defaultOpen);
 
@@ -21,9 +21,8 @@ function CourseScanResult({courseScanResults, defaultOpen = false})
       <Collapsible.Root open={open} onOpenChange={setOpen}>
         <div className="flex flex-row items-start gap-1">
           <h3 className="basis-full text-xl text-Left">
-            <a href="#" target="_blank" title="Link to course"
-               className="text-blue-600 hover:text-blue-500 hover:underline active:text-blue-400">Course title that is
-              very exteremely very very (COURSE ID) long goes here</a>
+            <a href={url} target="_blank" title="Link to course"
+               className="text-blue-600 hover:text-blue-500 hover:underline active:text-blue-400">{name}</a>
           </h3>
           <Collapsible.Trigger
             className="text-blue-600 hover:text-blue-500 hover:bg-white hover:shadow-sm active:text-blue-400 active:shadow-inner">
@@ -35,94 +34,49 @@ function CourseScanResult({courseScanResults, defaultOpen = false})
         </div>
         <div
           className="w-full sm:w-fit flex flex-col sm:flex-row flex-wrap justify-start items-center content-center gap-2">
-          <p
-            className="w-full sm:w-fit px-4 py-1 text-sm text-green-600 bg-green-200 font-bold text-center rounded-full">Published</p>
-          <p className="w-full sm:w-fit px-4 py-1 text-sm text-gray-400 bg-gray-100 text-center rounded-full"><span
-            className="inline-block font-bold">Course Code:</span> AAA-1003-POL</p>
-          <p className="w-full sm:w-fit px-4 py-1 text-sm text-gray-400 bg-gray-100 text-center rounded-full"><span
-            className="inline-block font-bold">SIS ID: </span> 1234567890</p>
+          {published ?
+            <p
+              className="w-full sm:w-fit px-4 py-1 text-sm text-green-600 bg-green-200 font-bold text-center rounded-full">Published</p>
+            :
+            <p
+              className="w-full sm:w-fit px-4 py-1 text-sm text-red-600 bg-red-200 font-bold text-center rounded-full">Unpublished</p>
+          }
+          {
+            courseCode &&
+            <p className="w-full sm:w-fit px-4 py-1 text-sm text-gray-400 bg-gray-100 text-center rounded-full"><span
+              className="inline-block font-bold">Course Code:</span> {courseCode}</p>
+          }
+          {
+            sisCourseId &&
+            <p className="w-full sm:w-fit px-4 py-1 text-sm text-gray-400 bg-gray-100 text-center rounded-full"><span
+              className="inline-block font-bold">SIS ID:</span> {sisCourseId}</p>
+          }
         </div>
         <Collapsible.Content>
-          <hr className="my-2 border-gray-400"/>
-          <section className="w-full">
-            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
-              <MegaphoneSimpleIcon
-                className="w-6 h-6 text-gray-400"/>Announcements</h4>
-            <ul className="ml-2">
-              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
-                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
-            </ul>
-          </section>
-          <hr className="my-2 border-gray-400"/>
-          <section className="w-full">
-            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
-              <PencilLineIcon
-                className="w-6 h-6 text-gray-400"/>Assignments</h4>
-            <ul className="ml-2">
-              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
-                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
-            </ul>
-          </section>
-          <hr className="my-2 border-gray-400"/>
-          <section className="w-full">
-            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
-              <LinkSimpleIcon
-                className="w-6 h-6 text-gray-400"/>Course Navigation Links</h4>
-            <ul className="ml-2">
-              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
-                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
-            </ul>
-          </section>
-          <hr className="my-2 border-gray-400"/>
-          <section className="w-full">
-            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
-              <ChatCircleTextIcon
-                className="w-6 h-6 text-gray-400"/>Discussions</h4>
-            <ul className="ml-2">
-              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
-                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
-            </ul>
-          </section>
-          <hr className="my-2 border-gray-400"/>
-          <section className="w-full">
-            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
-              <FileIcon
-                className="w-6 h-6 text-gray-400"/>File Names</h4>
-            <ul className="ml-2">
-              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
-                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
-            </ul>
-          </section>
-          <hr className="my-2 border-gray-400"/>
-          <section className="w-full">
-            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
-              <LinkSimpleIcon
-                className="w-6 h-6 text-gray-400"/>Modules Links</h4>
-            <ul className="ml-2">
-              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
-                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
-            </ul>
-          </section>
-          <hr className="my-2 border-gray-400"/>
-          <section className="w-full">
-            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
-              <FileTextIcon
-                className="w-6 h-6 text-gray-400"/>Pages</h4>
-            <ul className="ml-2">
-              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
-                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
-            </ul>
-          </section>
-          <hr className="my-2 border-gray-400"/>
-          <section className="w-full">
-            <h4 className="flex justify-start items-center gap-1 text-gray-700 text-lg text-left font-bold">
-              <ClipboardTextIcon
-                className="w-6 h-6 text-gray-400"/>Syllabus</h4>
-            <ul className="ml-2">
-              <li><CourseItemScanResult name={"Course Announcement"} matches={["Week 7", "Week 9"]}
-                                        previews={[" PReview "]} url={"https://google.com"} published={false}/></li>
-            </ul>
-          </section>
+          {(items.announcement?.length > 0) &&
+            <CourseItemResultsSection icon={<MegaphoneSimpleIcon className="w-6 h-6 text-gray-400"/>} title="Announcements" items={items.announcement}/>
+          }
+          {(items.assignment?.length > 0) &&
+            <CourseItemResultsSection icon={<PencilLineIcon className="w-6 h-6 text-gray-400"/>} title="Assignments" items={items.assignment}/>
+          }
+          {(items.courseNavLink?.length > 0) &&
+            <CourseItemResultsSection icon={<LinkSimpleIcon className="w-6 h-6 text-gray-400"/>} title="Course Navigation Links" items={items.courseNavLink}/>
+          }
+          {(items.discussion?.length > 0) &&
+            <CourseItemResultsSection icon={<ChatCircleTextIcon className="w-6 h-6 text-gray-400"/>} title="Discussions" items={items.discussion}/>
+          }
+          {(items.file?.length > 0) &&
+            <CourseItemResultsSection icon={<FileIcon className="w-6 h-6 text-gray-400"/>} title="File Names" items={items.file}/>
+          }
+          {(items.moduleLink?.length > 0) &&
+            <CourseItemResultsSection icon={<LinkSimpleIcon className="w-6 h-6 text-gray-400"/>} title="Module Links" items={items.moduleLink}/>
+          }
+          {(items.page?.length > 0) &&
+            <CourseItemResultsSection icon={<FileTextIcon className="w-6 h-6 text-gray-400"/>} title="Pages" items={items.page}/>
+          }
+          {(items.syllabus?.length > 0) &&
+            <CourseItemResultsSection icon={<ClipboardTextIcon className="w-6 h-6 text-gray-400"/>} title="Syllabus" items={items.syllabus}/>
+          }
         </Collapsible.Content>
       </Collapsible.Root>
     </PrimaryCard>

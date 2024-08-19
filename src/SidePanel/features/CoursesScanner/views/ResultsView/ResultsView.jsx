@@ -66,9 +66,23 @@ function ResultsView({taskId, scanAgainCallback})
           </div>
         </div>
       </PrimaryCard>
-      <CourseScanResult/>
-      <CourseScanResult/>
-      {/*<p>{JSON.stringify(data)}</p>*/}
+      {
+        data.resultsData?.length < 1 ?
+          <p className="text-lg text-gray-700 text-center font-bold">No scan results found.</p>
+          :
+          data.resultsData.map((course, index) =>
+          {
+            return <CourseScanResult id={course.id}
+                                     name={course.name}
+                                     courseCode={course.courseCode}
+                                     sisCourseId={course.sisCourseId}
+                                     published={course.published}
+                                     url={course.url}
+                                     items={course.items}
+                                     defaultOpen={data.resultsData.length === 1}
+                                     key={"course-id-"+ index} />
+          })
+      }
     </PrimaryCardLayout>
   )
 }

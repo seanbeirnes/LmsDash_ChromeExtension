@@ -1,4 +1,4 @@
-import {EyeClosedIcon, EyeNoneIcon, EyeOpenIcon, InfoCircledIcon} from "@radix-ui/react-icons";
+import {EyeNoneIcon, EyeOpenIcon, InfoCircledIcon} from "@radix-ui/react-icons";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import IconButton from "../../../../components/shared/buttons/IconButton.jsx";
 

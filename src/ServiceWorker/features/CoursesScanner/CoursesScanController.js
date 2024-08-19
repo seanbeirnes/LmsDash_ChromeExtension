@@ -3,7 +3,6 @@ import {Message} from "../../../shared/models/Message.js";
 import {CanvasRequest} from "../../../shared/models/CanvasRequest.js";
 import Logger from "../../../shared/utils/Logger.js";
 import CourseScannerController from "./CourseScannerController.js";
-import CourseItem from "../../../shared/models/CourseItem.js";
 import Task from "../../../shared/models/Task.js";
 
 export default class CoursesScanController
@@ -62,7 +61,16 @@ export default class CoursesScanController
       this.incrementProgress();
 
       const scanResult = await courseScanController.run();
-      this.courseScanResults.push(scanResult);
+
+      // If scan results were found, add to the courseScanResults array
+      if(scanResult.items.announcement.length ||
+        scanResult.items.assignment.length ||
+        scanResult.items.courseNavLink.length ||
+        scanResult.items.discussion.length ||
+        scanResult.items.file.length ||
+        scanResult.items.moduleLink.length ||
+        scanResult.items.page.length ||
+        scanResult.items.syllabus.length) this.courseScanResults.push(scanResult);
 
       this.incrementCoursesScanned();
     }
