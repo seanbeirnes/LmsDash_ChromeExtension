@@ -2,8 +2,20 @@ import {EyeNoneIcon, EyeOpenIcon, InfoCircledIcon} from "@radix-ui/react-icons";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import IconButton from "../../../../components/shared/buttons/IconButton.jsx";
 
-function CourseItemScanResult({id, name, matches, previews, url, published})
+function CourseItemScanResult({id, name, matches, previews, url, published, infoModalCallback})
 {
+  function handleInfoButtonClick()
+  {
+    infoModalCallback({
+      id: id,
+      name: name,
+      matches: matches,
+      previews: previews,
+      url: url,
+      published: published
+    })
+  }
+
   return (
     <div className="px-4 py-1 w-full flex justify-start items-center hover:bg-blue-100 rounded-full">
       <Tooltip.Root>
@@ -43,7 +55,7 @@ function CourseItemScanResult({id, name, matches, previews, url, published})
         </Tooltip.Content>
       </Tooltip.Root>
       <Tooltip.Root>
-        <IconButton animated={false} className="text-blue-600 hover:text-blue-500 hover:shadow active:text-blue-400 active:shadow-inner">
+        <IconButton animated={false} onClick={handleInfoButtonClick} className="text-blue-600 hover:text-blue-500 hover:shadow active:text-blue-400 active:shadow-inner">
           <Tooltip.Trigger asChild>
             <InfoCircledIcon className="w-6 h-6 p-1"/>
           </Tooltip.Trigger>

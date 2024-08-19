@@ -8,10 +8,23 @@ import {DownloadIcon} from "@radix-ui/react-icons";
 import IconButton from "../../../../components/shared/buttons/IconButton.jsx";
 import CourseScanResult from "./CourseScanResult.jsx";
 import * as Tooltip from "@radix-ui/react-tooltip";
+import {useState} from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 
 function ResultsView({taskId, scanAgainCallback})
 {
   const {isPending, isError, data, error} = useTaskById(taskId);
+  const [curDetails, setCurDetails] = useState(null);
+
+  function infoModalCallback(details)
+  {
+    setCurDetails(details);
+  }
+
+  function handleDownloadClick()
+  {
+    console.log("TO DO: Export as CSV");
+  }
 
   if(isPending || !data)
   {
@@ -20,12 +33,8 @@ function ResultsView({taskId, scanAgainCallback})
     )
   }
 
-  function handleDownloadClick()
-  {
-    console.log("TO DO: Export as CSV");
-  }
-
   return (
+    <>
     <PrimaryCardLayout>
       <PrimaryCard fixedWidth={false} minHeight={false} className="w-full">
         <div className="grid grid-cols-1 grid-flow-row start justify-start content-start gap-2">
@@ -80,10 +89,33 @@ function ResultsView({taskId, scanAgainCallback})
                                      url={course.url}
                                      items={course.items}
                                      defaultOpen={data.resultsData.length === 1}
+                                     infoModalCallback={infoModalCallback}
                                      key={"course-id-"+ index} />
           })
       }
     </PrimaryCardLayout>
+  <Dialog.Root open={curDetails !== null} modal={true}>
+    <Dialog.Portal>
+      <Dialog.Overlay className="fixed inset-0 w-dvw h-dvh bg-gray-700 opacity-50" />
+      <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-dvw max-w-[85dvw] sm:max-w-lg max-h-[85dvh] min-h-32 p-8 text-2xl bg-white shadow-lg rounded">
+        <Dialog.Title className="text-gray-700 font-bold mb-2">
+          Scan Result Details
+        </Dialog.Title>
+        <Dialog.Description className="text-base text-gray-700">
+          The previews tab show a preview of where the matches are in the course item. The info tab shows more information about the course item.
+        </Dialog.Description>
+        <div>
+          <p>{JSON.stringify(curDetails)}</p>
+        </div>
+        <div className="mt-6 flex justify-end">
+        <Dialog.Close asChild>
+          <ButtonPrimary onClick={() => setCurDetails(null)}>OK</ButtonPrimary>
+        </Dialog.Close>
+        </div>
+      </Dialog.Content>
+    </Dialog.Portal>
+  </Dialog.Root>
+    </>
   )
 }
 

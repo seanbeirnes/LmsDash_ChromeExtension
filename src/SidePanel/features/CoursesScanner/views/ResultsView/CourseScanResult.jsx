@@ -12,7 +12,7 @@ import ChatCircleTextIcon from "../../../../components/shared/icons/ChatCircleTe
 import ClipboardTextIcon from "../../../../components/shared/icons/ClipboardTextIcon.jsx";
 import CourseItemResultsSection from "./CourseItemResultsSection.jsx";
 
-function CourseScanResult({id, name, courseCode, sisCourseId, published, url, items, defaultOpen = false})
+function CourseScanResult({id, name, courseCode, sisCourseId, published, url, items, defaultOpen = false, infoModalCallback})
 {
   const [open, setOpen] = useState(defaultOpen);
 
@@ -60,35 +60,35 @@ function CourseScanResult({id, name, courseCode, sisCourseId, published, url, it
           </div>
           {(items.announcement?.length > 0) &&
             <CourseItemResultsSection icon={<MegaphoneSimpleIcon className="w-6 h-6 text-gray-400"/>}
-                                      title="Announcements" items={items.announcement}/>
+                                      title="Announcements" items={items.announcement} infoModalCallback={infoModalCallback} />
           }
           {(items.assignment?.length > 0) &&
             <CourseItemResultsSection icon={<PencilLineIcon className="w-6 h-6 text-gray-400"/>} title="Assignments"
-                                      items={items.assignment}/>
+                                      items={items.assignment} infoModalCallback={infoModalCallback} />
           }
           {(items.courseNavLink?.length > 0) &&
             <CourseItemResultsSection icon={<LinkSimpleIcon className="w-6 h-6 text-gray-400"/>}
-                                      title="Course Navigation Links" items={items.courseNavLink}/>
+                                      title="Course Navigation Links" items={items.courseNavLink} infoModalCallback={infoModalCallback} />
           }
           {(items.discussion?.length > 0) &&
             <CourseItemResultsSection icon={<ChatCircleTextIcon className="w-6 h-6 text-gray-400"/>} title="Discussions"
-                                      items={items.discussion}/>
+                                      items={items.discussion} infoModalCallback={infoModalCallback} />
           }
           {(items.file?.length > 0) &&
             <CourseItemResultsSection icon={<FileIcon className="w-6 h-6 text-gray-400"/>} title="File Names"
-                                      items={items.file}/>
+                                      items={items.file} infoModalCallback={infoModalCallback} />
           }
           {(items.moduleLink?.length > 0) &&
             <CourseItemResultsSection icon={<LinkSimpleIcon className="w-6 h-6 text-gray-400"/>} title="Module Links"
-                                      items={items.moduleLink}/>
+                                      items={items.moduleLink} infoModalCallback={infoModalCallback} />
           }
           {(items.page?.length > 0) &&
             <CourseItemResultsSection icon={<FileTextIcon className="w-6 h-6 text-gray-400"/>} title="Pages"
-                                      items={items.page}/>
+                                      items={items.page} infoModalCallback={infoModalCallback} />
           }
           {(items.syllabus?.length > 0) &&
             <CourseItemResultsSection icon={<ClipboardTextIcon className="w-6 h-6 text-gray-400"/>} title="Syllabus"
-                                      items={items.syllabus}/>
+                                      items={items.syllabus} infoModalCallback={infoModalCallback} />
           }
         </Collapsible.Content>
       </Collapsible.Root>

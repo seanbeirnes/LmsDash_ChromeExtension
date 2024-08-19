@@ -1,6 +1,6 @@
 import CourseItemScanResult from "./CourseItemScanResult.jsx";
 
-function CourseItemResultsSection({icon, title, items})
+function CourseItemResultsSection({icon, title, items, infoModalCallback})
 {
   if(items.length < 1) return null;
 
@@ -14,7 +14,7 @@ function CourseItemResultsSection({icon, title, items})
          {
            items.map((item, index) => {
              return <li key={title + "-scan-results-" + index}>
-               <CourseItemScanResult id={item.id} name={item.name} matches={item.matches} previews={item.previews} url={item.url} published={item.published} />
+               <CourseItemScanResult id={item.id} name={item.name} matches={item.matches} previews={item.previews} url={item.url} published={item.published} infoModalCallback={infoModalCallback} />
              </li>
            })
          }
