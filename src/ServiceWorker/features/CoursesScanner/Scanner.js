@@ -9,7 +9,7 @@ import HTMLSanitizer from "../../../shared/utils/HTMLSanitizer.js";
  */
 export default class Scanner
 {
-  static #maxPreviewLength = 40;
+  static #maxPreviewLength = 75;
 
   // Takes in scannable.items, scannable.type
   static scanItems(scannableItems, itemType, scanSettings, courseInfo)
