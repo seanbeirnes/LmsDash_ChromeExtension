@@ -112,7 +112,7 @@ function ResultsView({taskId, scanAgainCallback})
           </Tabs.List>
           <Tabs.Content value="tab1" className="grow">
             {(curDetails !== null && curDetails.previews.length > 0) && <div
-              className="w-full h-full p-4 flex flex-col overflow-y-scroll bg-gray-200 rounded-b shadow-inner">
+              className="w-full h-72 p-4 flex flex-col overflow-y-scroll bg-gray-200 rounded-b shadow-inner">
               {
                 curDetails.previews.map((preview, index) => {
                   return <div className="w-full break-all" key={"preview-" + index}>
