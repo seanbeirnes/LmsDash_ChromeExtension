@@ -1,7 +1,10 @@
+import * as fs from "node:fs";
 import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
 import {resolve} from 'path';
 import replace from "@rollup/plugin-replace";
+
+const manifest = JSON.parse(fs.readFileSync("manifest.json"));
 
 const isProduction = process.env.NODE_ENV === 'production';
 const rootDir = resolve(__dirname);
@@ -30,7 +33,9 @@ export default defineConfig({
           plugins: [
             replace({
               'process.env.NODE_ENV': () => isProduction ? JSON.stringify('production') : JSON.stringify('development'),
-              __dirname: (id) => isProduction ? `''` : `'${id}'`
+              __dirname: (id) => isProduction ? `''` : `'${id}'`,
+              __app_version: () => `'${manifest.version}'`,
+              __app_description: () => `'${manifest.description}'`
             }),
           ]
         }

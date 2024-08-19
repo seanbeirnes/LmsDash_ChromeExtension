@@ -9,6 +9,7 @@ import PrimaryCard from "../components/shared/cards/PrimaryCard.jsx";
 import PrimaryCardLayout from "../components/shared/cards/PrimaryCardLayout.jsx";
 import {AppStateContext, UserInfoContext} from "../App.jsx";
 import Pages from "../models/Pages.js";
+import Config from "../../shared/config/Config.js";
 
 function AboutPage()
 {
@@ -35,9 +36,13 @@ function AboutPage()
             <p className="text-sm"><span className="font-bold">Name: </span>{userInfo.fullName}</p>
             <p className="text-sm"><span className="font-bold">Email: </span>{userInfo.email}</p>
             <p className="text-sm"><span className="font-bold">ID: </span>{userInfo.sis_user_id}</p>
-            <p className="text-sm"><span className="font-bold">Canvas Instance: </span><a className={"text-blue-600 hover:text-blue-500 active:text-blue-400"} href={userInfo.lmsInstance}
-               target={"_blank"}>{userInfo.lmsInstance}</a></p>
+            <p className="text-sm"><span className="font-bold">Canvas Instance: </span><a
+              className={"text-blue-600 hover:text-blue-500 active:text-blue-400"} href={userInfo.lmsInstance}
+              target={"_blank"}>{userInfo.lmsInstance}</a></p>
             <br/>
+            <h3 className={"font-bold text-lg"}>LMS Dash Creator</h3>
+            <p className="text-sm"><span className="font-bold">Description: </span>{Config.APP_DESCRIPTION}</p>
+            <p className="text-sm"><span className="font-bold">Version: </span>{Config.APP_VERSION}</p>
             <br/>
             <h3 className={"font-bold text-lg"}>LMS Dash Creator</h3>
             <a className={"flex items-center text-blue-600 hover:text-blue-500 active:text-blue-400"}
