@@ -8,9 +8,10 @@ import {Cross2Icon, DownloadIcon} from "@radix-ui/react-icons";
 import IconButton from "../../../../components/shared/buttons/IconButton.jsx";
 import CourseScanResult from "./CourseScanResult.jsx";
 import * as Tooltip from "@radix-ui/react-tooltip";
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
+import * as Toast from "@radix-ui/react-toast";
 import serializeCoursesScanResults from "../../serializers/serializeCoursesScanResults.js";
 import downloadCSV from "../../../../helpers/downloadCSV.js";
 
@@ -18,6 +19,14 @@ function ResultsView({taskId, scanAgainCallback})
 {
   const {isPending, isError, data, error} = useTaskById(taskId);
   const [curDetails, setCurDetails] = useState(null);
+  const [downloaded, setDownloaded] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const timerRef = useRef(0);
+
+  useEffect(() =>
+  {
+    return () => clearTimeout(timerRef.current);
+  }, []);
 
   function infoModalCallback(details)
   {
@@ -31,8 +40,19 @@ function ResultsView({taskId, scanAgainCallback})
       await downloadCSV(csvData);
     }
     catch (error){
-      console.log(error);
+      setShowNotification(false);
+      window.clearTimeout(timerRef.current);
+      timerRef.current = window.setTimeout(() => {
+        setDownloaded(false);
+        setShowNotification(true);
+      }, 100);
     }
+    setShowNotification(false);
+      window.clearTimeout(timerRef.current);
+      timerRef.current = window.setTimeout(() => {
+        setDownloaded(true);
+        setShowNotification(true);
+      }, 100);
   }
 
   if(isPending || !data)
@@ -105,6 +125,19 @@ function ResultsView({taskId, scanAgainCallback})
           })
       }
     </PrimaryCardLayout>
+      <Toast.Root open={showNotification} onOpenChange={setShowNotification} className={`${downloaded ? "bg-green-200" : "bg-red-200"} rounded-md p-2 grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-3.5 animate__animated items-center data-[state=open]:animate__fadeInRight data-[state=closed]:animate__fadeOutDownBig data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate__fadeOutDown`}>
+        <Toast.Title className={`${downloaded ? "text-green-600" : "text-red-600"} [grid-area:_title] mb-1 font-bold text-base`}>
+          {downloaded ? "Download Success" : "Download Failed"}
+        </Toast.Title>
+        <Toast.Description className={`${downloaded ? "text-green-700" : "text-red-700"} [grid-area:_description] m-0 text-sm leading-snug`}>
+          {downloaded ? "Scan results exported to CSV" : "An error occurred when exporting"}
+        </Toast.Description>
+      <Toast.Action className="[grid-area:_action]" asChild altText="Close download notification">
+        <IconButton animated={false} onClick={() => setShowNotification(false)} className="text-gray-700 hover:text-white hover:bg-gray-700 appearance-none rounded-full">
+          <Cross2Icon className="w-5 h-5 p-0.5" />
+        </IconButton>
+      </Toast.Action>
+      </Toast.Root>
   <Dialog.Root open={curDetails !== null} modal={true}>
     <Dialog.Portal>
       <Dialog.Overlay className="fixed inset-0 w-dvw h-dvh bg-gray-700 opacity-50" />

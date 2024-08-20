@@ -7,6 +7,7 @@ import AppStateModalController from "./controllers/AppStateModalController.jsx";
 import getActiveTabCourseId from "./hooks/getActiveTabCourseId.js";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import Security from "../shared/utils/Security.js";
+import * as Toast from "@radix-ui/react-toast";
 
 const queryClient = new QueryClient({});
 
@@ -119,13 +120,16 @@ function App()
     <QueryClientProvider client={queryClient}>
       <AppStateContext.Provider value={appState}>
         <UserInfoContext.Provider value={userInfo}>
-          <Tooltip.Provider>
-            <div className="bg-gray-300">
-              <AppStateModalController>
-                <PageRouter></PageRouter>
-              </AppStateModalController>
-            </div>
-          </Tooltip.Provider>
+          <Toast.Provider swipeDirection="right">
+            <Tooltip.Provider>
+              <div className="bg-gray-300">
+                <AppStateModalController>
+                  <PageRouter/>
+                </AppStateModalController>
+              </div>
+            </Tooltip.Provider>
+            <Toast.Viewport className="[--viewport-padding:_24px] fixed bottom-0 right-0 flex flex-col p-[var(--viewport-padding)] gap-[10px] w-[390px] max-w-[100vw] m-0 list-none z-[2147483647]"/>
+          </Toast.Provider>
         </UserInfoContext.Provider>
       </AppStateContext.Provider>
     </QueryClientProvider>
