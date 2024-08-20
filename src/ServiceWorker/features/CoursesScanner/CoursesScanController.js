@@ -4,6 +4,7 @@ import {CanvasRequest} from "../../../shared/models/CanvasRequest.js";
 import Logger from "../../../shared/utils/Logger.js";
 import CourseScannerController from "./CourseScannerController.js";
 import Task from "../../../shared/models/Task.js";
+import Security from "../../../shared/utils/Security.js";
 
 export default class CoursesScanController
 {
@@ -121,14 +122,15 @@ export default class CoursesScanController
 
     if(!tabId) return null;
 
-    const responseMsg = await chrome.tabs.sendMessage(
-      tabId,
-      new Message(Message.Target.TAB,
+    const requestMsg = new Message(Message.Target.TAB,
         Message.Sender.SERVICE_WORKER,
         Message.Type.Canvas.REQUESTS,
         "Canvas requests",
         requests)
-    ).catch(e =>
+    await requestMsg.setSignature();
+
+    const responseMsg = await chrome.tabs.sendMessage(
+      tabId, requestMsg).catch( e =>
     {
       if(counter < 4)
       {
@@ -138,6 +140,8 @@ export default class CoursesScanController
         console.warn("Content script not available:\n" + e)
       }
     });
+
+    Security.compare.canvasRequestMessages(requestMsg, responseMsg);
 
     return responseMsg ? responseMsg.data : null;
   }

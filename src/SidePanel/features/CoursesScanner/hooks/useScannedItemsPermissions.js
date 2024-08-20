@@ -1,6 +1,7 @@
 import {CanvasRequest} from "../../../../shared/models/CanvasRequest.js";
 import {useQuery} from "@tanstack/react-query";
 import {Message} from "../../../../shared/models/Message.js";
+import Security from "../../../../shared/utils/Security.js";
 
 export default function useScannedItemsPermissions(courseId)
 {
@@ -19,13 +20,16 @@ export default function useScannedItemsPermissions(courseId)
     const canvasRequests = [reqAnnouncements, reqAssignments, reqTabs, reqDiscussions, reqFiles, reqModules, reqPages, reqCourse];
 
 
-    const msgResponse = await chrome.runtime.sendMessage(
-      new Message(Message.Target.SERVICE_WORKER,
+    const msgRequest = new Message(Message.Target.SERVICE_WORKER,
         Message.Sender.SIDE_PANEL,
         Message.Type.Canvas.REQUESTS,
         "Permissions request",
         canvasRequests)
-    )
+    await msgRequest.setSignature();
+    const msgResponse = await chrome.runtime.sendMessage(msgRequest);
+
+    Security.compare.messages(msgRequest, msgResponse);
+
     if(!msgResponse.data) throw new Error("Message data is null")
 
     const hasAnnouncements = msgResponse.data.filter(item => item.id === reqAnnouncements.id)[0].status < 400;

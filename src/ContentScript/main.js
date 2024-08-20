@@ -21,17 +21,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) =>
       // If message is a request, make requests in batches and send respones back in a message
       if(isTarget)
       {
+        if(!message.signature) throw new Error("Invalid message. No signature found.");
         requestHandler.enqueueList(message.data);
 
         const responses = await requestHandler.run(); // Array of responses returned
 
-        sendResponse(
-          new Message( Message.Target.SERVICE_WORKER,
+        const responseMessage = new Message( Message.Target.SERVICE_WORKER,
             Message.Sender.TAB,
             Message.Type.Canvas.RESPONSES,
             "Response",
             responses )
-        );
+        responseMessage.signature = message.signature;
+        sendResponse(responseMessage);
       }
     })();
 

@@ -1,4 +1,6 @@
-export class Message 
+import Security from "../utils/Security.js";
+
+export class Message
 {
     constructor(target, sender, type, text = "", data = {}, time = Date.now())
     {
@@ -8,6 +10,12 @@ export class Message
         this.text = text;
         this.data = data;
         this.time = time;
+        this.signature = null;
+    }
+
+    async setSignature()
+    {
+        this.signature = await Security.create.signature(`${this.target}${this.sender}${this.type}`);
     }
 
     // Enums for message types

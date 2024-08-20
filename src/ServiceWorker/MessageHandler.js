@@ -2,6 +2,7 @@ import {Message} from "../shared/models/Message.js";
 import {CanvasRequest} from "../shared/models/CanvasRequest.js";
 import {Utils} from "../shared/utils/Utils.js";
 import Task from "../shared/models/Task.js";
+import Security from "../shared/utils/Security.js";
 
 export class MessageHandler
 {
@@ -35,42 +36,45 @@ export class MessageHandler
 
   async handleSidePanelMessage(message, sender, sendResponse)
   {
+    if(!message.signature) throw new Error("No message signature! Cannot process message");
+
     switch(message.type)
     {
       case Message.Type.Canvas.REQUESTS:
       {
         const response = await this.sendCanvasRequests(message.data)
 
-        sendResponse(
-          new Message(
-            Message.Target.SIDE_PANEL,
-            Message.Sender.SERVICE_WORKER,
-            Message.Type.Canvas.RESPONSES,
-            "Canvas Responses",
-            response
-          )
+        const responseMsg = new Message(
+          Message.Target.SIDE_PANEL,
+          Message.Sender.SERVICE_WORKER,
+          Message.Type.Canvas.RESPONSES,
+          "Canvas Responses",
+          response
         )
+
+        responseMsg.signature = message.signature;
+        sendResponse(responseMsg);
       }
         break;
 
-      case Message.Type.Task.Request.App.STATE:
-      {
-       //TO DO: return App State
-      }
-        break;
+      // case Message.Type.Task.Request.App.STATE:
+      // {
+      //  //TO DO: return App State
+      // }
+      //   break;
 
       case Message.Type.Task.Request.App.SET_PANEL_OPENED:
       {
         this.appController.setSidePanelOpen();
-        sendResponse(
-          new Message(
+        const responseMsg =  new Message(
             Message.Target.SIDE_PANEL,
             Message.Sender.SERVICE_WORKER,
             Message.Type.Task.Response.App.SET_PANEL_OPENED,
             "SidePanel was opened",
             this.appController.state
           )
-        )
+        responseMsg.signature = message.signature;
+        sendResponse(responseMsg)
       }
         break;
 
@@ -80,15 +84,15 @@ export class MessageHandler
           [new CanvasRequest(CanvasRequest.Get.UsersSelf)]
         )
 
-        sendResponse(
-          new Message(
+        const responseMsg = new Message(
             Message.Target.SIDE_PANEL,
             Message.Sender.SERVICE_WORKER,
             Message.Type.Task.Response.Info.USER,
             "User info response",
             response
           )
-        )
+        responseMsg.signature = message.signature;
+        sendResponse(responseMsg)
       }
         break;
 
@@ -97,15 +101,15 @@ export class MessageHandler
       {
         const task = this.getTaskById(message.data, false) // Data should only be an integer
 
-        sendResponse(
-          new Message(
+        const responseMsg = new Message(
             Message.Target.SIDE_PANEL,
             Message.Sender.SERVICE_WORKER,
             Message.Type.Task.Response.PROGRESS,
             task ? "Task found" : "No task by received id",
             task ? task : null
           )
-        )
+        responseMsg.signature = message.signature;
+        sendResponse(responseMsg)
       }
 
         break;
@@ -114,15 +118,15 @@ export class MessageHandler
       {
         const task = this.getTaskById(message.data) // Data should only be an integer
 
-        sendResponse(
-          new Message(
+        const responseMsg =  new Message(
             Message.Target.SIDE_PANEL,
             Message.Sender.SERVICE_WORKER,
             Message.Type.Task.Response.BY_ID,
             task ? "Task found" : "No task by received id",
             task ? task : null
           )
-        )
+        responseMsg.signature = message.signature;
+        sendResponse(responseMsg);
       }
         break;
 
@@ -131,15 +135,15 @@ export class MessageHandler
       {
         const tasks = this.getTasksByType(message.data) // Data should only be an integer
 
-        sendResponse(
-          new Message(
+        const responseMsg =  new Message(
             Message.Target.SIDE_PANEL,
             Message.Sender.SERVICE_WORKER,
             Message.Type.Task.Response.BY_TYPE,
             tasks ? "Tasks found" : "No tasks by received task type",
             tasks ? tasks : null
           )
-        )
+        responseMsg.signature = message.signature;
+        sendResponse(responseMsg);
       }
         break;
 
@@ -148,15 +152,15 @@ export class MessageHandler
       {
         const task = this.enqueueTask(message.data);
 
-          sendResponse(
-            new Message(
+        const responseMsg = new Message(
               Message.Target.SIDE_PANEL,
               Message.Sender.SERVICE_WORKER,
               Message.Type.Task.Response.NEW,
               task ? "New task created" : "Task creation failed",
               task ? task : null
             )
-          )
+        responseMsg.signature = message.signature;
+        sendResponse(responseMsg);
       }
         break;
 
@@ -165,20 +169,20 @@ export class MessageHandler
       {
         const success = this.appController.taskController.stopTask(message.data);
 
-        sendResponse(
-          new Message(
+        const responseMsg = new Message(
             Message.Target.SIDE_PANEL,
             Message.Sender.SERVICE_WORKER,
             Message.Type.Task.Response.STOP,
             success ? "Task stopped" : "Task could not be stopped",
             success
           )
-        )
+        responseMsg.signature = message.signature;
+        sendResponse(responseMsg);
       }
         break;
 
       default:
-        return;
+        throw new Error("Unknown message type passed.");
     }
   }
 
@@ -186,17 +190,20 @@ export class MessageHandler
   ////// Message utility functions
   //////
 
-  sendSidePanelMessage(text, data, counter = 0)
+  async sendSidePanelMessage(text, data, counter = 0)
   {
     if(this.appController.state.hasOpenSidePanel === false) return;
 
-    chrome.runtime.sendMessage(new Message(
-      Message.Target.SIDE_PANEL,
-      Message.Sender.SERVICE_WORKER,
-      Message.Type.Task.Response.App.STATE,
-      text,
-      data
-    )).catch(e =>
+    const newMessage = new Message(
+        Message.Target.SIDE_PANEL,
+        Message.Sender.SERVICE_WORKER,
+        Message.Type.Task.Response.App.STATE,
+        text,
+        data
+      )
+    await newMessage.setSignature();
+
+    chrome.runtime.sendMessage(newMessage).catch( e =>
     {
       if(counter < 4)
       {
@@ -218,14 +225,18 @@ export class MessageHandler
 
     if(!tabId) return null;
 
+    const requestMessage = new Message(Message.Target.TAB,
+      Message.Sender.SERVICE_WORKER,
+      Message.Type.Canvas.REQUESTS,
+      "Canvas requests",
+      requests)
+
+    await requestMessage.setSignature();
+
     const responseMsg = await chrome.tabs.sendMessage(
       tabId,
-      new Message(Message.Target.TAB,
-        Message.Sender.SERVICE_WORKER,
-        Message.Type.Canvas.REQUESTS,
-        "Canvas requests",
-        requests)
-    ).catch(e =>
+      requestMessage
+    ).catch( e =>
     {
       if(counter < 4)
       {
@@ -236,6 +247,8 @@ export class MessageHandler
         console.warn("Content script not available:\n" + e)
       }
     });
+
+    Security.compare.canvasRequestMessages(responseMsg, responseMsg);
 
     return responseMsg ? responseMsg.data : null;
   }

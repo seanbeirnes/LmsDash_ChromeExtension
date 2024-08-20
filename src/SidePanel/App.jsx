@@ -6,6 +6,7 @@ import PageRouter from "./router/PageRouter.jsx";
 import AppStateModalController from "./controllers/AppStateModalController.jsx";
 import getActiveTabCourseId from "./hooks/getActiveTabCourseId.js";
 import * as Tooltip from "@radix-ui/react-tooltip";
+import Security from "../shared/utils/Security.js";
 
 const queryClient = new QueryClient({});
 
@@ -58,12 +59,13 @@ function App()
     {
       if(appState.timeUpdated !== 0) return;
       // Let serviceWorker know the panel has been opened
-      const response = await chrome.runtime.sendMessage(
-        new Message(Message.Target.SERVICE_WORKER,
+      const request = new Message(Message.Target.SERVICE_WORKER,
           Message.Sender.SIDE_PANEL,
           Message.Type.Task.Request.App.SET_PANEL_OPENED,
           "SidePanel was opened")
-      );
+      await request.setSignature();
+      const response = await chrome.runtime.sendMessage(request);
+      Security.compare.messages(request, response);
       handleMessage(response);
     }
 
@@ -72,12 +74,14 @@ function App()
       if(userInfo.timeChecked !== 0 || !appState.hasTabs) return;
 
       // Request user info
-      const response = await chrome.runtime.sendMessage(
-        new Message(Message.Target.SERVICE_WORKER,
-          Message.Sender.SIDE_PANEL,
-          Message.Type.Task.Request.Info.USER,
-          "User info request")
-      );
+      const request = new Message(Message.Target.SERVICE_WORKER,
+        Message.Sender.SIDE_PANEL,
+        Message.Type.Task.Request.Info.USER,
+        "User info request");
+      await request.setSignature();
+
+      const response = await chrome.runtime.sendMessage(request);
+      Security.compare.messages(request, response);
 
       if(response.data === null) return;
 

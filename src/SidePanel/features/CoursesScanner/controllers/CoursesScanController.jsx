@@ -13,6 +13,7 @@ import useTasksByType from "../../../hooks/useTasksByType.js";
 import MenuButton from "../../../components/shared/buttons/MenuButton.jsx";
 import {MagnifyingGlassIcon} from "@radix-ui/react-icons";
 import ResultsView from "../views/ResultsView/ResultsView.jsx";
+import Security from "../../../../shared/utils/Security.js";
 
 function CoursesScanController()
 {
@@ -48,7 +49,7 @@ function CoursesScanController()
   ////// FOR TESTING: Test Messages for getting Tasks
   // async function testMessages()
   // {
-  //
+  //   // Will need updating with setSignature() and Security.compare
   //   const taskById = await chrome.runtime.sendMessage(
   //     new Message(Message.Target.SERVICE_WORKER,
   //       Message.Sender.SIDE_PANEL,
@@ -64,13 +65,14 @@ function CoursesScanController()
 
   const createTask = useMutation({
   mutationFn: async (scanSettings) => {
-    const msgResponse = await chrome.runtime.sendMessage(
-      new Message(Message.Target.SERVICE_WORKER,
+    const msgRequest = new Message(Message.Target.SERVICE_WORKER,
         Message.Sender.SIDE_PANEL,
         Message.Type.Task.Request.NEW,
         "New course scan request",
         new Task(Task.type.coursesScan, scanSettings))
-    )
+    await msgRequest.setSignature();
+    const msgResponse = await chrome.runtime.sendMessage(msgRequest);
+    Security.compare.messages(msgRequest, msgResponse);
     return msgResponse.data // returns
   },
     onSuccess: (task) => {if(task !== null) setRunningTaskId(task.id)}
@@ -78,13 +80,14 @@ function CoursesScanController()
 
   const stopTask = useMutation({
     mutationFn: async (taskId) => {
-      const msgResponse = await chrome.runtime.sendMessage(
-        new Message(Message.Target.SERVICE_WORKER,
+      const msgRequest = new Message(Message.Target.SERVICE_WORKER,
           Message.Sender.SIDE_PANEL,
           Message.Type.Task.Request.STOP,
           "Stop scan task request",
           taskId)
-      );
+      await msgRequest.setSignature();
+      const msgResponse = await chrome.runtime.sendMessage(msgRequest);
+      Security.compare.messages(msgRequest, msgResponse);
       return msgResponse.data
     },
     onSuccess: (success) => {if(success) setRunningTaskId(null)}
