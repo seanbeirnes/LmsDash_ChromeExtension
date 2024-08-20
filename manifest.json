@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "LMS Dash",
-  "description": "LMS Dash is your Canvas \"assistant.\" This browser extension helps instructors, instructional designers, and administrators manage and use Canvas more efficiently.",
+  "description": "LMS Dash helps instructors, instructional designers, and administrators spend less time managing Canvas.",
   "content_security_policy": {
     "extension_pages": "default-src 'self'; style-src 'self' 'unsafe-inline';"
   },
