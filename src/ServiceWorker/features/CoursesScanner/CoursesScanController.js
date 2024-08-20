@@ -114,36 +114,9 @@ export default class CoursesScanController
     Logger.debug(__dirname, "Collected course IDs for scanning: \n" + courseIds.toString());
   }
 
-  async sendCanvasRequests(requests, counter = 0)
+  async sendCanvasRequests(requests)
   {
-    if(counter > 0) await Utils.sleep(Math.pow(10, counter))
-
-    let tabId = this.appController.tabHandler.getTabId();
-
-    if(!tabId) return null;
-
-    const requestMsg = new Message(Message.Target.TAB,
-        Message.Sender.SERVICE_WORKER,
-        Message.Type.Canvas.REQUESTS,
-        "Canvas requests",
-        requests)
-    await requestMsg.setSignature();
-
-    const responseMsg = await chrome.tabs.sendMessage(
-      tabId, requestMsg).catch( e =>
-    {
-      if(counter < 4)
-      {
-        this.sendCanvasRequests(requests, ++counter);
-      } else
-      {
-        console.warn("Content script not available:\n" + e)
-      }
-    });
-
-    Security.compare.canvasRequestMessages(requestMsg, responseMsg);
-
-    return responseMsg ? responseMsg.data : null;
+    return await this.appController.messageHandler.sendCanvasRequests(requests);
   }
 
   incrementProgress()
