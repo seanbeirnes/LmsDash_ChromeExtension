@@ -217,40 +217,46 @@ export class MessageHandler
     });
   }
 
-  async sendCanvasRequests(requests, counter = 0)
+  // Wrapper method for sending requests and receiving responses from the Canvas content script
+  async sendCanvasRequests(requests)
   {
-    if(counter > 0) await Utils.sleep(Math.pow(10,counter))
-
-    let tabId = this.appController.tabHandler.getTabId();
-
-    if(!tabId) return null;
-
-    const requestMessage = new Message(Message.Target.TAB,
+    const requestMsg = new Message(Message.Target.TAB,
       Message.Sender.SERVICE_WORKER,
       Message.Type.Canvas.REQUESTS,
       "Canvas requests",
       requests)
+    await requestMsg.setSignature();
 
-    await requestMessage.setSignature();
+    const responseMsg = this.#trySendingRequests(requestMsg)
 
-    const responseMsg = await chrome.tabs.sendMessage(
+    return responseMsg ? responseMsg.data : null;
+  }
+
+  // Recursively retries sending requests if they failed
+  async #trySendingRequests(message, counter = 0)
+  {
+    if(counter > 0) await Utils.sleep(Math.pow(10,counter))
+    let tabId = this.appController.tabHandler.getTabId();
+
+    const response = await chrome.tabs.sendMessage(
       tabId,
-      requestMessage
-    ).catch( e =>
+      message
+    ).catch( async (e) =>
     {
       if(counter < 4)
       {
-        this.sendCanvasRequests(requests, ++counter);
-      }
-      else
+        return await this.#trySendingRequests(message, ++counter);
+      } else
       {
         console.warn("Content script not available:\n" + e)
       }
-    });
+    })
 
-    Security.compare.canvasRequestMessages(responseMsg, responseMsg);
+    // Null check to prevent errors in security check
+    if(!response) return null;
 
-    return responseMsg ? responseMsg.data : null;
+    Security.compare.canvasRequestMessages(message, response);
+    return response;
   }
 
   //////
