@@ -1,3 +1,5 @@
+import CourseItem from "../../../../shared/models/CourseItem.js";
+
 export default async function serializeCoursesScanResults(scanResults)
 {
   return new Promise((resolve, reject) => {
@@ -69,7 +71,7 @@ function serializeCourseItem(courseItem)
 {
   return [
     formatText(courseItem.type),
-    formatText(courseItem.id),
+    formatText(courseItem.type === CourseItem.Type.SYLLABUS ? "N/A" : courseItem.id),
     formatText(courseItem.name),
     courseItem.url ? formatText(courseItem.url) : "",
     courseItem.published ? "TRUE" : "FALSE",
@@ -79,8 +81,8 @@ function serializeCourseItem(courseItem)
 
 function formatText(inputText)
 {
-  const text = String(inputText);
+  const text = String(inputText).trim();
   if(!text.includes(",")) return text;
-  if(text.includes("\"")) return `"${text}"`;
+  if(text.includes("\"")) return `"${text.replaceAll("\"","\"\"")}"`;
   return `"${text}"`
 }
