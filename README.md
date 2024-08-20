@@ -1,4 +1,4 @@
-# LMS DASH Chrome Extension
+# LMS Dash Chrome Extension
 
 **Note:** LMS Dash is currently in beta. Unexpected errors may occasionally happen.
 
