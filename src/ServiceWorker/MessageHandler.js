@@ -227,7 +227,7 @@ export class MessageHandler
       requests)
     await requestMsg.setSignature();
 
-    const responseMsg = this.#trySendingRequests(requestMsg)
+    const responseMsg = await this.#trySendingRequests(requestMsg)
 
     return responseMsg ? responseMsg.data : null;
   }
