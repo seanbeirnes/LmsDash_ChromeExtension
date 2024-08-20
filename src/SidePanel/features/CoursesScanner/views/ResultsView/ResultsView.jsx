@@ -11,6 +11,8 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import {useState} from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Tabs from "@radix-ui/react-tabs";
+import serializeCoursesScanResults from "../../serializers/serializeCoursesScanResults.js";
+import downloadCSV from "../../../../helpers/downloadCSV.js";
 
 function ResultsView({taskId, scanAgainCallback})
 {
@@ -22,9 +24,15 @@ function ResultsView({taskId, scanAgainCallback})
     setCurDetails(details);
   }
 
-  function handleDownloadClick()
+  async function handleDownloadClick()
   {
-    console.log("TO DO: Export as CSV");
+    try{
+      const csvData = await serializeCoursesScanResults(data.resultsData);
+      await downloadCSV(csvData);
+    }
+    catch (error){
+      console.log(error);
+    }
   }
 
   if(isPending || !data)
@@ -59,20 +67,22 @@ function ResultsView({taskId, scanAgainCallback})
             <ButtonPrimary onClick={scanAgainCallback}>New Scan</ButtonPrimary>
           </div>
           <div>
-            <Tooltip.Root>
-              <IconButton animated={false} onClick={handleDownloadClick}
-                          className="text-blue-500 hover:text-blue-400 hover:shadow active:text-blue-400 active:shadow-inner">
-                <Tooltip.Trigger asChild>
-                  <DownloadIcon className="w-10 h-10 p-1"/>
-                </Tooltip.Trigger>
-              </IconButton>
-              <Tooltip.Content className="select-none p-2 bg-white rounded shadow-xl animate__animated animate__fadeIn"
-                               sideOffset={0}
-                               side={"bottom"}>
-                Download results as CSV file
-                <Tooltip.Arrow className="fill-white"/>
-              </Tooltip.Content>
-            </Tooltip.Root>
+            {(data && data.resultsData.length > 0) &&
+              <Tooltip.Root>
+                <IconButton animated={false} onClick={handleDownloadClick}
+                            className="text-blue-500 hover:text-blue-400 hover:shadow active:text-blue-400 active:shadow-inner">
+                  <Tooltip.Trigger asChild>
+                    <DownloadIcon className="w-10 h-10 p-1"/>
+                  </Tooltip.Trigger>
+                </IconButton>
+                <Tooltip.Content className="select-none p-2 bg-white rounded shadow-xl animate__animated animate__fadeIn"
+                                 sideOffset={0}
+                                 side={"bottom"}>
+                  Download results as CSV file
+                  <Tooltip.Arrow className="fill-white"/>
+                </Tooltip.Content>
+              </Tooltip.Root>
+            }
           </div>
         </div>
       </PrimaryCard>
