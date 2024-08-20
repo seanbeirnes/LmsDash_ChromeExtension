@@ -73,7 +73,7 @@ function serializeCourseItem(courseItem)
     formatText(courseItem.name),
     courseItem.url ? formatText(courseItem.url) : "",
     courseItem.published ? "TRUE" : "FALSE",
-    formatText(courseItem.matches.toString().replaceAll(/[\[\]]/g,"")),
+    formatText(courseItem.matches.toString().replaceAll(/[\[\]]/g,"").replaceAll(",",", ")),
   ]
 }
 
@@ -81,6 +81,6 @@ function formatText(inputText)
 {
   const text = String(inputText);
   if(!text.includes(",")) return text;
-  if(text.includes("\"")) return `""${text}""`;
+  if(text.includes("\"")) return `"${text}"`;
   return `"${text}"`
 }
