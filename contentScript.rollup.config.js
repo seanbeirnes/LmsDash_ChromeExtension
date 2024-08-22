@@ -16,7 +16,8 @@ export default {
 			'process.env.NODE_ENV': () => isProduction ? JSON.stringify('production') : JSON.stringify('development'),
 			__dirname: (id) => isProduction ? `''` : `'${id}'`,
 			__app_version: () => `'${manifest.version}'`,
-			__app_description: () => `'${manifest.description}'`
+			__app_description: () => `'${manifest.description}'`,
+			preventAssignment: true
 		}),
 			isProduction && terser()]
 };
