@@ -1,9 +1,9 @@
 import Select, {components} from "react-select"
 import {useCallback, useState} from "react";
-import {debounce} from "lodash";
 import useTermsSearch from "../../hooks/useTermsSearch.js";
 import ProgressSpinner from "../../../../components/shared/progress/ProgressSpinner.jsx";
 import {ChevronDownIcon} from "@radix-ui/react-icons";
+import {Utils} from "../../../../../shared/utils/Utils.js";
 
 const LoadingIndicator = () =>
 {
@@ -27,7 +27,7 @@ function SelectTerm({setScanType})
   const [searchTerm, setSearchTerm] = useState("");
   const [inputText, setInputText] = useState("");
   const setSearchTermDebounced = useCallback(
-    debounce(inputText => setSearchTerm(inputText), 500),
+    Utils.debounce(inputText => setSearchTerm(inputText), 500),
     []
   )
 

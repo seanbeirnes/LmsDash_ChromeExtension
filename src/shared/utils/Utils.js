@@ -7,4 +7,17 @@ export class Utils
       setTimeout(resolve, time)
     })
   }
+
+  static debounce(func, wait = 100)
+  {
+    let timeoutId;
+    return function(...args)
+    {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() =>
+      {
+        func.apply(this, args);
+      }, wait);
+    };
+  }
 }
