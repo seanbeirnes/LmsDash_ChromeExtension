@@ -37,8 +37,11 @@ extension consists of three main parts:
 
 Some code is shared among all three parts, and these are in the **shared** directory.
 
-**Dependencies:** [Lodash](https://github.com/lodash/lodash), [Radix UI Primitives](https://github.com/radix-ui/primitives), [React](https://react.dev/), 
-[React Select](https://github.com/jedwatson/react-select), [Rollup.js](https://rollupjs.org/), [TanStack Query](https://github.com/TanStack/query), [Vite](https://vitejs.dev/)
+**Dependencies:** [Animate.css](https://github.com/animate-css/animate.css),
+[Radix UI Primitives](https://github.com/radix-ui/primitives), [React](https://github.com/facebook/react), 
+[React Select](https://github.com/jedwatson/react-select), [Rollup.js](https://github.com/rollup/rollup), 
+[TanStack Query](https://github.com/TanStack/query), [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss),
+[Vite](https://github.com/vitejs/vite)
 
 ### Local Set Up
 1. Clone the repository.
