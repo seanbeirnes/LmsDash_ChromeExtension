@@ -4,6 +4,8 @@ import Task from "../shared/models/Task.js";
 
 export default class TaskController
 {
+  static CACHED_COUNT_LIMIT = 5;
+
   constructor(appController)
   {
     this.appController = appController;
@@ -26,11 +28,63 @@ export default class TaskController
   update()
   {
     this.#handleFinished();
+    this.#handleRunning();
     this.#handleNew();
   }
 
-  // Removes finished tasks from running tasks array
+  // Removes old tasks to prevent memory leaks
   #handleFinished()
+  {
+    // Do not run if below cache limit
+    if(this.finishedTasks.length < TaskController.CACHED_COUNT_LIMIT) return;
+
+    // Keep track of counts per task type
+    let coursesScanCount = 0;
+
+    // Updates counts of task types
+    function updateCounts(task){
+      switch(task.type)
+      {
+        case Task.type.coursesScan:
+          coursesScanCount++;
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    // Returns false if cache rule is met, defaults to true
+    function shouldRemove(task)
+    {
+      switch(task.type)
+      {
+        case Task.type.coursesScan:
+          if(coursesScanCount < 2) return false;
+          break;
+
+        default:
+          break;
+      }
+      return true
+    }
+
+    // Sort tasks from oldest to newest
+    const tasks = this.finishedTasks.sort((a, b) => a.timeFinished - b.timeFinished);
+
+    // Iterate over array of tasks from newest to oldest (backwards loop so tasks can be removed)
+    for(let i = tasks.length - 1; i >= 0; i--)
+    {
+      updateCounts(tasks[i]);
+      if(shouldRemove(tasks[i])) tasks.splice(i, 1);
+    }
+
+    Logger.debug(__dirname, "Cleared old tasks.\n" + tasks.toString());
+    if(tasks.length >= TaskController.CACHED_COUNT_LIMIT) console.warn("Tasks length exceeds cache limit. Total tasks cached: " + tasks.length);
+  }
+
+  // Removes finished tasks from running tasks array
+  #handleRunning()
   {
     for(let i = this.runningTasks.length - 1 ; i >= 0; i--)
     {
